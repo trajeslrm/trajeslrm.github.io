@@ -1,4 +1,3 @@
-// script.js
 document.addEventListener("DOMContentLoaded", function () {
   const catalogo = document.getElementById("catalogo");
   const modal = document.getElementById("modal");
@@ -11,27 +10,41 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentImageIndex = 0;
   let productos = [];
 
-  // URL corregida para Google Sheets
+  // URL para Google Sheets
   const SHEET_ID = "1x4Ovcl84SGK4bx7OTxbv5QRq9aJJ6VHaLcsk8wl0jJg";
   const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
 
   // Cargar productos desde Google Sheets
   fetch(URL)
-    .then(response => response.text())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error en la respuesta de la red');
+      }
+      return response.text();
+    })
     .then(data => {
       const rows = data.split("\n").slice(1); // Saltar encabezado
       productos = rows
         .map(row => {
-          const cells = row.split(",").map(cell => {
-            // Limpiar las celdas y quitar comillas
-            let clean = cell.replace(/^"|"$/g, "").trim();
-            // Si empieza con '="' y termina con '"', limpiar
-            if (clean.startsWith('="') && clean.endsWith('"')) {
-              clean = clean.slice(2, -1);
+          // Manejar comillas y formato CSV correctamente
+          const cells = [];
+          let currentCell = '';
+          let insideQuotes = false;
+          
+          for (let i = 0; i < row.length; i++) {
+            const char = row[i];
+            
+            if (char === '"') {
+              insideQuotes = !insideQuotes;
+            } else if (char === ',' && !insideQuotes) {
+              cells.push(currentCell.trim().replace(/^"|"$/g, ''));
+              currentCell = '';
+            } else {
+              currentCell += char;
             }
-            return clean;
-          });
-
+          }
+          cells.push(currentCell.trim().replace(/^"|"$/g, ''));
+          
           // Solo procesar filas que tengan datos válidos
           if (cells.length >= 10 && cells[0] && cells[1] && cells[9] === "Sí") {
             return {
@@ -55,12 +68,12 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch(error => {
       console.error("Error cargando el catálogo:", error);
-      catalogo.innerHTML = "<p>Error cargando el catálogo. Por favor intenta más tarde.</p>";
+      catalogo.innerHTML = '<div class="error-message">Error cargando el catálogo. Por favor intenta más tarde.</div>';
     });
 
   function mostrarCatalogo() {
     if (productos.length === 0) {
-      catalogo.innerHTML = "<p>No hay productos disponibles en este momento.</p>";
+      catalogo.innerHTML = '<div class="error-message">No hay productos disponibles en este momento.</div>';
       return;
     }
 
@@ -78,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   alt="${producto.nombre}" 
                   onclick="abrirModal(${index}, ${imgIndex})"
                   onerror="this.style.display='none'"
+                  loading="lazy"
                 />
               `
               )
@@ -86,11 +100,13 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="info">
             <h3>${producto.nombre}</h3>
             <p>${producto.descripcion}</p>
-            <p><strong>${producto.precio}</strong></p>
-            <p><strong>Tallas:</strong> ${producto.tallas}</p>
-            <p><strong>Categoría:</strong> ${producto.categoria}</p>
+            <p class="price"><strong>${producto.precio}</strong></p>
+            <div class="details">
+              <p><strong>Tallas:</strong> ${producto.tallas}</p>
+              <p><strong>Categoría:</strong> ${producto.categoria}</p>
+            </div>
             <a href="${producto.whatsapp_link}" class="whatsapp-btn" target="_blank">
-              💬 Alquilar por WhatsApp
+              <i class="fab fa-whatsapp"></i> Alquilar por WhatsApp
             </a>
           </div>
         </div>
@@ -109,12 +125,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (imagenes.length > 0) {
       modalImg.src = imagenes[imgIndex];
       modal.style.display = "block";
+      document.body.style.overflow = "hidden"; // Prevenir scroll
     }
   };
 
   function cambiarImagen(direction) {
     const producto = productos[currentProductIndex];
     const imagenes = [producto.img1, producto.img2, producto.img3].filter(img => img && img.trim() !== "");
+    
+    if (imagenes.length <= 1) return;
     
     currentImageIndex += direction;
     
@@ -127,17 +146,20 @@ document.addEventListener("DOMContentLoaded", function () {
     modalImg.src = imagenes[currentImageIndex];
   }
 
-  // Event listeners
-  closeBtn.addEventListener("click", () => {
+  function cerrarModal() {
     modal.style.display = "none";
-  });
+    document.body.style.overflow = "auto"; // Restaurar scroll
+  }
+
+  // Event listeners
+  closeBtn.addEventListener("click", cerrarModal);
 
   prevBtn.addEventListener("click", () => cambiarImagen(-1));
   nextBtn.addEventListener("click", () => cambiarImagen(1));
 
   modal.addEventListener("click", (e) => {
     if (e.target === modal) {
-      modal.style.display = "none";
+      cerrarModal();
     }
   });
 
@@ -145,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (modal.style.display === "block") {
       if (e.key === "ArrowLeft") cambiarImagen(-1);
       if (e.key === "ArrowRight") cambiarImagen(1);
-      if (e.key === "Escape") modal.style.display = "none";
+      if (e.key === "Escape") cerrarModal();
     }
   });
 });
