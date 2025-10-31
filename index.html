@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LRM Trajes - Alquiler de Trajes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>LRM Trajes</h1>
+    <p>Alquiler de trajes desde $15 por 3 días</p>
+  </header>
+
+  <main id="catalogo">
+    <!-- Aquí se cargarán los productos -->
+    <p>Cargando catálogo...</p>
+  </main>
+
+  <footer>
+    <div class="footer-col">
+      <h3>Nuestra Tienda</h3>
+      <p>Vargas con 18 - Merpolara</p>
+      <p>Lunes a Sábado, 9:00 AM - 6:00 PM</p>
+      <p>Teléfono: <a href="tel:+584129373630">0412-9373630</a></p>
+    </div>
+    <div class="footer-col">
+      <h3>Información</h3>
+      <p>Precio: $15 por 3 días</p>
+      <p>Garantía de calidad</p>
+      <p>Amplia variedad de tallas</p>
+    </div>
+    <div class="footer-col">
+      <h3>Síguenos</h3>
+      <p>
+        <a href="https://www.instagram.com/trajes_lrm" target="_blank">Instagram</a> • 
+        <a href="https://www.tiktok.com/@trajes_lrm" target="_blank">TikTok</a>
+      </p>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.422352!2d-68.1234567!3d10.1234567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDA3JzI0LjAiTiA2OMKwMDcnMjQuNCJX!5e0!3m2!1ses!2sve!4v1700000000000!5m2!1ses!2sve" width="200" height="100" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 LRM Trajes. Todos los derechos reservados.
+    </div>
+  </footer>
+
+  <!-- Modal para imágenes grandes -->
+  <div id="modal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modal-img">
+    <div class="modal-nav">
+      <button id="prev-btn">&#10094;</button>
+      <button id="next-btn">&#10095;</button>
+    </div>
+  </div>
+
+  <script>
+    // ⚠️ Reemplaza ESTE ID por el de tu hoja de Google
+    const SHEET_ID = "1x4Ovcl84SGK4bx7OTxbv5QRq9aJJ6VHaLcsk8wl0jJg";
+    const SHEET_NAME = "Hoja1"; // o el nombre de tu pestaña
+    const URL = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?output=csv`;
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
