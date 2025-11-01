@@ -6,7 +6,6 @@
   <title>LRM Trajes - Alquiler de Trajes</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    /* === VARIABLES Y ESTILOS BASE === */
     :root {
       --primary-color: #001775;
       --secondary-color: #2e6fd1;
@@ -31,7 +30,6 @@
       line-height: 1.6;
     }
 
-    /* === HEADER === */
     .header {
       background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
       color: var(--white);
@@ -53,7 +51,6 @@
       opacity: 0.9;
     }
 
-    /* === CATÁLOGO RESPONSIVO === */
     .catalogo-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -63,7 +60,6 @@
       margin: 0 auto;
     }
 
-    /* === TARJETA DE PRODUCTO MEJORADA === */
     .producto {
       background: var(--white);
       border-radius: 12px;
@@ -202,14 +198,12 @@
       box-shadow: 0 4px 8px rgba(37, 211, 102, 0.3);
     }
 
-    /* === SEPARADOR === */
     .separador {
       height: 2px;
       background: linear-gradient(90deg, transparent, #ccc, transparent);
       margin: 40px 20px 0;
     }
 
-    /* === FOOTER MEJORADO === */
     .footer-container {
       background-color: #e8f1ff;
       color: var(--text-color);
@@ -298,7 +292,6 @@
       margin-right: auto;
     }
 
-    /* === MODAL MEJORADO === */
     .modal {
       display: none;
       position: fixed;
@@ -402,7 +395,6 @@
       }
     }
 
-    /* === ANIMACIONES === */
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -412,7 +404,6 @@
       animation: fadeIn 0.5s ease forwards;
     }
 
-    /* === LOADING INDICATOR === */
     .loading {
       display: inline-block;
       width: 20px;
@@ -425,6 +416,19 @@
 
     @keyframes spin {
       to { transform: rotate(360deg); }
+    }
+
+    /* --- CORRECCIÓN: dos columnas en móvil --- */
+    @media (max-width: 600px) {
+      .catalogo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 8px;
+      }
+      .producto {
+        padding: 10px 4px;
+        font-size: 0.93rem;
+      }
     }
   </style>
 </head>
@@ -547,17 +551,13 @@
         let currentIndex = 0;
         const totalImages = images.length;
         
-        // Función para actualizar el carrusel
         function updateCarousel() {
           carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
-          
-          // Actualizar indicadores
           indicators.forEach((indicator, index) => {
             indicator.classList.toggle('active', index === currentIndex);
           });
         }
         
-        // Navegación
         prevBtn.addEventListener('click', () => {
           currentIndex = (currentIndex - 1 + totalImages) % totalImages;
           updateCarousel();
@@ -568,7 +568,6 @@
           updateCarousel();
         });
         
-        // Navegación por indicadores
         indicators.forEach((indicator, index) => {
           indicator.addEventListener('click', () => {
             currentIndex = index;
@@ -576,13 +575,11 @@
           });
         });
         
-        // Auto-avance cada 5 segundos
         let autoSlide = setInterval(() => {
           currentIndex = (currentIndex + 1) % totalImages;
           updateCarousel();
         }, 5000);
         
-        // Pausar auto-avance al interactuar
         container.addEventListener('mouseenter', () => {
           clearInterval(autoSlide);
         });
@@ -613,40 +610,34 @@
           const carousel = producto.querySelector('.carousel');
           const imagenes = Array.from(carousel.querySelectorAll('img')).map(img => img.src);
           currentImages = imagenes;
-          
-          // Encontrar el índice de la imagen clickeada
           const carouselImages = Array.from(carousel.querySelectorAll('img'));
           currentImageIndex = carouselImages.indexOf(this);
-          
+
           modalImg.src = this.src;
           updateImageCounter();
+          modal.style.display = "flex"; // CORRECCIÓN: Siempre mostrar flex al abrir
+          void modal.offsetWidth; // Forzar reflow para transición
           modal.classList.add('active');
           document.body.style.overflow = "hidden";
         });
       });
 
-      // Navegación entre imágenes
       function cambiarImagen(direction) {
         if (currentImages.length <= 1) return;
-        
         currentImageIndex += direction;
-        
         if (currentImageIndex >= currentImages.length) {
           currentImageIndex = 0;
         } else if (currentImageIndex < 0) {
           currentImageIndex = currentImages.length - 1;
         }
-        
         modalImg.src = currentImages[currentImageIndex];
         updateImageCounter();
       }
 
-      // Actualizar contador de imágenes
       function updateImageCounter() {
         imageCounter.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
       }
 
-      // Cerrar modal
       function cerrarModal() {
         modal.classList.remove('active');
         setTimeout(() => {
@@ -655,7 +646,6 @@
         document.body.style.overflow = "auto";
       }
 
-      // Event listeners
       closeBtn.addEventListener("click", cerrarModal);
       prevBtn.addEventListener("click", () => cambiarImagen(-1));
       nextBtn.addEventListener("click", () => cambiarImagen(1));
@@ -690,7 +680,6 @@
         });
       }, observerOptions);
 
-      // Aplicar animación a los productos
       document.querySelectorAll('.producto').forEach((producto, index) => {
         producto.dataset.delay = index * 100;
         observer.observe(producto);
