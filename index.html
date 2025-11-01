@@ -1,641 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LRM Trajes - Alquiler de Trajes</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .catalogo-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            padding: 10px;
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            overflow-x: hidden;
-        }
-
-        .producto {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            padding: 10px;
-            text-align: center;
-            position: relative;
-        }
-
-        .carousel {
-            position: relative;
-            overflow: hidden;
-            height: 220px;
-            margin-bottom: 10px;
-        }
-
-        .carousel img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: opacity 0.5s ease;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .carousel-indicators {
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            z-index: 10;
-        }
-
-        .carousel-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .carousel-indicator.active {
-            background-color: white;
-        }
-
-        .popup {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            top: 0; 
-            left: 0;
-            width: 100%; 
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .popup-content {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 80%;
-        }
-
-        .popup img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-
-        .popup .nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 40px;
-            color: white;
-            cursor: pointer;
-            user-select: none;
-            padding: 20px;
-            z-index: 10;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 50%;
-        }
-
-        .popup .nav:hover {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .popup .prev { 
-            left: 20px; 
-        }
-        
-        .popup .next { 
-            right: 20px; 
-        }
-
-        .popup-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 40px;
-            color: white;
-            cursor: pointer;
-            z-index: 10;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.3s;
-        }
-
-        .popup-close:hover {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .boton-whatsapp {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 6px 12px;
-            background-color: #25D366;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .boton-whatsapp:hover {
-            background-color: #1ebe5d;
-        }
-
-        /* Separador entre la grilla y el footer */
-        .separador {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ccc, transparent);
-            margin: 30px 20px 0;
-        }
-
-        /* Estilos del pie de página */
-        .footer-container {
-            background-color: #e8f1ff; /* Azul muy claro */
-            color: #333;
-            padding: 30px 20px;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 14px;
-            margin-top: 20px;
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .footer-section {
-            flex: 1 1 250px;
-        }
-
-        .footer-section h3 {
-            color: #001775; /* Azul oscuro para resaltar */
-            margin-bottom: 15px;
-            font-size: 18px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #a0c1ff;
-            font-weight: 600;
-        }
-
-        .footer-section p {
-            margin: 8px 0;
-            line-height: 1.5;
-        }
-
-        .footer-section a {
-            color: #2e6fd1; /* Azul más suave para enlaces */
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-section a:hover {
-            color: #001775; /* Azul oscuro al pasar el mouse */
-            text-decoration: underline;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
-        }
-
-        .social-link {
-            font-size: 22px;
-            color: #2e6fd1;
-            transition: color 0.3s, transform 0.3s;
-        }
-
-        .social-link:hover {
-            color: #001775;
-            transform: scale(1.1);
-        }
-
-        .copyright {
-            text-align: center;
-            font-size: 13px;
-            color: #666;
-            border-top: 1px solid #c5d7f7;
-            padding-top: 15px;
-            margin-top: 15px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LRM Trajes - Alquiler de Trajes</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
 
-<div class="catalogo-grid">
+  <div class="catalogo-grid">
 
- 
-    <!-- Producto 14 -->
+    <!-- Producto 1 -->
     <div class="producto">
-        <h4>Traje 3 Piezas</h4>
-        <div class="carousel" data-images='[
+      <h4>Traje 3 Piezas</h4>
+      <div class="carousel" data-images='[
         "https://i.ibb.co/NgkXzhw7/Whats-App-Image-2025-10-04-at-12-07-52-PM.jpg",
         "https://i.ibb.co/gFyK46Kk/Whats-App-Image-2025-10-04-at-12-07-53-PM-4.jpg",
-		"https://i.ibb.co/sJ6PbvFR/Whats-App-Image-2025-10-04-at-12-07-54-PM.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla S-M-5XL - Negro</p>
-        <a class="boton-whatsapp" href="https://wa.link/0x5gal" target="_blank">Reservar</a>
-    </div>
-
-   
-    <!-- Producto 13 -->
-    <div class="producto">
-        <h4>Blazer Juvenil Azul</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/Ng6m755B/IMG-20240305-093215.jpg",
-        "https://i.ibb.co/m5F7TtSf/IMG-20240305-093339.jpg",
-		"https://i.ibb.co/KpvddZNV/IMG-20240305-093035.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla S - Azul Marino</p>
-        <a class="boton-whatsapp" href="https://wa.link/0x5gal" target="_blank">Reservar</a>
-    </div>
-
-  
-    <!-- Producto 12 -->
-    <div class="producto">
-        <h4>Saco + Pantalon Azul Marino</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/4RDQ5gmM/1744729868218.jpg",
-        "https://i.ibb.co/4gWrqFBH/IMG-20240511-WA0009.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla M - Azul Marino c/rayas blancas </p>
-        <a class="boton-whatsapp" href="https://wa.link/07jng5" target="_blank">Reservar</a>
-    </div>
-
-  
-    <!-- Producto 11 -->
-    <div class="producto">
-        <h4>Saco + Chaleco Verde Oscuro</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/d0xhFB76/1744837799244.jpg",
-        "https://i.ibb.co/ksdZ135G/1744837784985.jpg",
-        "https://i.ibb.co/4RdKqHBD/1744837813774.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla M - Verde</p>
-        <a class="boton-whatsapp" href="https://wa.link/rucyzr" target="_blank">Reservar</a>
-    </div>
-
-
-    <!-- Producto 10 -->
-    <div class="producto">
-        <h4>Traje 2 Piezas 1 Boton</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/7dz38WFs/1751397234475.jpg",
-        "https://i.ibb.co/3yd1Rbk5/1000286869-Pica-1.jpg",
-        "https://i.ibb.co/PsQsKy9Q/1000286872-Pica-1.jpg",
-        "https://i.ibb.co/MybMFSYz/1000286870-Pica-1.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla S-M-L - Negro</p>
-        <a class="boton-whatsapp" href="https://wa.link/n5nd47" target="_blank">Reservar</a>
-    </div>
-
-
-
-    <!-- Producto 9 -->
-    <div class="producto">
-        <h4>Traje Negro Un Botón 3 Piezas</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/d9KsPn6/traje-1-1.jpg",
-        "https://i.ibb.co/S4P1xrKz/traje-1-2.jpg",
-        "https://i.ibb.co/qLDmVss3/traje-1-3.jpg",
-        "https://i.ibb.co/Qv89YfJn/traje-1-4.jpg",
-		"https://i.ibb.co/9mSPzcx6/traje-1-5.jpg",
-        "https://i.ibb.co/gMQR2zVc/traje-3-1.jpg",
-        "https://i.ibb.co/wN9S9VnT/traje-3-2.jpg",
-		"https://i.ibb.co/fzLd7hrt/traje-4-1.jpg",
-		"https://i.ibb.co/SDpk8Csr/traje-4-2.jpg",
-		"https://i.ibb.co/99qktKsT/traje-4-3.jpg",
-		"https://i.ibb.co/D2Snsf9/traje-6-1.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla S - 5XL - Negro</p>
-        <a class="boton-whatsapp" href="https://api.whatsapp.com/send?phone=584129373630&text=Hola%20quiero%20alquilar%20este%20traje.%20%0Ahttps%3A%2F%2Fi.ibb.co%2Fd9KsPn6%2Ftraje-1-1.jpg" target="_blank">Reservar</a>
-    </div>
-
-
-    <!-- Producto 8 -->
-    <div class="producto">
-        <h4>Traje Negro Un Botón 2 Piezas</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/Z6Db8knP/traje-2-1.jpg",
-        "https://i.ibb.co/pjTmjMqd/traje-2-2.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla S - XL - Negro</p>
-        <a class="boton-whatsapp" href="https://api.whatsapp.com/send?phone=584129373630&text=Hola%20quiero%20alquilar%20este%20traje.%20%0Ahttps%3A%2F%2Fi.ibb.co%2FZ6Db8knP%2Ftraje-2-1.jpg" target="_blank">Reservar</a>
-    </div>
-
-
-    <!-- Producto 7 -->
-    <div class="producto">
-        <h4>Blazer Azul Marino</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/pvx7QQGX/traje-5-1.jpg",
-        "https://i.ibb.co/fGxZHsVg/traje-5-2.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla S-M-L - Azul Marino</p>
-        <a class="boton-whatsapp" href="https://api.whatsapp.com/send?phone=584129373630&text=Hola%20quiero%20alquilar%20este%20Blazer%20Azul.%20%0Ahttps%3A%2F%2Fi.ibb.co%2Fpvx7QQGX%2Ftraje-5-1.jpg" target="_blank">Reservar</a>
-    </div>
-
-
-    <!-- Producto 6 -->
-    <div class="producto">
-        <h4>Saco negro 2 botones</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/nqzspbb2/IMG-20250929-WA0052.jpg",
-        "https://i.ibb.co/yBKxLzsS/IMG-20250929-WA0051.jpg",                                   
-        "https://i.ibb.co/ZRjtJkvr/IMG-20250929-WA0049.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla XL(46) - Negro</p>
-        <a class="boton-whatsapp" href="https://wa.link/6pno14" target="_blank">Reservar</a>
-    </div>
-
-
-  
-    <!-- Producto 5 -->
-    <div class="producto">
-        <h4>Traje Verde 3 Piezas</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/8gC0dN0m/1745070748290.jpg",
-		"https://i.ibb.co/jk0YgtRF/1745070700572.jpg",
-		"https://i.ibb.co/27QcpS6k/1000342406-Pica.png",
-		"https://i.ibb.co/99RVDcjK/1745070766882.jpg",
-        "https://i.ibb.co/N2n6BbmP/1000342405-Pica.png"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla 42 - Verde Aceituna</p>
-        <a class="boton-whatsapp" href="https://wa.link/mztzx0" target="_blank">Reservar</a>
-    </div>
-
-
-    <!-- Producto 4 -->
-    <div class="producto">
-        <h4>Traje de Mariachi</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/ccxLxsLJ/IMG-20240531-191425.jpg",
-        "https://i.ibb.co/C5s09pyd/IMG-20240531-191441.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla M - Negro/Dorado</p>
-        <a class="boton-whatsapp" href="https://wa.me/584129373630?text=Hola%2C%20quiero%20reservar%20el%20Traje%20de%20Mariachi" target="_blank">Reservar</a>
-    </div>
-
-    <!-- Producto 3 -->
-    <div class="producto">
-        <h4>Chaqueta doble botón + Pantalón</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/JjPr6BtB/IMG-20250725-WA0045.jpg",
-        "https://i.ibb.co/Ng95r1vQ/IMG-20250725-WA0062.jpg",
-        "https://i.ibb.co/DHmwd3Gq/1745322063426.jpg",
-        "https://i.ibb.co/cc13z6Q3/1745322099298.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla S-M-L - Negro</p>
-        <a class="boton-whatsapp" href="https://wa.me/584129373630?text=Hola%2C%20quiero%20reservar%20la%20Chaqueta%20doble%20botón" target="_blank">Reservar</a>
+        "https://i.ibb.co/sJ6PbvFR/Whats-App-Image-2025-10-04-at-12-07-54-PM.jpg"
+      ]'></div>
+      <p>$15 por 3 días</p>
+      <p>Talla S-M-5XL - Negro</p>
+      <a class="boton-whatsapp" href="https://wa.me/584129373630?text=Hola%20Gervacia%2C%20me%20gustar%C3%ADa%20alquilar%20este%20traje%3A%20Traje%203%20Piezas%20-%20https%3A%2F%2Fi.ibb.co%2FNgkXzhw7%2FWhats-App-Image-2025-10-04-at-12-07-52-PM.jpg" target="_blank">Reservar</a>
     </div>
 
     <!-- Producto 2 -->
     <div class="producto">
-        <h4>Blazer Azul Marino</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/1G1s3DpW/17159162499ace0d1686e3247fa3925c955d07cdd8-thumbnail-999x999.jpg",
-        "https://i.ibb.co/xybpnL8/16878214732bc1fa8e1a51fa1bbc24565001c03686-thumbnail-999x999.jpg",
-        "https://i.ibb.co/bY1RkNc/1737318962a72c71c6cb60842340ab4d7a90e3742a-thumbnail-999x999.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla M - Azul Marino</p>
-        <a class="boton-whatsapp" href="https://wa.me/584129373630?text=Hola%2C%20quiero%20reservar%20el%20Blazer%20Azul%20Marino" target="_blank">Reservar</a>
+      <h4>Blazer Juvenil Azul</h4>
+      <div class="carousel" data-images='[
+        "https://i.ibb.co/Ng6m755B/IMG-20240305-093215.jpg",
+        "https://i.ibb.co/m5F7TtSf/IMG-20240305-093339.jpg",
+        "https://i.ibb.co/KpvddZNV/IMG-20240305-093035.jpg"
+      ]'></div>
+      <p>$15 por 3 días</p>
+      <p>Talla S - Azul Marino</p>
+      <a class="boton-whatsapp" href="https://wa.me/584129373630?text=Hola%20Gervacia%2C%20me%20gustar%C3%ADa%20alquilar%20este%20traje%3A%20Blazer%20Juvenil%20Azul%20-%20https%3A%2F%2Fi.ibb.co%2FNg6m755B%2FIMG-20240305-093215.jpg" target="_blank">Reservar</a>
     </div>
 
-    <!-- Producto 1 -->
-    <div class="producto">
-        <h4>Traje Negro Un Botón</h4>
-        <div class="carousel" data-images='[
-        "https://i.ibb.co/bMcjwHKV/IMG-20250714-WA0075.jpg",
-        "https://i.ibb.co/gZNpdqD8/IMG-20250714-WA0077.jpg",
-        "https://i.ibb.co/tww104hb/IMG-20250714-WA0074.jpg",
-        "https://i.ibb.co/MyKSH4td/IMG-20250714-WA0076.jpg"
-        ]'></div>
-        <p>$15 por 3 días</p>
-        <p>Talla M - Negro</p>
-        <a class="boton-whatsapp" href="https://wa.link/2in5lm" target="_blank">Reservar</a>
-    </div>
+    <!-- Agrega más productos aquí siguiendo el mismo patrón -->
 
+  </div>
 
+  <!-- Separador -->
+  <div class="separador"></div>
 
-</div>
-
-<!-- Separador entre la grilla y el footer -->
-<div class="separador"></div>
-
-<!-- PIE DE PÁGINA LRM TRAJES -->
-<div class="footer-container">
+  <!-- Pie de página -->
+  <footer class="footer-container">
     <div class="footer-content">
-        <div class="footer-section">
-            <h3><i class="fas fa-store"></i> Nuestra Tienda</h3>
-            <p><a href="https://maps.app.goo.gl/HPJMkwu7Reqs5zGt5" target="_blank"><i class="fas fa-map-marker-alt"></i> Vargas con 18 - Merpolara</a></p>
-            <p><i class="fas fa-clock"></i> Horario: Lunes a Sábado, 9:00 AM - 6:00 PM</p>
-            <p><a href="tel:04129373630"><i class="fas fa-phone-alt"></i> Teléfono: 0412-9373630</a></p>
+      <div class="footer-section">
+        <h3><i class="fas fa-store"></i> Nuestra Tienda</h3>
+        <p><a href="https://maps.app.goo.gl/HPJMkwu7Reqs5zGt5" target="_blank"><i class="fas fa-map-marker-alt"></i> Vargas con 18 - Merpolara</a></p>
+        <p><i class="fas fa-clock"></i> Horario: Lunes a Sábado, 9:00 AM - 6:00 PM</p>
+        <p><a href="tel:+584129373630"><i class="fas fa-phone-alt"></i> Teléfono: 0412-9373630</a></p>
+      </div>
+      <div class="footer-section">
+        <h3><i class="fas fa-info-circle"></i> Información</h3>
+        <p><i class="fas fa-tag"></i> Precio: $15 por 3 días</p>
+        <p><i class="fas fa-shield-alt"></i> Garantía de calidad</p>
+        <p><i class="fas fa-tshirt"></i> Amplia variedad de tallas</p>
+      </div>
+      <div class="footer-section">
+        <h3><i class="fas fa-share-alt"></i> Síguenos</h3>
+        <p>Conéctate con nosotros en redes sociales</p>
+        <div class="social-links">
+          <a class="social-link" href="https://www.instagram.com/trajes_lrm" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a class="social-link" href="https://www.tiktok.com/@trajes_lrm" target="_blank"><i class="fab fa-tiktok"></i></a>
         </div>
-        <div class="footer-section">
-            <h3><i class="fas fa-info-circle"></i> Información</h3>
-            <p><i class="fas fa-tag"></i> Precio: $15 por 3 días</p>
-            <p><i class="fas fa-shield-alt"></i> Garantía de calidad</p>
-            <p><i class="fas fa-tshirt"></i> Amplia variedad de tallas</p>
-        </div>
-        <div class="footer-section">
-            <h3><i class="fas fa-share-alt"></i> Síguenos</h3>
-            <p>Conéctate con nosotros en redes sociales</p>
-            <div class="social-links">
-                <a class="social-link" href="https://www.instagram.com/trajes_lrm" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a class="social-link" href="https://www.tiktok.com/@trajes_lrm" target="_blank"><i class="fab fa-tiktok"></i></a>
-            </div>
-        </div>
+      </div>
     </div>
     <div class="copyright">
-        © 2025 LRM Trajes. Todos los derechos reservados.
+      © 2025 LRM Trajes. Todos los derechos reservados.
     </div>
-</div>
-<!-- FIN PIE DE PÁGINA -->
+  </footer>
 
-<!-- Popup para imágenes -->
-<div class="popup" id="popup">
-    <div class="popup-content">
-        <span class="nav prev">❮</span>
-        <img id="popup-img" src="">
-        <span class="nav next">❯</span>
-        <span class="popup-close">×</span>
-    </div>
-</div>
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <span class="modal-close">&times;</span>
+    <img class="modal-img" id="modal-img" />
+    <button class="modal-nav prev">❮</button>
+    <button class="modal-nav next">❯</button>
+  </div>
 
-<script>
-    // Variables globales para el control del popup
-    let currentImages = [];
-    let currentIndex = 0;
-    
-    // Función para abrir el popup
-    function openPopup(images, index) {
-        currentImages = images;
-        currentIndex = index;
-        document.getElementById('popup-img').src = images[index];
-        document.getElementById('popup').style.display = 'flex';
-    }
-    
-    // Función para navegar entre imágenes
-    function navigate(direction) {
-        currentIndex = (currentIndex + direction + currentImages.length) % currentImages.length;
-        document.getElementById('popup-img').src = currentImages[currentIndex];
-    }
-    
-    // Función para cerrar el popup
-    function closePopup() {
-        document.getElementById('popup').style.display = 'none';
-    }
-    
-    // Inicialización cuando el DOM está listo
-    document.addEventListener('DOMContentLoaded', function() {
-        const carousels = document.querySelectorAll('.carousel');
-        
-        // Configurar cada carrusel
-        carousels.forEach(c => {
-            const imgs = JSON.parse(c.getAttribute('data-images'));
-            let index = 0;
-            
-            // Crear contenedor de imágenes
-            const imagesContainer = document.createElement('div');
-            imagesContainer.style.position = 'relative';
-            imagesContainer.style.height = '100%';
-            
-            // Agregar imágenes al contenedor
-            imgs.forEach((src, i) => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.style.opacity = i === 0 ? '1' : '0';
-                img.style.transition = 'opacity 0.5s ease';
-                img.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    openPopup(imgs, i);
-                });
-                imagesContainer.appendChild(img);
-            });
-            
-            // Limpiar y agregar contenedor de imágenes
-            c.innerHTML = '';
-            c.appendChild(imagesContainer);
-            
-            // Crear indicadores
-            const indicatorsContainer = document.createElement('div');
-            indicatorsContainer.className = 'carousel-indicators';
-            
-            imgs.forEach((_, i) => {
-                const indicator = document.createElement('div');
-                indicator.className = 'carousel-indicator' + (i === 0 ? ' active' : '');
-                indicator.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    // Cambiar a imagen específica al hacer clic en el indicador
-                    imagesContainer.children[index].style.opacity = '0';
-                    index = i;
-                    imagesContainer.children[index].style.opacity = '1';
-                    updateIndicators();
-                });
-                indicatorsContainer.appendChild(indicator);
-            });
-            
-            c.appendChild(indicatorsContainer);
-            
-            // Función para actualizar indicadores
-            function updateIndicators() {
-                const indicators = indicatorsContainer.querySelectorAll('.carousel-indicator');
-                indicators.forEach((ind, i) => {
-                    ind.classList.toggle('active', i === index);
-                });
-            }
-            
-            // Configurar intervalo de cambio automático
-            setInterval(() => {
-                imagesContainer.children[index].style.opacity = '0';
-                index = (index + 1) % imgs.length;
-                imagesContainer.children[index].style.opacity = '1';
-                updateIndicators();
-            }, 3000);
-        });
-        
-        // Configurar eventos para los controles del popup
-        document.querySelector('.popup .prev').addEventListener('click', function(e) {
-            e.stopPropagation();
-            navigate(-1);
-        });
-        
-        document.querySelector('.popup .next').addEventListener('click', function(e) {
-            e.stopPropagation();
-            navigate(1);
-        });
-        
-        document.querySelector('.popup-close').addEventListener('click', function(e) {
-            e.stopPropagation();
-            closePopup();
-        });
-        
-        // Cerrar popup al hacer clic fuera de la imagen
-        document.getElementById('popup').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closePopup();
-            }
-        });
-        
-        // Navegación con teclado
-        document.addEventListener('keydown', function(e) {
-            if (document.getElementById('popup').style.display === 'flex') {
-                if (e.key === 'ArrowLeft') {
-                    navigate(-1);
-                } else if (e.key === 'ArrowRight') {
-                    navigate(1);
-                } else if (e.key === 'Escape') {
-                    closePopup();
-                }
-            }
-        });
-    });
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
