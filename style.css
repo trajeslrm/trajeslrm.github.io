@@ -181,7 +181,7 @@ body {
   border-radius: 6px;
   font-size: 0.95rem;
   transition: var(--transition);
-  width: 100%;
+  width: 60%;
 }
 
 .boton-whatsapp:hover {
