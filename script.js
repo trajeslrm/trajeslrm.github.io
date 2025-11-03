@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let autoSlide = setInterval(() => {
       currentIndex = (currentIndex + 1) % totalImages;
       updateCarousel();
-    }, 5000);
+    }, 3000);
     
     container.addEventListener('mouseenter', () => {
       clearInterval(autoSlide);
