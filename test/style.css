@@ -225,11 +225,12 @@ body {
 
   .producto-imagen {
     flex-shrink: 0;
+    width: 45%; /* Controla el ancho de la sección de imagen */
   }
 
   .carousel-container {
-    width: 120px;
-    height: 120px;
+    width: 100%; /* Ocupa todo el ancho disponible de .producto-imagen */
+    height: 180px; /* Aumentado para hacer más grande */
     margin-bottom: 0;
   }
 
@@ -239,6 +240,7 @@ body {
     flex-direction: column;
     gap: 6px;
     min-width: 0;
+    width: 55%; /* Controla el ancho de la sección de información */
   }
 
   .producto h4 {
@@ -296,9 +298,17 @@ body {
     gap: 12px;
   }
 
+  .producto-imagen {
+    width: 45%; /* Mantener proporción */
+  }
+
   .carousel-container {
-    width: 100px;
-    height: 100px;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    height: 160px; /* Aumentado para móviles pequeños */
+  }
+
+  .producto-info {
+    width: 55%; /* Mantener proporción */
   }
 
   .producto h4 {
