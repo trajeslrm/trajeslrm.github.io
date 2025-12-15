@@ -18,8 +18,13 @@ class App {
 
   async init() {
     try {
-      // Cargar productos
-      const response = await fetch('./data/productos.json');
+      // ✅ FIX: Ruta absoluta para dominio personalizado
+      const response = await fetch('/test/data/productos.json');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const productos = await response.json();
       
       this.engine = new SearchEngine(productos);
@@ -32,7 +37,7 @@ class App {
     } catch (error) {
       console.error('Error cargando productos:', error);
       document.getElementById('productList').innerHTML = 
-        '<p>Error al cargar el catálogo. Por favor, recarga la página.</p>';
+        '<p style="text-align: center; padding: 2rem; color: #666;">Error al cargar el catálogo. Por favor, recarga la página.</p>';
     }
   }
 
