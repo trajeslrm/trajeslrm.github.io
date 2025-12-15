@@ -95,6 +95,7 @@ body {
   grid-template-columns: 280px 1fr;
   gap: 1.5rem;
   padding: 1.5rem;
+  min-height: calc(100vh - 300px); /* Espacio para footer */
 }
 
 /* === SIDEBAR === */
@@ -187,7 +188,7 @@ body {
   gap: 1rem;
 }
 
-/* === PRODUCT CARD (Vista Lista) === */
+/* === PRODUCT CARD === */
 .product-card {
   background: var(--white);
   border-radius: 12px;
@@ -277,7 +278,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* === SCROLL INFINITO INDICATOR === */
+/* === SCROLL INFINITO === */
 .infinite-scroll-indicator {
   text-align: center;
   padding: 2rem;
@@ -301,7 +302,7 @@ body {
   to { transform: rotate(360deg); }
 }
 
-/* === MODAL (Sin cambios) === */
+/* === MODAL === */
 .modal {
   display: none;
   position: fixed;
@@ -339,6 +340,7 @@ body {
   color: white;
   font-size: 40px;
   cursor: pointer;
+  z-index: 10;
 }
 
 .modal-nav {
@@ -352,6 +354,9 @@ body {
   border-radius: 50%;
   font-size: 20px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .prev { left: 30px; }
@@ -363,6 +368,76 @@ body {
   text-align: center;
   color: white;
   font-size: 16px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+}
+
+/* === FOOTER MINIMALISTA === */
+.footer-minimal {
+  background: #e8f1ff;
+  color: var(--text-color);
+  padding: 2rem 1rem 1rem;
+  margin-top: 3rem;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-section h4 {
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-section p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-section a {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+.footer-section a:hover {
+  text-decoration: underline;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.social-links a {
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+  transition: var(--transition);
+}
+
+.social-links a:hover {
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid #c5d7f7;
+  color: #666;
+  font-size: 0.85rem;
 }
 
 /* === RESPONSIVE === */
@@ -394,6 +469,7 @@ body {
   .main-wrapper {
     grid-template-columns: 1fr;
     padding: 1rem;
+    min-height: calc(100vh - 350px);
   }
 
   .product-card {
