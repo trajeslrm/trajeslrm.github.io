@@ -12,24 +12,20 @@
   --transition: all .3s cubic-bezier(.4,0,.2,1);
 }
 
-/* === RESET Y BASE === */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* === BASE ESTILOS RECUPERADOS === */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background: var(--light-bg);
   color: var(--text-color);
   line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
 }
 
-/* === HEADER AMAZON STYLE === */
+/* === HEADER COLORES === */
 .header {
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
   padding: 1rem;
   position: sticky;
   top: 0;
@@ -47,207 +43,19 @@ body {
 }
 
 .logo {
-  color: var(--white);
+  color: white;
   font-weight: 700;
   font-size: 1.4rem;
-  letter-spacing: -0.5px;
 }
 
-.search-container {
-  position: relative;
-  max-width: 600px;
-}
-
-#searchInput {
-  width: 100%;
-  padding: 0.75rem 2.5rem 0.75rem 1rem;
-  border: 1px solid var(--border-light);
-  border-radius: 8px;
-  font-size: 1rem;
-  background: var(--white);
-  transition: var(--transition);
-}
-
-#searchInput:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(0,23,117,.1);
-}
-
-.search-icon {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #666;
-  font-size: 1.1rem;
-}
-
-.filter-toggle {
-  background: var(--accent-color);
-  color: var(--white);
-  border: none;
-  padding: 0.75rem 1.25rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  display: none;
-  transition: var(--transition);
-}
-
-.filter-toggle:hover {
-  background: #1ebe5d;
-  transform: translateY(-1px);
-}
-
-/* === MAIN LAYOUT AMAZON === */
-.main-wrapper {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 2rem;
-  padding: 2rem 1rem;
-  min-height: calc(100vh - 300px);
-}
-
-/* === SIDEBAR AMAZON === */
-.sidebar {
-  background: var(--white);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-amazon);
-  height: fit-content;
-  position: sticky;
-  top: 100px;
-}
-
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-light);
-}
-
-.close-sidebar {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--primary-color);
-}
-
-.filter-section {
-  margin-bottom: 2rem;
-}
-
-.filter-section h4 {
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.filter-option {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 0;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.filter-option:hover {
-  background: rgba(0,23,117,.05);
-  margin: 0 -0.5rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  border-radius: 4px;
-}
-
-.filter-option input[type="checkbox"] {
-  margin-right: 0.75rem;
-  cursor: pointer;
-  width: 18px;
-  height: 18px;
-}
-
-.filter-option label {
-  cursor: pointer;
-  font-size: 0.9rem;
-  flex: 1;
-  color: var(--text-color);
-}
-
-.filter-option small {
-  color: #666;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-}
-
-.clear-filters {
-  width: 100%;
-  padding: 0.75rem;
-  background: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: var(--transition);
-}
-
-.clear-filters:hover {
-  background: var(--primary-color);
-  color: var(--white);
-}
-
-/* === RESULTS AREA AMAZON === */
-.results-header {
-  font-weight: 600;
-  color: var(--primary-color);
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-}
-
-.product-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-/* === PRODUCT CARD - DISTRIBUCIÓN AMAZON OPTIMIZADA === */
-.product-card {
-  background: var(--white);
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-amazon);
-  display: grid;
-  grid-template-columns: 45% 1fr; /* ✅ 45% imagen, 55% info */
-  gap: 1.5rem;
-  align-items: start;
-  transition: var(--transition);
-}
-
-.product-card:hover {
-  box-shadow: 0 8px 16px rgba(0,0,0,.12);
-  transform: translateY(-2px);
-}
-
-/* ✅ CARRUSEL - ALTURA DINÁMICA + OBJECT-FIT */
+/* === CARRUSEL - ESTILOS BÁSICOS RECUPERADOS === */
 .carousel-container {
   position: relative;
   width: 100%;
-  height: 160px; /* Altura fija cómoda */
+  height: 160px;
   overflow: hidden;
   border-radius: 8px;
-  cursor: pointer;
+  background: #f5f5f5;
 }
 
 .carousel {
@@ -260,13 +68,12 @@ body {
 .carousel img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* ✅ RECORTA ancho, NO estira */
-  object-position: center; /* ✅ Centra el área importante */
+  object-fit: cover;
   cursor: pointer;
   flex-shrink: 0;
 }
 
-/* Botones de navegación estilo Amazon */
+/* Botones carrusel COLORES */
 .carousel-nav {
   position: absolute;
   top: 0;
@@ -278,7 +85,7 @@ body {
   font-size: 20px;
   cursor: pointer;
   opacity: 0;
-  transition: var(--transition);
+  transition: opacity 0.3s;
   z-index: 2;
   display: flex;
   align-items: center;
@@ -289,15 +96,8 @@ body {
   opacity: 1;
 }
 
-.carousel-prev {
-  left: 0;
-  border-radius: 0 4px 4px 0;
-}
-
-.carousel-next {
-  right: 0;
-  border-radius: 4px 0 0 4px;
-}
+.carousel-prev { left: 0; }
+.carousel-next { right: 0; }
 
 .carousel-nav:hover {
   background: rgba(0,0,0,0.4);
@@ -320,7 +120,7 @@ body {
   border-radius: 50%;
   background: rgba(255,255,255,0.6);
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.3s;
 }
 
 .carousel-indicator.active {
@@ -328,116 +128,7 @@ body {
   transform: scale(1.2);
 }
 
-/* ✅ INFO ÁREA - ESPACIO AMAZON */
-.product-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.product-name {
-  color: var(--primary-color);
-  font-weight: 700;
-  font-size: 1.1rem;
-  line-height: 1.3;
-  max-height: 4.2em; /* ✅ Hasta 3 líneas cómodas */
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
-
-.product-attributes {
-  font-size: 0.9rem;
-  color: #666;
-  line-height: 1.4;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.product-description {
-  font-size: 0.85rem;
-  color: #555;
-  line-height: 1.4;
-}
-
-.product-description strong,
-.product-description em,
-.product-description u {
-  color: var(--primary-color);
-}
-
-/* ✅ PRECIO - ESTILO AMAZON */
-.product-price {
-  font-weight: 700;
-  color: var(--amazon-price);
-  font-size: 1.3rem;
-  margin: 0.5rem 0;
-}
-
-/* ✅ BOTÓN - ANCHO COMPLETO ESTILO AMAZON */
-.product-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-  margin-top: 1rem;
-}
-
-.whatsapp-btn {
-  background: var(--accent-color);
-  color: var(--white);
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: var(--transition);
-  width: 100%; /* ✅ ANCHO COMPLETO */
-  min-height: 48px; /* Tamaño táctil Amazon */
-  box-shadow: 0 2px 5px rgba(37, 211, 102, 0.3);
-}
-
-.whatsapp-btn:hover {
-  background: #1ebe5d;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-}
-
-.whatsapp-btn i {
-  font-size: 1.2rem;
-}
-
-/* === SCROLL INFINITO === */
-.infinite-scroll-indicator {
-  text-align: center;
-  padding: 3rem 2rem;
-  color: #666;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(0,0,0,0.1);
-  border-top-color: var(--primary-color);
-  border-radius: 50%;
-  animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* === MODAL PANTALLA COMPLETA AMAZON STYLE === */
+/* === MODAL PANTALLA COMPLETA - ESTILOS BÁSICOS === */
 .modal {
   display: none;
   position: fixed;
@@ -485,8 +176,8 @@ body {
   font-size: 48px;
   cursor: pointer;
   z-index: 10;
-  transition: var(--transition);
   text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  transition: transform 0.3s;
 }
 
 .modal-close:hover {
@@ -508,7 +199,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: var(--transition);
+  transition: all 0.3s;
   z-index: 10;
 }
 
@@ -527,10 +218,323 @@ body {
   text-align: center;
   color: white;
   font-size: 18px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
 }
 
-/* === FOOTER AMAZON STYLE === */
+/* === COLORES PARA FILTROS === */
+.filter-option {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-option:hover {
+  background: rgba(0,23,117,.05);
+  margin: 0 -0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 4px;
+}
+
+.filter-option input[type="checkbox"] {
+  margin-right: 0.75rem;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.filter-option label {
+  cursor: pointer;
+  font-size: 0.9rem;
+  flex: 1;
+  color: var(--text-color);
+}
+
+.filter-option small {
+  color: #666;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+.clear-filters {
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.clear-filters:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* === COLORES HEADER === */
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.logo {
+  color: white;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
+}
+
+.search-container {
+  position: relative;
+  max-width: 600px;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--white);
+  transition: all 0.3s;
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0,23,117,.1);
+}
+
+.search-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.filter-toggle {
+  background: var(--accent-color);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: none;
+  transition: all 0.3s;
+}
+
+.filter-toggle:hover {
+  background: #1ebe5d;
+  transform: translateY(-1px);
+}
+
+/* === COLORES MAIN LAYOUT === */
+.main-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  padding: 2rem 1rem;
+  min-height: calc(100vh - 300px);
+}
+
+/* === COLORES SIDEBAR === */
+.sidebar {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-amazon);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.close-sidebar {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--primary-color);
+}
+
+.filter-section {
+  margin-bottom: 2rem;
+}
+
+.filter-section h4 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* === PRODUCT CARD - DISTRIBUCIÓN AMAZON CON COLORES === */
+.product-card {
+  background: var(--white);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-amazon);
+  display: grid;
+  grid-template-columns: 45% 1fr; /* ✅ 45% imagen, 55% info */
+  gap: 1.5rem;
+  align-items: start;
+  transition: var(--transition);
+}
+
+.product-card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,.12);
+  transform: translateY(-2px);
+}
+
+/* ✅ INFO ÁREA - COLORES AMAZON */
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.product-name {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  max-height: 4.2em; /* ✅ Hasta 3 líneas cómodas */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.product-attributes {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.product-description {
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+.product-description strong,
+.product-description em,
+.product-description u {
+  color: var(--primary-color);
+}
+
+/* ✅ PRECIO - COLOR AMAZON */
+.product-price {
+  font-weight: 700;
+  color: var(--amazon-price);
+  font-size: 1.3rem;
+  margin: 0.5rem 0;
+}
+
+/* ✅ BOTÓN - COLOR AMAZON */
+.product-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.whatsapp-btn {
+  background: var(--accent-color);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  width: 100%; /* ✅ ANCHO COMPLETO */
+  min-height: 48px; /* Tamaño táctil Amazon */
+  box-shadow: 0 2px 5px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-btn:hover {
+  background: #1ebe5d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+}
+
+.whatsapp-btn i {
+  font-size: 1.2rem;
+}
+
+/* === ESTILOS BÁSICOS RECUPERADOS === */
+.results-header {
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.infinite-scroll-indicator {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0,0,0,0.1);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === FOOTER COLORES === */
 .footer-minimal {
   background: #f0f8ff;
   color: var(--text-color);
@@ -602,7 +606,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* === RESPONSIVE AMAZON === */
+/* === RESPONSIVE COLORES === */
 @media (max-width: 768px) {
   .filter-toggle {
     display: block;
@@ -635,7 +639,7 @@ body {
     min-height: calc(100vh - 350px);
   }
 
-  /* ✅ DISTRIBUCIÓN AMAZON EN MÓVIL */
+  /* ✅ DISTRIBUCIÓN AMAZON EN MÓVIL - COLORES */
   .product-card {
     grid-template-columns: 45% 1fr;
     gap: 1.5rem;
@@ -677,7 +681,7 @@ body {
   }
 }
 
-/* === ANIMACIONES AMAZON === */
+/* === ANIMACIONES COLORES === */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
