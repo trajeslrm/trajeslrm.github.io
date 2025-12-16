@@ -16,18 +16,25 @@ export class UIRenderer {
     this.productList.innerHTML = productos.map(p => this.createProductCard(p)).join('');
     
     this.infiniteSpinner.style.display = hasMore ? 'flex' : 'none';
-    
-    this.attachModalListeners();
   }
 
   createProductCard(producto) {
-    const imagen = producto.imagenes[0];
     const tallas = producto.tallas.join(', ');
     const colores = producto.colores.join(', ');
     
+    // ✅ ESTRUCTURA DE CARRUSEL IDÉNTICA A TU VERSIÓN
     return `
       <article class="product-card" data-id="${producto.id}">
-        <img src="${imagen}" alt="${producto.nombre}" class="product-image" data-images='${JSON.stringify(producto.imagenes)}'>
+        <div class="carousel-container">
+          <div class="carousel">
+            ${producto.imagenes.map(img => `<img src="${img}" alt="${producto.nombre}" loading="lazy">`).join('')}
+          </div>
+          <button class="carousel-nav carousel-prev">❮</button>
+          <button class="carousel-nav carousel-next">❯</button>
+          <div class="carousel-indicators">
+            ${producto.imagenes.map((_, i) => `<div class="carousel-indicator ${i === 0 ? 'active' : ''}"></div>`).join('')}
+          </div>
+        </div>
         
         <div class="product-info">
           <h3 class="product-name">${producto.nombre}</h3>
@@ -78,32 +85,5 @@ export class UIRenderer {
       });
     
     container.innerHTML = opciones.join('');
-  }
-
-  attachModalListeners() {
-    document.querySelectorAll('.product-image').forEach(img => {
-      img.addEventListener('click', (e) => {
-        const images = JSON.parse(e.target.dataset.images);
-        this.openModal(images, e.target.src);
-      });
-    });
-  }
-
-  openModal(images, currentSrc) {
-    // Reutiliza el modal existente
-    const modal = document.getElementById('modal');
-    const modalImg = document.getElementById('modal-img');
-    const counter = document.getElementById('image-counter');
-    
-    modalImg.src = currentSrc;
-    counter.textContent = `1 / ${images.length}`;
-    
-    modal.style.display = 'flex';
-    setTimeout(() => modal.classList.add('active'), 10);
-    document.body.style.overflow = 'hidden';
-    
-    // Adjuntar navegación del modal si tienes múltiples imágenes
-    window.currentModalImages = images;
-    window.currentModalIndex = 0;
   }
 }
