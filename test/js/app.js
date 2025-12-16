@@ -12,7 +12,7 @@ class App {
     this.clearFiltersBtn = document.getElementById('clearFilters');
     this.sidebar = document.getElementById('sidebar');
     this.isLoading = false;
-    this.carousels = new Map(); // Guardar intervalos de carruseles
+    this.carousels = new Map();
     
     this.init();
   }
@@ -29,7 +29,7 @@ class App {
       this.setupEventListeners();
       this.renderer.renderFilters();
       this.renderer.renderProductos();
-      this.initCarousels(); // ✅ Iniciar carruseles automáticos
+      this.initCarousels();
       
     } catch (error) {
       console.error('Error cargando productos:', error);
@@ -46,7 +46,7 @@ class App {
       searchTimeout = setTimeout(() => {
         this.engine.search(e.target.value);
         this.renderer.renderProductos();
-        this.initCarousels(); // ✅ Re-iniciar carruseles después de renderizar
+        this.initCarousels();
       }, 300);
     });
 
@@ -80,7 +80,7 @@ class App {
         this.engine.toggleFiltro(tipo, valor);
         this.renderer.renderProductos();
         this.renderer.renderFilters();
-        this.initCarousels(); // ✅ Re-iniciar carruseles
+        this.initCarousels();
       }
     });
 
@@ -90,7 +90,7 @@ class App {
       this.renderer.renderProductos();
       this.renderer.renderFilters();
       this.searchInput.value = '';
-      this.initCarousels(); // ✅ Re-iniciar carruseles
+      this.initCarousels();
     });
 
     // Scroll infinito
@@ -104,16 +104,16 @@ class App {
         this.isLoading = true;
         this.engine.loadMore();
         this.renderer.renderProductos();
-        this.initCarousels(); // ✅ Re-iniciar carruseles
+        this.initCarousels();
         this.isLoading = false;
       }
     });
 
-    // Modal
+    // Modal - CORREGIDO PARA PANTALLA COMPLETA
     this.setupModal();
   }
 
-  // ✅ SISTEMA DE CARRUSEL AUTOMÁTICO (COPIA EXACTA DE TU VERSIÓN)
+  // ✅ SISTEMA DE CARRUSEL AUTOMÁTICO
   initCarousels() {
     // Limpiar carruseles anteriores
     this.carousels.forEach(interval => clearInterval(interval));
@@ -189,9 +189,10 @@ class App {
     let currentImages = [];
     let currentImageIndex = 0;
 
-    // Abrir modal al hacer clic en cualquier imagen del carrusel
+    // Modal - CORREGIDO PARA DETECTAR IMÁGENES DEL CARRUSEL
     document.addEventListener('click', (e) => {
-      if (e.target.matches('.carousel img')) {
+      // Detectar clic en cualquier imagen del carrusel
+      if (e.target.closest('.carousel-container') && e.target.tagName === 'IMG') {
         const container = e.target.closest('.carousel-container');
         const carousel = container.querySelector('.carousel');
         const imagenes = Array.from(carousel.querySelectorAll('img')).map(img => img.src);
