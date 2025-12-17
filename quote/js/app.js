@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         productRow.className = 'product-row-grid';
         productRow.id = `product-${productId}`;
         productRow.innerHTML = `
-            <!-- Enlace (35%) -->
+            <!-- Enlace (30%) -->
             <div>
                 <textarea class="product-link link-cell-expand clear-on-focus" 
                        placeholder="https://detail.1688.com/offer/..."
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
                        rows="1"></textarea>
             </div>
             
-            <!-- Nombre (25%) -->
+            <!-- Nombre (20%) -->
             <div>
                 <textarea class="product-name auto-expand-cell clear-on-focus" 
                        placeholder="Complete product name"
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
                        required></textarea>
             </div>
             
-            <!-- Variante (12%) -->
+            <!-- Variante (10%) -->
             <div>
                 <input type="text" class="product-variant auto-expand-cell clear-on-focus" 
                        placeholder="Color/Size/Model"
@@ -101,10 +101,17 @@ document.addEventListener('DOMContentLoaded', function() {
                        min="0" step="0.01">
             </div>
             
-            <!-- Total por producto (8%) - CALCULADO -->
+            <!-- Total por producto en CNY (8%) - CALCULADO -->
             <div>
-                <div class="product-total-cell" id="product-total-${productId}">
+                <div class="product-total-cny" id="product-total-cny-${productId}">
                     ¥0.00
+                </div>
+            </div>
+            
+            <!-- Total por producto en USD (8%) - CALCULADO -->
+            <div>
+                <div class="product-total-usd" id="product-total-usd-${productId}">
+                    $0.00
                 </div>
             </div>
             
@@ -215,9 +222,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalUSD = totalCNY / exchangeRate;
         
         // Actualizar display del total del producto
-        const totalElement = document.getElementById(`product-total-${productId}`);
-        if (totalElement) {
-            totalElement.innerHTML = `¥${totalCNY.toFixed(2)}<br><small style="font-size: 9px; color: #666;">($${totalUSD.toFixed(2)})</small>`;
+        const totalCNYElement = document.getElementById(`product-total-cny-${productId}`);
+        const totalUSDElement = document.getElementById(`product-total-usd-${productId}`);
+        
+        if (totalCNYElement) {
+            totalCNYElement.textContent = `¥${totalCNY.toFixed(2)}`;
+        }
+        if (totalUSDElement) {
+            totalUSDElement.textContent = `$${totalUSD.toFixed(2)}`;
         }
         
         // Actualizar en array
@@ -255,9 +267,8 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
-        if (!isInitial) {
-            agentFeesContainer.appendChild(feeRow);
-        }
+        // SIEMPRE agregar al DOM (corrección del bug)
+        agentFeesContainer.appendChild(feeRow);
         
         // Event listeners para la nueva tarifa
         const descriptionInput = feeRow.querySelector('.fee-description');
@@ -370,10 +381,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Actualizar totales USD de productos
         products.forEach(product => {
-            const totalElement = document.getElementById(`product-total-${product.id}`);
-            if (totalElement) {
+            const totalCNYElement = document.getElementById(`product-total-cny-${product.id}`);
+            const totalUSDElement = document.getElementById(`product-total-usd-${product.id}`);
+            
+            if (totalCNYElement && totalUSDElement) {
                 const totalUSD = product.totalCNY / exchangeRate;
-                totalElement.innerHTML = `¥${product.totalCNY.toFixed(2)}<br><small style="font-size: 9px; color: #666;">($${totalUSD.toFixed(2)})</small>`;
+                product.totalUSD = totalUSD;
+                totalUSDElement.textContent = `$${totalUSD.toFixed(2)}`;
             }
         });
         
@@ -407,7 +421,8 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         const dataString = JSON.stringify(data);
-        const encodedData = btoa(encodeURIComponent(dataString));
+        // CORRECCIÓN: Solo Base64, sin encodeURIComponent doble
+        const encodedData = btoa(unescape(encodeURIComponent(dataString)));
         
         const baseURL = window.location.origin + window.location.pathname;
         const shareURL = `${baseURL}#${encodedData}`;
@@ -442,7 +457,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!hash) return;
         
         try {
-            const decodedString = decodeURIComponent(atob(hash));
+            // CORRECCIÓN: decode apropiado para Base64 puro
+            const decodedString = decodeURIComponent(escape(atob(hash)));
             const data = JSON.parse(decodedString);
             
             // Cargar tasa de cambio
@@ -485,8 +501,13 @@ document.addEventListener('DOMContentLoaded', function() {
                                    placeholder="Unit price" min="0" step="0.01">
                         </div>
                         <div>
-                            <div class="product-total-cell" id="product-total-${productId}">
+                            <div class="product-total-cny" id="product-total-cny-${productId}">
                                 ¥0.00
+                            </div>
+                        </div>
+                        <div>
+                            <div class="product-total-usd" id="product-total-usd-${productId}">
+                                $0.00
                             </div>
                         </div>
                         <div>
@@ -519,6 +540,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Configurar event listeners
                     setupProductEventListeners(productId);
                     autoResizeTextareas(productRow);
+                    
+                    // Actualizar displays iniciales
+                    const totalCNYElement = document.getElementById(`product-total-cny-${productId}`);
+                    const totalUSDElement = document.getElementById(`product-total-usd-${productId}`);
+                    
+                    if (totalCNYElement) {
+                        totalCNYElement.textContent = `¥${totalCNY.toFixed(2)}`;
+                    }
+                    if (totalUSDElement) {
+                        totalUSDElement.textContent = `$${totalUSD.toFixed(2)}`;
+                    }
                 });
             }
             
