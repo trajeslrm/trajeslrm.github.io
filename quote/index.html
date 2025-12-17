@@ -5,6 +5,212 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cotizador China - LRM Trajes</title>
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Estilos inline para fijar encabezados */
+        .table-header-fixed {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #2c3e50;
+            color: white;
+            font-weight: bold;
+            padding: 8px 0;
+            border-bottom: 2px solid #3498db;
+            display: grid;
+            grid-template-columns: 30% 25% 15% 10% 12% 8%;
+            gap: 5px;
+            align-items: center;
+            text-align: center;
+            font-size: 11px;
+        }
+        
+        .product-row-grid {
+            display: grid;
+            grid-template-columns: 30% 25% 15% 10% 12% 8%;
+            gap: 5px;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-row-grid:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        /* Campos más compactos */
+        .compact-input {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+        
+        .compact-input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        /* Botón eliminar compacto */
+        .btn-remove-compact {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 11px;
+            width: 100%;
+        }
+        
+        /* Totales compactos */
+        .totals-compact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .total-box-compact {
+            border: 1px solid #3498db;
+            border-radius: 5px;
+            padding: 10px;
+            background: #f8fbfe;
+        }
+        
+        .total-row-compact {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 12px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .total-row-compact:last-child {
+            border-bottom: none;
+        }
+        
+        /* Para móviles: scroll horizontal */
+        @media (max-width: 768px) {
+            .products-scroll-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .table-header-fixed,
+            .product-row-grid {
+                min-width: 700px; /* Forzar scroll horizontal en móvil */
+            }
+            
+            .compact-input {
+                font-size: 16px; /* Evita zoom en iOS */
+                min-height: 44px; /* Tamaño mínimo para dedos */
+            }
+        }
+        
+        /* Para impresión ultra-compacta */
+        @media print {
+            body {
+                font-size: 9pt !important;
+                line-height: 1 !important;
+                margin: 0.2cm !important;
+                background: white !important;
+            }
+            
+            .container {
+                box-shadow: none !important;
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+            }
+            
+            /* Ocultar elementos no necesarios para imprimir */
+            button, .instructions, .controls, .link-section, 
+            .action-buttons, footer, .exchange-rate-box {
+                display: none !important;
+            }
+            
+            /* Tabla ultra-compacta para impresión */
+            .table-header-fixed {
+                position: static !important;
+                background: #f0f0f0 !important;
+                color: black !important;
+                font-size: 8pt !important;
+                padding: 2px 0 !important;
+                margin-bottom: 2px !important;
+                -webkit-print-color-adjust: exact;
+            }
+            
+            .product-row-grid {
+                font-size: 8pt !important;
+                padding: 1px 0 !important;
+                border-bottom: 0.5px solid #ccc !important;
+                grid-template-columns: 30% 25% 15% 10% 12% 8% !important;
+                gap: 2px !important;
+                page-break-inside: avoid !important;
+            }
+            
+            .compact-input {
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                font-size: 8pt !important;
+                box-shadow: none !important;
+            }
+            
+            /* Asegurar que texto largo se muestre */
+            .compact-input {
+                white-space: nowrap !important;
+                overflow: visible !important;
+                text-overflow: unset !important;
+            }
+            
+            /* Totales más compactos para impresión */
+            .totals-compact {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px !important;
+                margin: 10px 0 !important;
+            }
+            
+            .total-box-compact {
+                padding: 5px !important;
+                border-width: 0.5px !important;
+            }
+            
+            .total-row-compact {
+                font-size: 9pt !important;
+                padding: 2px 0 !important;
+            }
+            
+            /* Encabezado principal más pequeño */
+            header {
+                padding: 5px !important;
+                -webkit-print-color-adjust: exact;
+            }
+            
+            h1 {
+                font-size: 14pt !important;
+                margin: 2px 0 !important;
+            }
+            
+            .subtitle {
+                font-size: 9pt !important;
+            }
+            
+            .content {
+                padding: 5px !important;
+            }
+            
+            /* Forzar página horizontal completa */
+            @page {
+                margin: 0.5cm;
+                size: letter;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -28,66 +234,83 @@
             <!-- Controles principales -->
             <div class="controls">
                 <div class="exchange-rate-box">
-                    <label for="exchange-rate">💰 TASA DE CAMBIO (1 USD = ? CNY):</label>
-                    <input type="number" id="exchange-rate" value="7.25" step="0.001" min="0">
+                    <label for="exchange-rate">💰 TASA (1 USD = ? CNY):</label>
+                    <input type="number" id="exchange-rate" value="7.25" step="0.001" min="0" style="width: 80px; padding: 6px;">
                 </div>
                 
                 <button id="add-product-btn" class="btn-primary">➕ AGREGAR PRODUCTO</button>
-                <button id="generate-link-btn" class="btn-success">🔗 GENERAR ENLACE PARA AGENTE</button>
+                <button id="generate-link-btn" class="btn-success">🔗 GENERAR ENLACE</button>
             </div>
 
-            <!-- Tabla de productos -->
+            <!-- Tabla de productos CON ENCABEZADOS FIJOS -->
             <div class="products-section">
                 <h2>🛒 PRODUCTOS</h2>
-                <div id="products-container">
-                    <!-- Los productos se agregarán aquí dinámicamente -->
-                    <div class="product-row empty-message">
-                        No hay productos agregados. Haz clic en "AGREGAR PRODUCTO" para comenzar.
+                
+                <div class="products-scroll-container">
+                    <!-- ENCABEZADOS FIJOS (siempre visibles) -->
+                    <div class="table-header-fixed">
+                        <div>🔗 ENLACE 1688</div>
+                        <div>📝 NOMBRE PRODUCTO</div>
+                        <div>🏷️ VARIANTE</div>
+                        <div>🔢 CANT</div>
+                        <div>💰 PRECIO (¥)</div>
+                        <div>❌</div>
+                    </div>
+                    
+                    <!-- Contenedor de productos -->
+                    <div id="products-container">
+                        <!-- Los productos se agregarán aquí dinámicamente -->
+                        <div class="product-row-grid empty-message" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d; font-style: italic;">
+                            No hay productos agregados. Haz clic en "AGREGAR PRODUCTO" para comenzar.
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Totales de línea por producto (se llena con JS) -->
+                <div id="line-totals" style="margin-top: 10px; font-size: 11px; color: #666;"></div>
             </div>
 
-            <!-- Totales -->
+            <!-- Totales COMPACTOS -->
             <div class="totals-section">
                 <h2>🧮 TOTALES</h2>
-                <div class="totals-grid">
-                    <div class="total-box">
-                        <h3>EN CNY (元)</h3>
-                        <div class="total-row">
+                <div class="totals-compact">
+                    <div class="total-box-compact">
+                        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px;">EN CNY (元)</h3>
+                        <div class="total-row-compact">
                             <span>Subtotal productos:</span>
                             <span id="subtotal-cny">0.00</span>
                         </div>
-                        <div class="total-row">
+                        <div class="total-row-compact">
                             <span>Comisión agente:</span>
-                            <input type="number" id="agent-fee-cny" value="0" min="0" step="0.01">
+                            <input type="number" id="agent-fee-cny" value="0" min="0" step="0.01" class="compact-input" style="width: 80px; text-align: right;">
                         </div>
-                        <div class="total-row">
+                        <div class="total-row-compact">
                             <span>Otros gastos:</span>
-                            <input type="number" id="other-costs-cny" value="0" min="0" step="0.01">
+                            <input type="number" id="other-costs-cny" value="0" min="0" step="0.01" class="compact-input" style="width: 80px; text-align: right;">
                         </div>
-                        <div class="total-row total-final">
-                            <strong>TOTAL FINAL (CNY):</strong>
-                            <strong id="grand-total-cny">0.00</strong>
+                        <div class="total-row-compact" style="font-weight: bold; border-top: 1px solid #3498db; margin-top: 3px; padding-top: 5px;">
+                            <span>TOTAL FINAL (CNY):</span>
+                            <span id="grand-total-cny">0.00</span>
                         </div>
                     </div>
                     
-                    <div class="total-box">
-                        <h3>EN USD ($)</h3>
-                        <div class="total-row">
+                    <div class="total-box-compact">
+                        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px;">EN USD ($)</h3>
+                        <div class="total-row-compact">
                             <span>Subtotal productos:</span>
                             <span id="subtotal-usd">0.00</span>
                         </div>
-                        <div class="total-row">
+                        <div class="total-row-compact">
                             <span>Comisión agente:</span>
                             <span id="agent-fee-usd">0.00</span>
                         </div>
-                        <div class="total-row">
+                        <div class="total-row-compact">
                             <span>Otros gastos:</span>
                             <span id="other-costs-usd">0.00</span>
                         </div>
-                        <div class="total-row total-final">
-                            <strong>TOTAL FINAL (USD):</strong>
-                            <strong id="grand-total-usd">0.00</strong>
+                        <div class="total-row-compact" style="font-weight: bold; border-top: 1px solid #3498db; margin-top: 3px; padding-top: 5px;">
+                            <span>TOTAL FINAL (USD):</span>
+                            <span id="grand-total-usd">0.00</span>
                         </div>
                     </div>
                 </div>
@@ -97,15 +320,15 @@
             <div class="link-section" style="display: none;" id="link-section">
                 <h2>🔗 ENLACE PARA COMPARTIR</h2>
                 <div class="generated-link">
-                    <input type="text" id="share-link" readonly>
-                    <button id="copy-link-btn" class="btn-copy">📋 COPIAR ENLACE</button>
+                    <input type="text" id="share-link" readonly style="width: 100%; padding: 8px; font-size: 11px;">
+                    <button id="copy-link-btn" class="btn-copy" style="margin-top: 5px;">📋 COPIAR ENLACE</button>
                 </div>
                 <p class="link-note">Envía este enlace a tu agente en China para que complete la cotización.</p>
             </div>
 
             <!-- Botones de acción -->
             <div class="action-buttons">
-                <button id="print-btn" class="btn-print">🖨️ VISTA PARA IMPRIMIR</button>
+                <button id="print-btn" class="btn-print">🖨️ IMPRIMIR / PDF</button>
                 <button id="reset-btn" class="btn-reset">🗑️ LIMPIAR TODO</button>
             </div>
         </div>
