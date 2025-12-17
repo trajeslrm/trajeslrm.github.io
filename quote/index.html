@@ -6,7 +6,8 @@
     <title>China Quotation Tool - LRM Trajes</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
-        /* ANCHOS DE COLUMNA PROPORCIONALES */
+        /* ANCHOS DE COLUMNA REAJUSTADOS */
+        /* 100% = 35% + 25% + 12% + 6% + 7% + 8% + 7% */
         .table-header-fixed {
             position: sticky;
             top: 0;
@@ -17,102 +18,125 @@
             padding: 8px 0;
             border-bottom: 2px solid #3498db;
             display: grid;
-            /* NUEVOS ANCHOS: Enlace más ancho, cant/precio más estrechos */
-            grid-template-columns: 40% 25% 15% 8% 7% 5%;
-            gap: 4px;
+            /* NUEVO: +1 columna para Total por producto */
+            grid-template-columns: 35% 25% 12% 6% 7% 8% 7%;
+            gap: 3px;
             align-items: center;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
         }
         
         .product-row-grid {
             display: grid;
-            grid-template-columns: 40% 25% 15% 8% 7% 5%;
-            gap: 4px;
-            align-items: stretch; /* ← Cambiado para estirar altura */
-            padding: 6px 0;
+            grid-template-columns: 35% 25% 12% 6% 7% 8% 7%;
+            gap: 3px;
+            align-items: stretch;
+            padding: 4px 0;
             border-bottom: 1px solid #eee;
+            min-height: 60px; /* Altura mínima para mostrar contenido */
         }
         
         .product-row-grid:nth-child(even) {
-            background: #f0f8ff; /* Azul muy claro para TU sección */
+            background: #f0f8ff;
         }
         
-        /* CAMPOS CON AJUSTE DE LÍNEA AUTOMÁTICO */
-        .text-cell {
+        /* CELDAS QUE SE ESTIRAN AUTOMÁTICAMENTE */
+        .auto-expand-cell {
             width: 100%;
-            padding: 6px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            font-size: 12px;
-            box-sizing: border-box;
-            resize: vertical;
-            min-height: 40px;
-            line-height: 1.3;
-            white-space: pre-wrap; /* ← Mantiene saltos de línea */
-            word-wrap: break-word; /* ← Rompe palabras largas */
-            overflow-wrap: break-word; /* ← Moderno para romper palabras */
-            overflow: auto; /* ← Scroll si es necesario */
-        }
-        
-        /* Específico para enlaces - más espacio vertical */
-        .link-cell {
-            width: 100%;
-            padding: 6px;
-            border: 1px solid #4a90e2; /* Azul para TU sección */
+            padding: 4px;
+            border: 1px solid #4a90e2;
             border-radius: 3px;
             font-size: 11px;
             box-sizing: border-box;
-            min-height: 50px; /* Más alto para enlaces largos */
+            resize: vertical;
+            min-height: 40px;
             line-height: 1.2;
             white-space: pre-wrap;
             word-wrap: break-word;
             overflow-wrap: break-word;
-            overflow: auto;
-            background-color: #f0f8ff; /* Fondo azul claro */
-            resize: vertical; /* Permite redimensionar manualmente */
+            overflow: visible;
+            background-color: #f8fbff;
         }
         
-        /* Campos estrechos para cantidad y precio */
-        .number-cell {
+        /* Enlaces con altura automática */
+        .link-cell-expand {
             width: 100%;
-            padding: 6px 3px;
+            padding: 4px;
+            border: 1px solid #4a90e2;
+            border-radius: 3px;
+            font-size: 10px;
+            box-sizing: border-box;
+            min-height: 50px;
+            line-height: 1.1;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            overflow: visible;
+            background-color: #f0f8ff;
+            resize: vertical;
+            font-family: monospace;
+        }
+        
+        /* Campos estrechos VACÍOS por defecto */
+        .empty-number-cell {
+            width: 100%;
+            padding: 4px 2px;
             border: 1px solid #ddd;
             border-radius: 3px;
-            font-size: 12px;
+            font-size: 11px;
             box-sizing: border-box;
             text-align: center;
             min-height: 40px;
+            background-color: white;
         }
         
-        .price-cell {
+        .empty-price-cell {
             width: 100%;
-            padding: 6px 3px;
-            border: 1px solid #ddd;
+            padding: 4px 2px;
+            border: 1px solid #ff9800; /* Naranja para precios editables por agente */
             border-radius: 3px;
-            font-size: 12px;
+            font-size: 11px;
             box-sizing: border-box;
             text-align: right;
             min-height: 40px;
+            background-color: #fff8e1; /* Fondo naranja claro */
         }
         
-        /* Botón eliminar compacto */
+        /* Total por producto (calculado automáticamente) */
+        .product-total-cell {
+            width: 100%;
+            padding: 4px 2px;
+            border: 1px solid #27ae60;
+            border-radius: 3px;
+            font-size: 11px;
+            box-sizing: border-box;
+            text-align: right;
+            min-height: 40px;
+            background-color: #f0fff4;
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        
+        /* Botón eliminar */
         .btn-remove-compact {
             background: #e74c3c;
             color: white;
             border: none;
             border-radius: 3px;
-            padding: 6px 0;
+            padding: 4px 0;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             width: 100%;
             min-height: 40px;
         }
         
-        /* SECCIONES IDENTIFICADAS POR COLOR */
+        /* SECCIONES IDENTIFICADAS */
         .client-section {
-            background-color: #f0f8ff !important; /* Azul claro */
-            border-left: 4px solid #3498db !important;
+            background-color: #f0f8ff;
+            border-left: 4px solid #3498db;
             padding: 10px;
             margin: 10px 0;
             border-radius: 0 5px 5px 0;
@@ -133,13 +157,13 @@
             color: white;
             padding: 3px 8px;
             border-radius: 3px;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: bold;
         }
         
         .agent-section {
-            background-color: #f0fff4 !important; /* Verde claro */
-            border-left: 4px solid #27ae60 !important;
+            background-color: #f0fff4;
+            border-left: 4px solid #27ae60;
             padding: 10px;
             margin: 10px 0;
             border-radius: 0 5px 5px 0;
@@ -160,41 +184,27 @@
             color: white;
             padding: 3px 8px;
             border-radius: 3px;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: bold;
         }
         
-        /* Campos de agente con fondo verde claro */
-        .agent-input {
-            background-color: #f8fff8 !important;
+        /* Campos editables por agente con borde verde */
+        .agent-editable {
             border-color: #27ae60 !important;
+            background-color: #f8fff8 !important;
         }
         
-        /* Totales compactos */
-        .totals-compact {
+        /* Contenedor para múltiples tarifas del agente */
+        .agent-fees-container {
+            margin-top: 10px;
+        }
+        
+        .agent-fee-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 15px 0;
-        }
-        
-        .total-box-compact {
-            border: 1px solid #3498db;
-            border-radius: 5px;
-            padding: 10px;
-            background: #f8fbfe;
-        }
-        
-        .total-row-compact {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            font-size: 12px;
-            border-bottom: 1px dashed #ddd;
-        }
-        
-        .total-row-compact:last-child {
-            border-bottom: none;
+            grid-template-columns: 50% 25% 25%;
+            gap: 5px;
+            margin-bottom: 5px;
+            align-items: center;
         }
         
         /* Para móviles: scroll horizontal */
@@ -206,29 +216,32 @@
             
             .table-header-fixed,
             .product-row-grid {
-                min-width: 650px; /* Reducido de 700px */
+                min-width: 750px; /* Aumentado por nueva columna */
             }
             
-            .text-cell,
-            .link-cell,
-            .number-cell,
-            .price-cell {
-                font-size: 16px; /* Evita zoom en iOS */
-                min-height: 44px; /* Tamaño mínimo para dedos */
+            .auto-expand-cell,
+            .link-cell-expand,
+            .empty-number-cell,
+            .empty-price-cell,
+            .product-total-cell {
+                font-size: 14px;
+                min-height: 44px;
             }
             
-            .link-cell {
-                min-height: 60px; /* Aún más alto en móvil */
+            .link-cell-expand {
+                min-height: 60px;
+                font-size: 12px;
             }
         }
         
-        /* Para impresión ultra-compacta */
+        /* PARA IMPRESIÓN ULTRA-COMPACTA CON TODO VISIBLE */
         @media print {
             body {
-                font-size: 9pt !important;
+                font-size: 8pt !important;
                 line-height: 1 !important;
                 margin: 0.2cm !important;
                 background: white !important;
+                width: 100% !important;
             }
             
             .container {
@@ -237,11 +250,13 @@
                 margin: 0 !important;
                 padding: 0 !important;
                 width: 100% !important;
+                max-width: none !important;
             }
             
             /* Ocultar elementos no necesarios para imprimir */
             button, .instructions, .controls, .link-section, 
-            .action-buttons, footer, .exchange-rate-box {
+            .action-buttons, footer, .exchange-rate-box,
+            #add-fee-btn, .fee-buttons {
                 display: none !important;
             }
             
@@ -250,32 +265,35 @@
                 position: static !important;
                 background: #f0f0f0 !important;
                 color: black !important;
-                font-size: 8pt !important;
-                padding: 2px 0 !important;
-                margin-bottom: 2px !important;
-                grid-template-columns: 40% 25% 15% 8% 7% 5% !important;
+                font-size: 7pt !important;
+                padding: 1px 0 !important;
+                margin-bottom: 1px !important;
+                grid-template-columns: 35% 25% 12% 6% 7% 8% 7% !important;
+                gap: 1px !important;
                 -webkit-print-color-adjust: exact;
             }
             
             .product-row-grid {
-                font-size: 8pt !important;
-                padding: 1px 0 !important;
-                border-bottom: 0.5px solid #ccc !important;
-                grid-template-columns: 40% 25% 15% 8% 7% 5% !important;
-                gap: 2px !important;
+                font-size: 7pt !important;
+                padding: 0 !important;
+                border-bottom: 0.3px solid #ccc !important;
+                grid-template-columns: 35% 25% 12% 6% 7% 8% 7% !important;
+                gap: 1px !important;
                 page-break-inside: avoid !important;
                 align-items: stretch !important;
+                min-height: auto !important;
             }
             
-            /* Campos de texto en impresión */
-            .text-cell,
-            .link-cell,
-            .number-cell,
-            .price-cell {
-                border: 1px solid #ddd !important;
+            /* Campos de texto en impresión - TODO VISIBLE */
+            .auto-expand-cell,
+            .link-cell-expand,
+            .empty-number-cell,
+            .empty-price-cell,
+            .product-total-cell {
+                border: 0.5px solid #999 !important;
                 background: transparent !important;
-                padding: 2px !important;
-                font-size: 8pt !important;
+                padding: 1px 2px !important;
+                font-size: 7pt !important;
                 box-shadow: none !important;
                 min-height: auto !important;
                 height: auto !important;
@@ -284,74 +302,84 @@
                 word-wrap: break-word !important;
                 overflow-wrap: break-word !important;
                 overflow: visible !important;
+                max-height: none !important;
+                resize: none !important;
             }
             
-            /* Asegurar que enlaces largos se ajusten en impresión */
-            .link-cell {
+            /* Enlaces especialmente visibles en impresión */
+            .link-cell-expand {
+                font-family: 'Courier New', monospace !important;
+                font-size: 6.5pt !important;
                 white-space: pre-wrap !important;
-                word-wrap: break-word !important;
                 word-break: break-all !important;
-                overflow-wrap: break-word !important;
             }
             
-            /* Totales más compactos para impresión */
+            /* Totales visibles */
             .totals-compact {
                 grid-template-columns: 1fr 1fr !important;
-                gap: 10px !important;
-                margin: 10px 0 !important;
+                gap: 8px !important;
+                margin: 8px 0 !important;
             }
             
             .total-box-compact {
-                padding: 5px !important;
+                padding: 3px !important;
                 border-width: 0.5px !important;
+                font-size: 8pt !important;
             }
             
             .total-row-compact {
-                font-size: 9pt !important;
-                padding: 2px 0 !important;
+                font-size: 8pt !important;
+                padding: 1px 0 !important;
             }
             
-            /* Encabezado principal más pequeño */
+            /* Encabezado pequeño */
             header {
-                padding: 5px !important;
+                padding: 3px !important;
                 -webkit-print-color-adjust: exact;
             }
             
             h1 {
-                font-size: 14pt !important;
-                margin: 2px 0 !important;
+                font-size: 12pt !important;
+                margin: 1px 0 !important;
             }
             
             .subtitle {
-                font-size: 9pt !important;
+                font-size: 8pt !important;
             }
             
             .content {
-                padding: 5px !important;
-            }
-            
-            /* Mostrar etiquetas de sección en impresión */
-            .client-section, .agent-section {
-                background: white !important;
-                border: 1px solid #ddd !important;
-                margin: 5px 0 !important;
                 padding: 3px !important;
             }
             
-            .client-section h2::before,
-            .agent-section h2::before {
+            /* Secciones en impresión */
+            .client-section, .agent-section {
                 background: white !important;
-                color: black !important;
-                border: 1px solid #ddd !important;
-                padding: 1px 4px !important;
-                font-size: 7pt !important;
+                border: 0.5px solid #999 !important;
+                margin: 3px 0 !important;
+                padding: 2px !important;
+                page-break-inside: avoid !important;
             }
             
-            /* Forzar página horizontal completa */
+            /* Forzar máximo uso de página */
             @page {
-                margin: 0.5cm;
+                margin: 0.3cm;
                 size: letter;
             }
+            
+            /* Asegurar que nada se corte */
+            * {
+                overflow: visible !important;
+            }
+        }
+        
+        /* Clase para campos que deben estar vacíos al hacer clic */
+        .clear-on-focus::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .clear-on-focus:focus {
+            background-color: #ffffcc;
         }
     </style>
 </head>
@@ -363,13 +391,14 @@
         </header>
 
         <div class="content">
-            <!-- Instrucciones específicas en inglés -->
+            <!-- Instrucciones específicas -->
             <div class="instructions agent-section">
                 <h3>📋 STEP-BY-STEP INSTRUCTIONS:</h3>
-                <ol>
-                    <li><strong>CLIENT (Blue Section):</strong> Fill product links, names, variants, quantities and prices</li>
+                <ol style="font-size: 11px;">
+                    <li><strong>CLIENT (Blue Section):</strong> Fill product links, names, variants, quantities. Unit prices can be adjusted by agent if needed.</li>
                     <li><strong>CLIENT:</strong> Click "GENERATE LINK" and send to your China agent</li>
-                    <li><strong>AGENT (Green Section):</strong> Review products and fill your fees/commissions</li>
+                    <li><strong>AGENT (Green Section):</strong> Review products, adjust unit prices if necessary, fill your detailed fees</li>
+                    <li><strong>AGENT:</strong> Add multiple fee lines if needed (click "ADD FEE LINE")</li>
                     <li><strong>AGENT:</strong> Click "PRINT / PDF" to generate final quotation</li>
                     <li><strong>AGENT:</strong> Send PDF to client for approval and payment</li>
                 </ol>
@@ -389,18 +418,20 @@
             <!-- SECCIÓN DEL CLIENTE (AZUL) -->
             <div class="client-section">
                 <h2>🛒 PRODUCTS TO ORDER</h2>
-                <p style="font-size: 11px; color: #666; margin-bottom: 10px;">
-                    <strong>CLIENT FILLS:</strong> Product details from 1688.com. Agent should NOT modify this section.
+                <p style="font-size: 10px; color: #666; margin-bottom: 10px; padding: 5px; background: #e8f4ff; border-radius: 3px;">
+                    <strong>CLIENT FILLS:</strong> Product details from 1688.com.<br>
+                    <span style="color: #ff9800; font-weight: bold;">Agent may adjust unit prices if needed (orange cells).</span>
                 </p>
                 
                 <div class="products-scroll-container">
                     <!-- ENCABEZADOS FIJOS (siempre visibles) -->
                     <div class="table-header-fixed">
-                        <div>🔗 1688 PRODUCT LINK</div>
+                        <div>🔗 1688 LINK</div>
                         <div>📝 PRODUCT NAME</div>
                         <div>🏷️ VARIANT</div>
                         <div>🔢 QTY</div>
                         <div>💰 PRICE (¥)</div>
+                        <div>Σ TOTAL (¥)</div>
                         <div>❌</div>
                     </div>
                     
@@ -414,27 +445,55 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN DEL AGENTE (VERDE) -->
+            <!-- SECCIÓN DEL AGENTE (VERDE) - CON MÚLTIPLES FILAS PARA TARIFAS -->
             <div class="agent-section">
-                <h2>🧮 QUOTATION & FEES</h2>
-                <p style="font-size: 11px; color: #666; margin-bottom: 10px;">
-                    <strong>AGENT FILLS:</strong> Your service fees and additional costs. Client will pay these amounts.
+                <h2>🧮 AGENT FEES & COSTS DETAIL</h2>
+                <p style="font-size: 10px; color: #666; margin-bottom: 10px; padding: 5px; background: #e8f6ef; border-radius: 3px;">
+                    <strong>AGENT FILLS:</strong> Your detailed service fees and costs. Client will pay these amounts.<br>
+                    Add as many lines as needed for different fee types.
                 </p>
                 
-                <div class="totals-compact">
+                <!-- Contenedor para múltiples tarifas -->
+                <div id="agent-fees-container" class="agent-fees-container">
+                    <!-- Tarifas se agregarán aquí dinámicamente -->
+                    <div class="agent-fee-row">
+                        <div>
+                            <input type="text" class="auto-expand-cell agent-editable fee-description" 
+                                   placeholder="Service fee/commission" 
+                                   style="width: 100%;">
+                        </div>
+                        <div>
+                            <input type="number" class="empty-price-cell agent-editable fee-amount" 
+                                   placeholder="0.00"
+                                   style="width: 100%; text-align: right;">
+                        </div>
+                        <div style="font-size: 11px; text-align: right; padding-right: 5px;">
+                            <span class="fee-usd">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botón para agregar más tarifas -->
+                <div class="fee-buttons" style="margin-top: 8px; display: flex; gap: 8px;">
+                    <button id="add-fee-btn" class="btn-success" style="padding: 6px 10px; font-size: 11px;">
+                        ➕ ADD FEE LINE
+                    </button>
+                    <button id="remove-fee-btn" class="btn-reset" style="padding: 6px 10px; font-size: 11px;">
+                        ➖ REMOVE LAST FEE
+                    </button>
+                </div>
+                
+                <!-- Totales resumen -->
+                <div class="totals-compact" style="margin-top: 15px;">
                     <div class="total-box-compact">
-                        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px;">IN CNY (元)</h3>
+                        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px;">TOTALS IN CNY (元)</h3>
                         <div class="total-row-compact">
                             <span>Products Subtotal:</span>
                             <span id="subtotal-cny">0.00</span>
                         </div>
                         <div class="total-row-compact">
-                            <span>Service Fee/Commission:</span>
-                            <input type="number" id="agent-fee-cny" value="0" min="0" step="0.01" class="price-cell agent-input" style="width: 70px;">
-                        </div>
-                        <div class="total-row-compact">
-                            <span>Additional Costs:</span>
-                            <input type="number" id="other-costs-cny" value="0" min="0" step="0.01" class="price-cell agent-input" style="width: 70px;">
+                            <span>Agent Fees Total:</span>
+                            <span id="agent-fees-total-cny">0.00</span>
                         </div>
                         <div class="total-row-compact" style="font-weight: bold; border-top: 1px solid #27ae60; margin-top: 3px; padding-top: 5px;">
                             <span>FINAL TOTAL (CNY):</span>
@@ -443,18 +502,14 @@
                     </div>
                     
                     <div class="total-box-compact">
-                        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px;">IN USD ($)</h3>
+                        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px;">TOTALS IN USD ($)</h3>
                         <div class="total-row-compact">
                             <span>Products Subtotal:</span>
                             <span id="subtotal-usd">0.00</span>
                         </div>
                         <div class="total-row-compact">
-                            <span>Service Fee/Commission:</span>
-                            <span id="agent-fee-usd">0.00</span>
-                        </div>
-                        <div class="total-row-compact">
-                            <span>Additional Costs:</span>
-                            <span id="other-costs-usd">0.00</span>
+                            <span>Agent Fees Total:</span>
+                            <span id="agent-fees-total-usd">0.00</span>
                         </div>
                         <div class="total-row-compact" style="font-weight: bold; border-top: 1px solid #27ae60; margin-top: 3px; padding-top: 5px;">
                             <span>FINAL TOTAL (USD):</span>
@@ -463,12 +518,12 @@
                     </div>
                 </div>
                 
-                <!-- Instrucciones específicas para el agente -->
-                <div style="background: #e8f6ef; padding: 8px; border-radius: 4px; margin-top: 10px; font-size: 11px;">
+                <!-- Notas para el agente -->
+                <div style="background: #e8f6ef; padding: 8px; border-radius: 4px; margin-top: 10px; font-size: 10px;">
                     <strong>AGENT NOTES:</strong>
                     <ul style="margin-left: 15px; margin-top: 5px;">
-                        <li>Fill your service fee (can be percentage or fixed amount)</li>
-                        <li>Add any additional costs (shipping, handling, inspection, etc.)</li>
+                        <li>Adjust unit prices if different from client's estimate (orange cells)</li>
+                        <li>Add detailed fee lines for each cost component (commission, shipping, handling, inspection, etc.)</li>
                         <li>Verify product availability and confirm lead time</li>
                         <li>Click PRINT/PDF when finished and send to client</li>
                     </ul>
@@ -482,7 +537,7 @@
                     <input type="text" id="share-link" readonly style="width: 100%; padding: 8px; font-size: 11px;">
                     <button id="copy-link-btn" class="btn-copy" style="margin-top: 5px;">📋 COPY LINK</button>
                 </div>
-                <p class="link-note">Send this link to your China agent. They will see all products and fill their fees.</p>
+                <p class="link-note">Send this link to your China agent. They will see all products and fill their detailed fees.</p>
             </div>
 
             <!-- Botones de acción -->
