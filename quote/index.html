@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cotizador China - LRM Trajes</title>
+    <title>China Quotation Tool - LRM Trajes</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
         /* ANCHOS DE COLUMNA PROPORCIONALES */
-        /* 100% = 40% + 25% + 15% + 8% + 7% + 5% */
         .table-header-fixed {
             position: sticky;
             top: 0;
@@ -30,17 +29,17 @@
             display: grid;
             grid-template-columns: 40% 25% 15% 8% 7% 5%;
             gap: 4px;
-            align-items: center;
+            align-items: stretch; /* ← Cambiado para estirar altura */
             padding: 6px 0;
             border-bottom: 1px solid #eee;
         }
         
         .product-row-grid:nth-child(even) {
-            background: #f8f9fa;
+            background: #f0f8ff; /* Azul muy claro para TU sección */
         }
         
-        /* Campos con ajuste de línea automático */
-        .compact-input {
+        /* CAMPOS CON AJUSTE DE LÍNEA AUTOMÁTICO */
+        .text-cell {
             width: 100%;
             padding: 6px;
             border: 1px solid #ddd;
@@ -48,35 +47,34 @@
             font-size: 12px;
             box-sizing: border-box;
             resize: vertical;
-            min-height: 38px;
+            min-height: 40px;
             line-height: 1.3;
+            white-space: pre-wrap; /* ← Mantiene saltos de línea */
+            word-wrap: break-word; /* ← Rompe palabras largas */
+            overflow-wrap: break-word; /* ← Moderno para romper palabras */
+            overflow: auto; /* ← Scroll si es necesario */
         }
         
-        /* ESPECIAL para campo de enlace: ajuste automático de texto */
-        .product-link-input {
+        /* Específico para enlaces - más espacio vertical */
+        .link-cell {
             width: 100%;
             padding: 6px;
-            border: 1px solid #ddd;
+            border: 1px solid #4a90e2; /* Azul para TU sección */
             border-radius: 3px;
             font-size: 11px;
             box-sizing: border-box;
-            min-height: 38px;
+            min-height: 50px; /* Más alto para enlaces largos */
             line-height: 1.2;
+            white-space: pre-wrap;
             word-wrap: break-word;
-            white-space: normal;
             overflow-wrap: break-word;
-            resize: vertical;
-        }
-        
-        .compact-input:focus,
-        .product-link-input:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            overflow: auto;
+            background-color: #f0f8ff; /* Fondo azul claro */
+            resize: vertical; /* Permite redimensionar manualmente */
         }
         
         /* Campos estrechos para cantidad y precio */
-        .compact-input-narrow {
+        .number-cell {
             width: 100%;
             padding: 6px 3px;
             border: 1px solid #ddd;
@@ -84,9 +82,10 @@
             font-size: 12px;
             box-sizing: border-box;
             text-align: center;
+            min-height: 40px;
         }
         
-        .compact-input-price {
+        .price-cell {
             width: 100%;
             padding: 6px 3px;
             border: 1px solid #ddd;
@@ -94,6 +93,7 @@
             font-size: 12px;
             box-sizing: border-box;
             text-align: right;
+            min-height: 40px;
         }
         
         /* Botón eliminar compacto */
@@ -106,7 +106,68 @@
             cursor: pointer;
             font-size: 11px;
             width: 100%;
-            min-height: 38px;
+            min-height: 40px;
+        }
+        
+        /* SECCIONES IDENTIFICADAS POR COLOR */
+        .client-section {
+            background-color: #f0f8ff !important; /* Azul claro */
+            border-left: 4px solid #3498db !important;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .client-section h2 {
+            color: #2c3e50;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .client-section h2::before {
+            content: "👤 CLIENT";
+            background: #3498db;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .agent-section {
+            background-color: #f0fff4 !important; /* Verde claro */
+            border-left: 4px solid #27ae60 !important;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .agent-section h2 {
+            color: #2c3e50;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .agent-section h2::before {
+            content: "👷 AGENT";
+            background: #27ae60;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        /* Campos de agente con fondo verde claro */
+        .agent-input {
+            background-color: #f8fff8 !important;
+            border-color: #27ae60 !important;
         }
         
         /* Totales compactos */
@@ -148,12 +209,16 @@
                 min-width: 650px; /* Reducido de 700px */
             }
             
-            .compact-input,
-            .product-link-input,
-            .compact-input-narrow,
-            .compact-input-price {
+            .text-cell,
+            .link-cell,
+            .number-cell,
+            .price-cell {
                 font-size: 16px; /* Evita zoom en iOS */
                 min-height: 44px; /* Tamaño mínimo para dedos */
+            }
+            
+            .link-cell {
+                min-height: 60px; /* Aún más alto en móvil */
             }
         }
         
@@ -176,8 +241,7 @@
             
             /* Ocultar elementos no necesarios para imprimir */
             button, .instructions, .controls, .link-section, 
-            .action-buttons, footer, .exchange-rate-box,
-            #line-totals { /* ← OCULTAR EL RESUMEN */
+            .action-buttons, footer, .exchange-rate-box {
                 display: none !important;
             }
             
@@ -200,26 +264,31 @@
                 grid-template-columns: 40% 25% 15% 8% 7% 5% !important;
                 gap: 2px !important;
                 page-break-inside: avoid !important;
+                align-items: stretch !important;
             }
             
             /* Campos de texto en impresión */
-            .compact-input,
-            .product-link-input,
-            .compact-input-narrow,
-            .compact-input-price {
-                border: none !important;
+            .text-cell,
+            .link-cell,
+            .number-cell,
+            .price-cell {
+                border: 1px solid #ddd !important;
                 background: transparent !important;
-                padding: 0 !important;
+                padding: 2px !important;
                 font-size: 8pt !important;
                 box-shadow: none !important;
                 min-height: auto !important;
                 height: auto !important;
                 line-height: 1 !important;
+                white-space: pre-wrap !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+                overflow: visible !important;
             }
             
             /* Asegurar que enlaces largos se ajusten en impresión */
-            .product-link-input {
-                white-space: normal !important;
+            .link-cell {
+                white-space: pre-wrap !important;
                 word-wrap: break-word !important;
                 word-break: break-all !important;
                 overflow-wrap: break-word !important;
@@ -261,6 +330,23 @@
                 padding: 5px !important;
             }
             
+            /* Mostrar etiquetas de sección en impresión */
+            .client-section, .agent-section {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                margin: 5px 0 !important;
+                padding: 3px !important;
+            }
+            
+            .client-section h2::before,
+            .agent-section h2::before {
+                background: white !important;
+                color: black !important;
+                border: 1px solid #ddd !important;
+                padding: 1px 4px !important;
+                font-size: 7pt !important;
+            }
+            
             /* Forzar página horizontal completa */
             @page {
                 margin: 0.5cm;
@@ -272,45 +358,49 @@
 <body>
     <div class="container">
         <header>
-            <h1>📦 COTIZADOR CHINA</h1>
-            <p class="subtitle">Sistema para cotizaciones de productos 1688</p>
+            <h1>📦 CHINA QUOTATION TOOL</h1>
+            <p class="subtitle">1688 Product Quotation System for International Buyers</p>
         </header>
 
         <div class="content">
-            <!-- Instrucciones -->
-            <div class="instructions">
-                <h3>📋 INSTRUCCIONES:</h3>
+            <!-- Instrucciones específicas en inglés -->
+            <div class="instructions agent-section">
+                <h3>📋 STEP-BY-STEP INSTRUCTIONS:</h3>
                 <ol>
-                    <li>Agrega productos con enlace, nombre, variante, cantidad y precio</li>
-                    <li>Los totales se calculan automáticamente</li>
-                    <li>Genera enlace para compartir con tu agente</li>
-                    <li>El agente completa sus tarifas y envía cotización final</li>
+                    <li><strong>CLIENT (Blue Section):</strong> Fill product links, names, variants, quantities and prices</li>
+                    <li><strong>CLIENT:</strong> Click "GENERATE LINK" and send to your China agent</li>
+                    <li><strong>AGENT (Green Section):</strong> Review products and fill your fees/commissions</li>
+                    <li><strong>AGENT:</strong> Click "PRINT / PDF" to generate final quotation</li>
+                    <li><strong>AGENT:</strong> Send PDF to client for approval and payment</li>
                 </ol>
             </div>
 
             <!-- Controles principales -->
             <div class="controls">
                 <div class="exchange-rate-box">
-                    <label for="exchange-rate">💰 TASA (1 USD = ? CNY):</label>
+                    <label for="exchange-rate">💰 EXCHANGE RATE (1 USD = ? CNY):</label>
                     <input type="number" id="exchange-rate" value="7.25" step="0.001" min="0" style="width: 70px; padding: 6px; font-size: 12px;">
                 </div>
                 
-                <button id="add-product-btn" class="btn-primary">➕ AGREGAR PRODUCTO</button>
-                <button id="generate-link-btn" class="btn-success">🔗 GENERAR ENLACE</button>
+                <button id="add-product-btn" class="btn-primary">➕ ADD PRODUCT</button>
+                <button id="generate-link-btn" class="btn-success">🔗 GENERATE LINK</button>
             </div>
 
-            <!-- Tabla de productos CON ENCABEZADOS FIJOS -->
-            <div class="products-section">
-                <h2>🛒 PRODUCTOS</h2>
+            <!-- SECCIÓN DEL CLIENTE (AZUL) -->
+            <div class="client-section">
+                <h2>🛒 PRODUCTS TO ORDER</h2>
+                <p style="font-size: 11px; color: #666; margin-bottom: 10px;">
+                    <strong>CLIENT FILLS:</strong> Product details from 1688.com. Agent should NOT modify this section.
+                </p>
                 
                 <div class="products-scroll-container">
                     <!-- ENCABEZADOS FIJOS (siempre visibles) -->
                     <div class="table-header-fixed">
-                        <div>🔗 ENLACE 1688</div>
-                        <div>📝 NOMBRE PRODUCTO</div>
-                        <div>🏷️ VARIANTE</div>
-                        <div>🔢 CANT</div>
-                        <div>💰 PRECIO (¥)</div>
+                        <div>🔗 1688 PRODUCT LINK</div>
+                        <div>📝 PRODUCT NAME</div>
+                        <div>🏷️ VARIANT</div>
+                        <div>🔢 QTY</div>
+                        <div>💰 PRICE (¥)</div>
                         <div>❌</div>
                     </div>
                     
@@ -318,80 +408,92 @@
                     <div id="products-container">
                         <!-- Los productos se agregarán aquí dinámicamente -->
                         <div class="product-row-grid empty-message" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d; font-style: italic;">
-                            No hay productos agregados. Haz clic en "AGREGAR PRODUCTO" para comenzar.
+                            No products added. Click "ADD PRODUCT" to start.
                         </div>
                     </div>
                 </div>
-                
-                <!-- RESUMEN OCULTO - Se mostrará solo temporalmente -->
-                <div id="line-totals" style="display: none;"></div>
             </div>
 
-            <!-- Totales COMPACTOS -->
-            <div class="totals-section">
-                <h2>🧮 TOTALES</h2>
+            <!-- SECCIÓN DEL AGENTE (VERDE) -->
+            <div class="agent-section">
+                <h2>🧮 QUOTATION & FEES</h2>
+                <p style="font-size: 11px; color: #666; margin-bottom: 10px;">
+                    <strong>AGENT FILLS:</strong> Your service fees and additional costs. Client will pay these amounts.
+                </p>
+                
                 <div class="totals-compact">
                     <div class="total-box-compact">
-                        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px;">EN CNY (元)</h3>
+                        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px;">IN CNY (元)</h3>
                         <div class="total-row-compact">
-                            <span>Subtotal productos:</span>
+                            <span>Products Subtotal:</span>
                             <span id="subtotal-cny">0.00</span>
                         </div>
                         <div class="total-row-compact">
-                            <span>Comisión agente:</span>
-                            <input type="number" id="agent-fee-cny" value="0" min="0" step="0.01" class="compact-input-price" style="width: 70px;">
+                            <span>Service Fee/Commission:</span>
+                            <input type="number" id="agent-fee-cny" value="0" min="0" step="0.01" class="price-cell agent-input" style="width: 70px;">
                         </div>
                         <div class="total-row-compact">
-                            <span>Otros gastos:</span>
-                            <input type="number" id="other-costs-cny" value="0" min="0" step="0.01" class="compact-input-price" style="width: 70px;">
+                            <span>Additional Costs:</span>
+                            <input type="number" id="other-costs-cny" value="0" min="0" step="0.01" class="price-cell agent-input" style="width: 70px;">
                         </div>
-                        <div class="total-row-compact" style="font-weight: bold; border-top: 1px solid #3498db; margin-top: 3px; padding-top: 5px;">
-                            <span>TOTAL FINAL (CNY):</span>
+                        <div class="total-row-compact" style="font-weight: bold; border-top: 1px solid #27ae60; margin-top: 3px; padding-top: 5px;">
+                            <span>FINAL TOTAL (CNY):</span>
                             <span id="grand-total-cny">0.00</span>
                         </div>
                     </div>
                     
                     <div class="total-box-compact">
-                        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px;">EN USD ($)</h3>
+                        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px;">IN USD ($)</h3>
                         <div class="total-row-compact">
-                            <span>Subtotal productos:</span>
+                            <span>Products Subtotal:</span>
                             <span id="subtotal-usd">0.00</span>
                         </div>
                         <div class="total-row-compact">
-                            <span>Comisión agente:</span>
+                            <span>Service Fee/Commission:</span>
                             <span id="agent-fee-usd">0.00</span>
                         </div>
                         <div class="total-row-compact">
-                            <span>Otros gastos:</span>
+                            <span>Additional Costs:</span>
                             <span id="other-costs-usd">0.00</span>
                         </div>
-                        <div class="total-row-compact" style="font-weight: bold; border-top: 1px solid #3498db; margin-top: 3px; padding-top: 5px;">
-                            <span>TOTAL FINAL (USD):</span>
+                        <div class="total-row-compact" style="font-weight: bold; border-top: 1px solid #27ae60; margin-top: 3px; padding-top: 5px;">
+                            <span>FINAL TOTAL (USD):</span>
                             <span id="grand-total-usd">0.00</span>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Instrucciones específicas para el agente -->
+                <div style="background: #e8f6ef; padding: 8px; border-radius: 4px; margin-top: 10px; font-size: 11px;">
+                    <strong>AGENT NOTES:</strong>
+                    <ul style="margin-left: 15px; margin-top: 5px;">
+                        <li>Fill your service fee (can be percentage or fixed amount)</li>
+                        <li>Add any additional costs (shipping, handling, inspection, etc.)</li>
+                        <li>Verify product availability and confirm lead time</li>
+                        <li>Click PRINT/PDF when finished and send to client</li>
+                    </ul>
                 </div>
             </div>
 
             <!-- Enlace generado -->
             <div class="link-section" style="display: none;" id="link-section">
-                <h2>🔗 ENLACE PARA COMPARTIR</h2>
+                <h2>🔗 SHARE LINK WITH AGENT</h2>
                 <div class="generated-link">
                     <input type="text" id="share-link" readonly style="width: 100%; padding: 8px; font-size: 11px;">
-                    <button id="copy-link-btn" class="btn-copy" style="margin-top: 5px;">📋 COPIAR ENLACE</button>
+                    <button id="copy-link-btn" class="btn-copy" style="margin-top: 5px;">📋 COPY LINK</button>
                 </div>
-                <p class="link-note">Envía este enlace a tu agente en China para que complete la cotización.</p>
+                <p class="link-note">Send this link to your China agent. They will see all products and fill their fees.</p>
             </div>
 
             <!-- Botones de acción -->
             <div class="action-buttons">
-                <button id="print-btn" class="btn-print">🖨️ IMPRIMIR / PDF</button>
-                <button id="reset-btn" class="btn-reset">🗑️ LIMPIAR TODO</button>
+                <button id="print-btn" class="btn-print">🖨️ PRINT / SAVE PDF</button>
+                <button id="reset-btn" class="btn-reset">🗑️ CLEAR ALL</button>
             </div>
         </div>
 
         <footer>
-            <p>LRM Trajes • Sistema de Cotizaciones China • <span id="current-date"></span></p>
+            <p>LRM Trajes • China Quotation System • <span id="current-date"></span></p>
         </footer>
     </div>
 
