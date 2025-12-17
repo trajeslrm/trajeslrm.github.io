@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const exchangeRateInput = document.getElementById('exchange-rate');
     const linkSection = document.getElementById('link-section');
     const shareLinkInput = document.getElementById('share-link');
+    const lineTotalsDiv = document.getElementById('line-totals');
     
     // Datos iniciales
     let products = [];
@@ -32,46 +33,73 @@ document.addEventListener('DOMContentLoaded', function() {
     copyLinkBtn.addEventListener('click', copyLinkToClipboard);
     exchangeRateInput.addEventListener('input', updateExchangeRate);
     
+    // Event listeners para campos de tarifas
+    document.getElementById('agent-fee-cny').addEventListener('input', updateAllTotals);
+    document.getElementById('other-costs-cny').addEventListener('input', updateAllTotals);
+    
     // Funciones principales
     
     function addNewProduct() {
         const productId = Date.now(); // ID único
         
-        const productRow = document.createElement('div');
-        productRow.className = 'product-row';
-        productRow.id = `product-${productId}`;
-        productRow.innerHTML = `
-            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: center;">
-                <div>
-                    <input type="text" class="product-link" placeholder="🔗 Enlace 1688 (opcional)" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
-                </div>
-                <div>
-                    <input type="text" class="product-name" placeholder="📝 Nombre producto" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;" required>
-                </div>
-                <div>
-                    <input type="text" class="product-variant" placeholder="🏷️ Variante" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
-                </div>
-                <div>
-                    <input type="number" class="product-quantity" value="1" min="1" step="1" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; text-align: center;">
-                </div>
-                <div>
-                    <input type="number" class="product-price" value="0" min="0" step="0.01" placeholder="¥ Precio" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; text-align: right;">
-                </div>
-                <div style="display: flex; gap: 5px;">
-                    <button type="button" class="btn-remove" onclick="removeProduct(${productId})" style="padding: 6px 10px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer;">✕</button>
-                </div>
-            </div>
-            <div style="margin-top: 8px; display: flex; justify-content: space-between; font-size: 12px; color: #666;">
-                <span>Total línea: <strong class="line-total-cny">¥0.00</strong></span>
-                <span>En USD: <strong class="line-total-usd">$0.00</strong></span>
-            </div>
-        `;
-        
-        // Insertar antes del mensaje de vacío
+        // Remover mensaje de vacío si existe
         const emptyMessage = productsContainer.querySelector('.empty-message');
         if (emptyMessage) {
-            emptyMessage.style.display = 'none';
+            emptyMessage.remove();
         }
+        
+        const productRow = document.createElement('div');
+        productRow.className = 'product-row-grid';
+        productRow.id = `product-${productId}`;
+        productRow.innerHTML = `
+            <!-- Enlace (30%) -->
+            <div>
+                <input type="url" class="product-link compact-input" 
+                       placeholder="pega.enlace.1688"
+                       title="Pega aquí el enlace del producto en 1688">
+            </div>
+            
+            <!-- Nombre (25%) -->
+            <div>
+                <input type="text" class="product-name compact-input" 
+                       placeholder="Nombre producto"
+                       title="Nombre del producto"
+                       required>
+            </div>
+            
+            <!-- Variante (15%) -->
+            <div>
+                <input type="text" class="product-variant compact-input" 
+                       placeholder="Color/Talla"
+                       title="Variante o especificación (color, tamaño, etc.)">
+            </div>
+            
+            <!-- Cantidad (10%) -->
+            <div>
+                <input type="number" class="product-quantity compact-input" 
+                       value="1" min="1" step="1"
+                       title="Cantidad a comprar"
+                       style="text-align: center;">
+            </div>
+            
+            <!-- Precio (12%) -->
+            <div>
+                <input type="number" class="product-price compact-input" 
+                       value="0" min="0" step="0.01"
+                       placeholder="0.00"
+                       title="Precio unitario en CNY (yuanes)"
+                       style="text-align: right;">
+            </div>
+            
+            <!-- Eliminar (8%) -->
+            <div>
+                <button type="button" class="btn-remove-compact" 
+                        onclick="removeProduct(${productId})"
+                        title="Eliminar este producto">
+                    ✕
+                </button>
+            </div>
+        `;
         
         productsContainer.appendChild(productRow);
         
@@ -80,6 +108,11 @@ document.addEventListener('DOMContentLoaded', function() {
         inputs.forEach(input => {
             input.addEventListener('input', () => updateProductTotals(productId));
         });
+        
+        // También escuchar cambios en nombre y enlace
+        productRow.querySelector('.product-link').addEventListener('input', () => updateProductData(productId));
+        productRow.querySelector('.product-name').addEventListener('input', () => updateProductData(productId));
+        productRow.querySelector('.product-variant').addEventListener('input', () => updateProductData(productId));
         
         // Guardar en array de productos
         products.push({
@@ -94,6 +127,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         updateAllTotals();
+        
+        // Enfocar el campo de nombre automáticamente
+        setTimeout(() => {
+            productRow.querySelector('.product-name').focus();
+        }, 100);
+    }
+    
+    function updateProductData(productId) {
+        const productRow = document.getElementById(`product-${productId}`);
+        if (!productRow) return;
+        
+        const productIndex = products.findIndex(p => p.id === productId);
+        if (productIndex !== -1) {
+            products[productIndex].link = productRow.querySelector('.product-link').value;
+            products[productIndex].name = productRow.querySelector('.product-name').value;
+            products[productIndex].variant = productRow.querySelector('.product-variant').value;
+        }
     }
     
     function updateProductTotals(productId) {
@@ -106,10 +156,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalCNY = quantity * price;
         const totalUSD = totalCNY / exchangeRate;
         
-        // Actualizar display
-        productRow.querySelector('.line-total-cny').textContent = `¥${totalCNY.toFixed(2)}`;
-        productRow.querySelector('.line-total-usd').textContent = `$${totalUSD.toFixed(2)}`;
-        
         // Actualizar en array
         const productIndex = products.findIndex(p => p.id === productId);
         if (productIndex !== -1) {
@@ -117,11 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
             products[productIndex].price = price;
             products[productIndex].totalCNY = totalCNY;
             products[productIndex].totalUSD = totalUSD;
-            
-            // Actualizar también nombre, variante y enlace
-            products[productIndex].link = productRow.querySelector('.product-link').value;
-            products[productIndex].name = productRow.querySelector('.product-name').value;
-            products[productIndex].variant = productRow.querySelector('.product-variant').value;
         }
         
         updateAllTotals();
@@ -130,8 +171,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateAllTotals() {
         // Calcular subtotal productos
         let subtotalCNY = 0;
-        products.forEach(product => {
+        let productsHTML = '';
+        
+        products.forEach((product, index) => {
             subtotalCNY += product.totalCNY;
+            
+            // Generar resumen por producto
+            if (product.name) {
+                productsHTML += `
+                    <div style="display: flex; justify-content: space-between; font-size: 10px; padding: 2px 0;">
+                        <span>${index + 1}. ${product.name} ${product.variant ? `(${product.variant})` : ''}</span>
+                        <span>${product.quantity} × ¥${product.price.toFixed(2)} = <strong>¥${product.totalCNY.toFixed(2)}</strong></span>
+                    </div>
+                `;
+            }
         });
         
         const subtotalUSD = subtotalCNY / exchangeRate;
@@ -156,20 +209,21 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.getElementById('grand-total-cny').textContent = grandTotalCNY.toFixed(2);
         document.getElementById('grand-total-usd').textContent = grandTotalUSD.toFixed(2);
+        
+        // Actualizar resumen de productos
+        if (productsHTML) {
+            lineTotalsDiv.innerHTML = `<div style="background: #f0f7ff; padding: 5px; border-radius: 3px; margin-top: 5px;">
+                <strong style="font-size: 11px;">📋 RESUMEN POR PRODUCTO:</strong>
+                ${productsHTML}
+            </div>`;
+        } else {
+            lineTotalsDiv.innerHTML = '';
+        }
     }
     
     function updateExchangeRate() {
         exchangeRate = parseFloat(exchangeRateInput.value) || 7.25;
         updateAllTotals();
-        
-        // Actualizar totales USD de cada producto
-        products.forEach(product => {
-            const productRow = document.getElementById(`product-${product.id}`);
-            if (productRow) {
-                const totalUSD = product.totalCNY / exchangeRate;
-                productRow.querySelector('.line-total-usd').textContent = `$${totalUSD.toFixed(2)}`;
-            }
-        });
     }
     
     function generateShareLink() {
@@ -185,7 +239,8 @@ document.addEventListener('DOMContentLoaded', function() {
             exchangeRate: exchangeRate,
             agentFee: parseFloat(document.getElementById('agent-fee-cny').value) || 0,
             otherCosts: parseFloat(document.getElementById('other-costs-cny').value) || 0,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            version: '1.1'
         };
         
         // Codificar datos en Base64
@@ -206,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function copyLinkToClipboard() {
         shareLinkInput.select();
-        shareLinkInput.setSelectionRange(0, 99999); // Para móviles
+        shareLinkInput.setSelectionRange(0, 99999);
         
         navigator.clipboard.writeText(shareLinkInput.value)
             .then(() => {
@@ -247,32 +302,40 @@ document.addEventListener('DOMContentLoaded', function() {
                     const productId = Date.now() + index;
                     
                     const productRow = document.createElement('div');
-                    productRow.className = 'product-row';
+                    productRow.className = 'product-row-grid';
                     productRow.id = `product-${productId}`;
                     productRow.innerHTML = `
-                        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: center;">
-                            <div>
-                                <input type="text" class="product-link" value="${productData.link || ''}" placeholder="🔗 Enlace 1688" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
-                            </div>
-                            <div>
-                                <input type="text" class="product-name" value="${productData.name || ''}" placeholder="📝 Nombre" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;" required>
-                            </div>
-                            <div>
-                                <input type="text" class="product-variant" value="${productData.variant || ''}" placeholder="🏷️ Variante" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
-                            </div>
-                            <div>
-                                <input type="number" class="product-quantity" value="${productData.quantity || 1}" min="1" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; text-align: center;">
-                            </div>
-                            <div>
-                                <input type="number" class="product-price" value="${productData.price || 0}" min="0" step="0.01" placeholder="¥ Precio" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; text-align: right;">
-                            </div>
-                            <div style="display: flex; gap: 5px;">
-                                <button type="button" class="btn-remove" onclick="removeProduct(${productId})" style="padding: 6px 10px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer;">✕</button>
-                            </div>
+                        <div>
+                            <input type="url" class="product-link compact-input" 
+                                   value="${productData.link || ''}" 
+                                   placeholder="pega.enlace.1688">
                         </div>
-                        <div style="margin-top: 8px; display: flex; justify-content: space-between; font-size: 12px; color: #666;">
-                            <span>Total línea: <strong class="line-total-cny">¥0.00</strong></span>
-                            <span>En USD: <strong class="line-total-usd">$0.00</strong></span>
+                        <div>
+                            <input type="text" class="product-name compact-input" 
+                                   value="${productData.name || ''}" 
+                                   placeholder="Nombre producto" required>
+                        </div>
+                        <div>
+                            <input type="text" class="product-variant compact-input" 
+                                   value="${productData.variant || ''}" 
+                                   placeholder="Color/Talla">
+                        </div>
+                        <div>
+                            <input type="number" class="product-quantity compact-input" 
+                                   value="${productData.quantity || 1}" min="1" step="1"
+                                   style="text-align: center;">
+                        </div>
+                        <div>
+                            <input type="number" class="product-price compact-input" 
+                                   value="${productData.price || 0}" min="0" step="0.01"
+                                   placeholder="0.00"
+                                   style="text-align: right;">
+                        </div>
+                        <div>
+                            <button type="button" class="btn-remove-compact" 
+                                    onclick="removeProduct(${productId})">
+                                ✕
+                            </button>
                         </div>
                     `;
                     
@@ -298,6 +361,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     inputs.forEach(input => {
                         input.addEventListener('input', () => updateProductTotals(productId));
                     });
+                    
+                    productRow.querySelector('.product-link').addEventListener('input', () => updateProductData(productId));
+                    productRow.querySelector('.product-name').addEventListener('input', () => updateProductData(productId));
+                    productRow.querySelector('.product-variant').addEventListener('input', () => updateProductData(productId));
                 });
                 
                 // Cargar tarifas del agente
@@ -308,7 +375,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateAllTotals();
                 
                 // Mostrar mensaje
-                alert('✅ Cotización cargada desde el enlace. Ahora puedes editar los precios y agregar productos.');
+                if (products.length > 0) {
+                    alert(`✅ Cotización cargada (${products.length} productos). Ahora puedes editar.`);
+                }
             }
         } catch (error) {
             console.error('Error al cargar datos de URL:', error);
@@ -318,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function resetAll() {
         if (confirm('¿Estás seguro de limpiar toda la cotización? Se perderán todos los datos.')) {
-            productsContainer.innerHTML = '<div class="product-row empty-message">No hay productos agregados. Haz clic en "AGREGAR PRODUCTO" para comenzar.</div>';
+            productsContainer.innerHTML = '<div class="product-row-grid empty-message" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d; font-style: italic;">No hay productos agregados. Haz clic en "AGREGAR PRODUCTO" para comenzar.</div>';
             products = [];
             
             // Resetear otros campos
@@ -326,6 +395,9 @@ document.addEventListener('DOMContentLoaded', function() {
             exchangeRate = 7.25;
             document.getElementById('agent-fee-cny').value = 0;
             document.getElementById('other-costs-cny').value = 0;
+            
+            // Limpiar resumen
+            lineTotalsDiv.innerHTML = '';
             
             // Ocultar sección de enlace
             linkSection.style.display = 'none';
@@ -351,14 +423,36 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Si no hay productos, mostrar mensaje
             if (products.length === 0) {
-                productsContainer.innerHTML = '<div class="product-row empty-message">No hay productos agregados. Haz clic en "AGREGAR PRODUCTO" para comenzar.</div>';
+                productsContainer.innerHTML = '<div class="product-row-grid empty-message" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d; font-style: italic;">No hay productos agregados. Haz clic en "AGREGAR PRODUCTO" para comenzar.</div>';
             }
             
             updateAllTotals();
         }
     };
     
-    // Event listeners para campos de tarifas
-    document.getElementById('agent-fee-cny').addEventListener('input', updateAllTotals);
-    document.getElementById('other-costs-cny').addEventListener('input', updateAllTotals);
+    // Auto-guardar en localStorage cada 5 segundos
+    setInterval(() => {
+        if (products.length > 0) {
+            const data = {
+                products: products,
+                exchangeRate: exchangeRate,
+                agentFee: parseFloat(document.getElementById('agent-fee-cny').value) || 0,
+                otherCosts: parseFloat(document.getElementById('other-costs-cny').value) || 0
+            };
+            localStorage.setItem('cotizacion_auto_guardada', JSON.stringify(data));
+        }
+    }, 5000);
+    
+    // Cargar auto-guardado si existe
+    const autoSaved = localStorage.getItem('cotizacion_auto_guardada');
+    if (autoSaved && !window.location.hash) {
+        try {
+            const data = JSON.parse(autoSaved);
+            if (confirm('¿Recuperar cotización auto-guardada?')) {
+                // Implementar carga similar a loadFromURL
+            }
+        } catch (e) {
+            // Ignorar error
+        }
+    }
 });
