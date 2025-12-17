@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const exchangeRateInput = document.getElementById('exchange-rate');
     const linkSection = document.getElementById('link-section');
     const shareLinkInput = document.getElementById('share-link');
-    const lineTotalsDiv = document.getElementById('line-totals');
+    const lineTotalsDiv = document.getElementById('line-totals'); // Ya no se usará
     
     // Datos iniciales
     let products = [];
@@ -52,46 +52,44 @@ document.addEventListener('DOMContentLoaded', function() {
         productRow.className = 'product-row-grid';
         productRow.id = `product-${productId}`;
         productRow.innerHTML = `
-            <!-- Enlace (30%) -->
+            <!-- Enlace (40%) -->
             <div>
-                <input type="url" class="product-link compact-input" 
-                       placeholder="pega.enlace.1688"
-                       title="Pega aquí el enlace del producto en 1688">
+                <input type="url" class="product-link product-link-input" 
+                       placeholder="https://detail.1688.com/..."
+                       title="Pega aquí el enlace completo del producto en 1688">
             </div>
             
             <!-- Nombre (25%) -->
             <div>
                 <input type="text" class="product-name compact-input" 
-                       placeholder="Nombre producto"
-                       title="Nombre del producto"
+                       placeholder="Nombre del producto"
+                       title="Nombre completo del producto"
                        required>
             </div>
             
             <!-- Variante (15%) -->
             <div>
                 <input type="text" class="product-variant compact-input" 
-                       placeholder="Color/Talla"
-                       title="Variante o especificación (color, tamaño, etc.)">
+                       placeholder="Color/Talla/Modelo"
+                       title="Variante o especificación específica">
             </div>
             
-            <!-- Cantidad (10%) -->
+            <!-- Cantidad (8%) -->
             <div>
-                <input type="number" class="product-quantity compact-input" 
+                <input type="number" class="product-quantity compact-input-narrow" 
                        value="1" min="1" step="1"
-                       title="Cantidad a comprar"
-                       style="text-align: center;">
+                       title="Cantidad a comprar">
             </div>
             
-            <!-- Precio (12%) -->
+            <!-- Precio (7%) -->
             <div>
-                <input type="number" class="product-price compact-input" 
+                <input type="number" class="product-price compact-input-price" 
                        value="0" min="0" step="0.01"
                        placeholder="0.00"
-                       title="Precio unitario en CNY (yuanes)"
-                       style="text-align: right;">
+                       title="Precio unitario en CNY (yuanes)">
             </div>
             
-            <!-- Eliminar (8%) -->
+            <!-- Eliminar (5%) -->
             <div>
                 <button type="button" class="btn-remove-compact" 
                         onclick="removeProduct(${productId})"
@@ -104,12 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
         productsContainer.appendChild(productRow);
         
         // Agregar event listeners a los inputs nuevos
-        const inputs = productRow.querySelectorAll('.product-quantity, .product-price');
-        inputs.forEach(input => {
-            input.addEventListener('input', () => updateProductTotals(productId));
-        });
+        const quantityInput = productRow.querySelector('.product-quantity');
+        const priceInput = productRow.querySelector('.product-price');
         
-        // También escuchar cambios en nombre y enlace
+        quantityInput.addEventListener('input', () => updateProductTotals(productId));
+        priceInput.addEventListener('input', () => updateProductTotals(productId));
+        
+        // También escuchar cambios en nombre, enlace y variante
         productRow.querySelector('.product-link').addEventListener('input', () => updateProductData(productId));
         productRow.querySelector('.product-name').addEventListener('input', () => updateProductData(productId));
         productRow.querySelector('.product-variant').addEventListener('input', () => updateProductData(productId));
@@ -128,9 +127,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         updateAllTotals();
         
-        // Enfocar el campo de nombre automáticamente
+        // Enfocar el campo de enlace automáticamente (para pegar rápido)
         setTimeout(() => {
-            productRow.querySelector('.product-name').focus();
+            productRow.querySelector('.product-link').focus();
         }, 100);
     }
     
@@ -171,20 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateAllTotals() {
         // Calcular subtotal productos
         let subtotalCNY = 0;
-        let productsHTML = '';
         
-        products.forEach((product, index) => {
+        products.forEach((product) => {
             subtotalCNY += product.totalCNY;
-            
-            // Generar resumen por producto
-            if (product.name) {
-                productsHTML += `
-                    <div style="display: flex; justify-content: space-between; font-size: 10px; padding: 2px 0;">
-                        <span>${index + 1}. ${product.name} ${product.variant ? `(${product.variant})` : ''}</span>
-                        <span>${product.quantity} × ¥${product.price.toFixed(2)} = <strong>¥${product.totalCNY.toFixed(2)}</strong></span>
-                    </div>
-                `;
-            }
         });
         
         const subtotalUSD = subtotalCNY / exchangeRate;
@@ -209,16 +197,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.getElementById('grand-total-cny').textContent = grandTotalCNY.toFixed(2);
         document.getElementById('grand-total-usd').textContent = grandTotalUSD.toFixed(2);
-        
-        // Actualizar resumen de productos
-        if (productsHTML) {
-            lineTotalsDiv.innerHTML = `<div style="background: #f0f7ff; padding: 5px; border-radius: 3px; margin-top: 5px;">
-                <strong style="font-size: 11px;">📋 RESUMEN POR PRODUCTO:</strong>
-                ${productsHTML}
-            </div>`;
-        } else {
-            lineTotalsDiv.innerHTML = '';
-        }
     }
     
     function updateExchangeRate() {
@@ -240,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
             agentFee: parseFloat(document.getElementById('agent-fee-cny').value) || 0,
             otherCosts: parseFloat(document.getElementById('other-costs-cny').value) || 0,
             timestamp: new Date().toISOString(),
-            version: '1.1'
+            version: '1.2'
         };
         
         // Codificar datos en Base64
@@ -306,30 +284,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     productRow.id = `product-${productId}`;
                     productRow.innerHTML = `
                         <div>
-                            <input type="url" class="product-link compact-input" 
+                            <input type="url" class="product-link product-link-input" 
                                    value="${productData.link || ''}" 
-                                   placeholder="pega.enlace.1688">
+                                   placeholder="https://detail.1688.com/...">
                         </div>
                         <div>
                             <input type="text" class="product-name compact-input" 
                                    value="${productData.name || ''}" 
-                                   placeholder="Nombre producto" required>
+                                   placeholder="Nombre del producto" required>
                         </div>
                         <div>
                             <input type="text" class="product-variant compact-input" 
                                    value="${productData.variant || ''}" 
-                                   placeholder="Color/Talla">
+                                   placeholder="Color/Talla/Modelo">
                         </div>
                         <div>
-                            <input type="number" class="product-quantity compact-input" 
-                                   value="${productData.quantity || 1}" min="1" step="1"
-                                   style="text-align: center;">
+                            <input type="number" class="product-quantity compact-input-narrow" 
+                                   value="${productData.quantity || 1}" min="1" step="1">
                         </div>
                         <div>
-                            <input type="number" class="product-price compact-input" 
+                            <input type="number" class="product-price compact-input-price" 
                                    value="${productData.price || 0}" min="0" step="0.01"
-                                   placeholder="0.00"
-                                   style="text-align: right;">
+                                   placeholder="0.00">
                         </div>
                         <div>
                             <button type="button" class="btn-remove-compact" 
@@ -357,10 +333,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                     
                     // Event listeners
-                    const inputs = productRow.querySelectorAll('.product-quantity, .product-price');
-                    inputs.forEach(input => {
-                        input.addEventListener('input', () => updateProductTotals(productId));
-                    });
+                    const quantityInput = productRow.querySelector('.product-quantity');
+                    const priceInput = productRow.querySelector('.product-price');
+                    
+                    quantityInput.addEventListener('input', () => updateProductTotals(productId));
+                    priceInput.addEventListener('input', () => updateProductTotals(productId));
                     
                     productRow.querySelector('.product-link').addEventListener('input', () => updateProductData(productId));
                     productRow.querySelector('.product-name').addEventListener('input', () => updateProductData(productId));
@@ -376,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Mostrar mensaje
                 if (products.length > 0) {
-                    alert(`✅ Cotización cargada (${products.length} productos). Ahora puedes editar.`);
+                    console.log(`Cotización cargada: ${products.length} productos`);
                 }
             }
         } catch (error) {
@@ -395,9 +372,6 @@ document.addEventListener('DOMContentLoaded', function() {
             exchangeRate = 7.25;
             document.getElementById('agent-fee-cny').value = 0;
             document.getElementById('other-costs-cny').value = 0;
-            
-            // Limpiar resumen
-            lineTotalsDiv.innerHTML = '';
             
             // Ocultar sección de enlace
             linkSection.style.display = 'none';
@@ -442,17 +416,4 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('cotizacion_auto_guardada', JSON.stringify(data));
         }
     }, 5000);
-    
-    // Cargar auto-guardado si existe
-    const autoSaved = localStorage.getItem('cotizacion_auto_guardada');
-    if (autoSaved && !window.location.hash) {
-        try {
-            const data = JSON.parse(autoSaved);
-            if (confirm('¿Recuperar cotización auto-guardada?')) {
-                // Implementar carga similar a loadFromURL
-            }
-        } catch (e) {
-            // Ignorar error
-        }
-    }
 });
