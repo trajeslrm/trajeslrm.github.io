@@ -1,1 +1,120 @@
-.
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizador China - LRM Trajes</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📦 COTIZADOR CHINA</h1>
+            <p class="subtitle">Sistema para cotizaciones de productos 1688</p>
+        </header>
+
+        <div class="content">
+            <!-- Instrucciones -->
+            <div class="instructions">
+                <h3>📋 INSTRUCCIONES:</h3>
+                <ol>
+                    <li>Agrega productos con enlace, nombre, variante, cantidad y precio</li>
+                    <li>Los totales se calculan automáticamente</li>
+                    <li>Genera enlace para compartir con tu agente</li>
+                    <li>El agente completa sus tarifas y envía cotización final</li>
+                </ol>
+            </div>
+
+            <!-- Controles principales -->
+            <div class="controls">
+                <div class="exchange-rate-box">
+                    <label for="exchange-rate">💰 TASA DE CAMBIO (1 USD = ? CNY):</label>
+                    <input type="number" id="exchange-rate" value="7.25" step="0.001" min="0">
+                </div>
+                
+                <button id="add-product-btn" class="btn-primary">➕ AGREGAR PRODUCTO</button>
+                <button id="generate-link-btn" class="btn-success">🔗 GENERAR ENLACE PARA AGENTE</button>
+            </div>
+
+            <!-- Tabla de productos -->
+            <div class="products-section">
+                <h2>🛒 PRODUCTOS</h2>
+                <div id="products-container">
+                    <!-- Los productos se agregarán aquí dinámicamente -->
+                    <div class="product-row empty-message">
+                        No hay productos agregados. Haz clic en "AGREGAR PRODUCTO" para comenzar.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Totales -->
+            <div class="totals-section">
+                <h2>🧮 TOTALES</h2>
+                <div class="totals-grid">
+                    <div class="total-box">
+                        <h3>EN CNY (元)</h3>
+                        <div class="total-row">
+                            <span>Subtotal productos:</span>
+                            <span id="subtotal-cny">0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Comisión agente:</span>
+                            <input type="number" id="agent-fee-cny" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="total-row">
+                            <span>Otros gastos:</span>
+                            <input type="number" id="other-costs-cny" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="total-row total-final">
+                            <strong>TOTAL FINAL (CNY):</strong>
+                            <strong id="grand-total-cny">0.00</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="total-box">
+                        <h3>EN USD ($)</h3>
+                        <div class="total-row">
+                            <span>Subtotal productos:</span>
+                            <span id="subtotal-usd">0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Comisión agente:</span>
+                            <span id="agent-fee-usd">0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Otros gastos:</span>
+                            <span id="other-costs-usd">0.00</span>
+                        </div>
+                        <div class="total-row total-final">
+                            <strong>TOTAL FINAL (USD):</strong>
+                            <strong id="grand-total-usd">0.00</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enlace generado -->
+            <div class="link-section" style="display: none;" id="link-section">
+                <h2>🔗 ENLACE PARA COMPARTIR</h2>
+                <div class="generated-link">
+                    <input type="text" id="share-link" readonly>
+                    <button id="copy-link-btn" class="btn-copy">📋 COPIAR ENLACE</button>
+                </div>
+                <p class="link-note">Envía este enlace a tu agente en China para que complete la cotización.</p>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="action-buttons">
+                <button id="print-btn" class="btn-print">🖨️ VISTA PARA IMPRIMIR</button>
+                <button id="reset-btn" class="btn-reset">🗑️ LIMPIAR TODO</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>LRM Trajes • Sistema de Cotizaciones China • <span id="current-date"></span></p>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
