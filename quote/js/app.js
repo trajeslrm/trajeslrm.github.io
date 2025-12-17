@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Elementos principales
     const productsContainer = document.getElementById('products-container');
+    const agentFeesContainer = document.getElementById('agent-fees-container');
     const addProductBtn = document.getElementById('add-product-btn');
+    const addFeeBtn = document.getElementById('add-fee-btn');
+    const removeFeeBtn = document.getElementById('remove-fee-btn');
     const generateLinkBtn = document.getElementById('generate-link-btn');
     const printBtn = document.getElementById('print-btn');
     const resetBtn = document.getElementById('reset-btn');
@@ -10,39 +13,45 @@ document.addEventListener('DOMContentLoaded', function() {
     const linkSection = document.getElementById('link-section');
     const shareLinkInput = document.getElementById('share-link');
     
-    // Datos iniciales
+    // Datos
     let products = [];
+    let agentFees = [];
     let exchangeRate = 7.25;
     
     // Fecha actual
     document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
-        weekday: 'long',
         year: 'numeric',
-        month: 'long',
+        month: 'short',
         day: 'numeric'
     });
     
-    // Cargar datos desde URL si existen
-    loadFromURL();
+    // Inicializar
+    initialize();
     
     // Event Listeners
     addProductBtn.addEventListener('click', addNewProduct);
+    addFeeBtn.addEventListener('click', addNewFeeLine);
+    removeFeeBtn.addEventListener('click', removeLastFeeLine);
     generateLinkBtn.addEventListener('click', generateShareLink);
     printBtn.addEventListener('click', () => window.print());
     resetBtn.addEventListener('click', resetAll);
     copyLinkBtn.addEventListener('click', copyLinkToClipboard);
     exchangeRateInput.addEventListener('input', updateExchangeRate);
     
-    // Event listeners para campos de tarifas
-    document.getElementById('agent-fee-cny').addEventListener('input', updateAllTotals);
-    document.getElementById('other-costs-cny').addEventListener('input', updateAllTotals);
-    
-    // Funciones principales
+    function initialize() {
+        // Cargar datos desde URL si existen
+        loadFromURL();
+        
+        // Si no hay datos en URL, crear primera línea de tarifa
+        if (agentFees.length === 0) {
+            addNewFeeLine(true); // true = inicialización
+        }
+    }
     
     function addNewProduct() {
-        const productId = Date.now(); // ID único
+        const productId = Date.now();
         
-        // Remover mensaje de vacío si existe
+        // Remover mensaje de vacío
         const emptyMessage = productsContainer.querySelector('.empty-message');
         if (emptyMessage) {
             emptyMessage.remove();
@@ -52,46 +61,54 @@ document.addEventListener('DOMContentLoaded', function() {
         productRow.className = 'product-row-grid';
         productRow.id = `product-${productId}`;
         productRow.innerHTML = `
-            <!-- Enlace (40%) -->
+            <!-- Enlace (35%) -->
             <div>
-                <textarea class="product-link link-cell" 
+                <textarea class="product-link link-cell-expand clear-on-focus" 
                        placeholder="https://detail.1688.com/offer/..."
-                       title="Paste full 1688 product link here"
-                       rows="2"></textarea>
+                       title="Paste full 1688 product link"
+                       rows="1"></textarea>
             </div>
             
             <!-- Nombre (25%) -->
             <div>
-                <textarea class="product-name text-cell" 
-                       placeholder="Complete product name from 1688"
-                       title="Product name (copy from 1688 page)"
-                       rows="2"
+                <textarea class="product-name auto-expand-cell clear-on-focus" 
+                       placeholder="Complete product name"
+                       title="Product name (copy from 1688)"
+                       rows="1"
                        required></textarea>
             </div>
             
-            <!-- Variante (15%) -->
+            <!-- Variante (12%) -->
             <div>
-                <input type="text" class="product-variant text-cell" 
+                <input type="text" class="product-variant auto-expand-cell clear-on-focus" 
                        placeholder="Color/Size/Model"
-                       title="Specific variant (color, size, model number)">
+                       title="Specific variant">
             </div>
             
-            <!-- Cantidad (8%) -->
+            <!-- Cantidad (6%) - VACÍO -->
             <div>
-                <input type="number" class="product-quantity number-cell" 
-                       value="1" min="1" step="1"
-                       title="Quantity to purchase">
+                <input type="number" class="product-quantity empty-number-cell clear-on-focus" 
+                       placeholder="Qty"
+                       title="Quantity to purchase"
+                       min="1" step="1">
             </div>
             
-            <!-- Precio (7%) -->
+            <!-- Precio (7%) - VACÍO y editable por agente -->
             <div>
-                <input type="number" class="product-price price-cell" 
-                       value="0" min="0" step="0.01"
-                       placeholder="0.00"
-                       title="Unit price in CNY (Chinese Yuan)">
+                <input type="number" class="product-price empty-price-cell clear-on-focus" 
+                       placeholder="Unit price"
+                       title="Unit price in CNY (Agent may adjust)"
+                       min="0" step="0.01">
             </div>
             
-            <!-- Eliminar (5%) -->
+            <!-- Total por producto (8%) - CALCULADO -->
+            <div>
+                <div class="product-total-cell" id="product-total-${productId}">
+                    ¥0.00
+                </div>
+            </div>
+            
+            <!-- Eliminar (7%) -->
             <div>
                 <button type="button" class="btn-remove-compact" 
                         onclick="removeProduct(${productId})"
@@ -103,34 +120,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         productsContainer.appendChild(productRow);
         
-        // Agregar event listeners a los inputs nuevos
-        const quantityInput = productRow.querySelector('.product-quantity');
-        const priceInput = productRow.querySelector('.product-price');
+        // Event listeners para el nuevo producto
+        setupProductEventListeners(productId);
         
-        quantityInput.addEventListener('input', () => updateProductTotals(productId));
-        priceInput.addEventListener('input', () => updateProductTotals(productId));
-        
-        // También escuchar cambios en nombre, enlace y variante
-        productRow.querySelector('.product-link').addEventListener('input', () => updateProductData(productId));
-        productRow.querySelector('.product-name').addEventListener('input', () => updateProductData(productId));
-        productRow.querySelector('.product-variant').addEventListener('input', () => updateProductData(productId));
-        
-        // Auto-ajustar altura de textareas
-        const textareas = productRow.querySelectorAll('textarea');
-        textareas.forEach(textarea => {
-            textarea.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
-            });
-        });
-        
-        // Guardar en array de productos
+        // Guardar en array
         products.push({
             id: productId,
             link: '',
             name: '',
             variant: '',
-            quantity: 1,
+            quantity: 0,
             price: 0,
             totalCNY: 0,
             totalUSD: 0
@@ -138,10 +137,59 @@ document.addEventListener('DOMContentLoaded', function() {
         
         updateAllTotals();
         
-        // Enfocar el campo de enlace automáticamente (para pegar rápido)
+        // Auto-ajustar altura de textareas
+        autoResizeTextareas(productRow);
+        
+        // Enfocar en campo de enlace
         setTimeout(() => {
             productRow.querySelector('.product-link').focus();
         }, 100);
+    }
+    
+    function setupProductEventListeners(productId) {
+        const productRow = document.getElementById(`product-${productId}`);
+        if (!productRow) return;
+        
+        // Campos que actualizan cálculos
+        const quantityInput = productRow.querySelector('.product-quantity');
+        const priceInput = productRow.querySelector('.product-price');
+        
+        quantityInput.addEventListener('input', () => updateProductTotal(productId));
+        priceInput.addEventListener('input', () => updateProductTotal(productId));
+        
+        // Campos de texto
+        const linkInput = productRow.querySelector('.product-link');
+        const nameInput = productRow.querySelector('.product-name');
+        const variantInput = productRow.querySelector('.product-variant');
+        
+        linkInput.addEventListener('input', () => updateProductData(productId));
+        nameInput.addEventListener('input', () => updateProductData(productId));
+        variantInput.addEventListener('input', () => updateProductData(productId));
+        
+        // Clear on focus para campos vacíos
+        const clearInputs = productRow.querySelectorAll('.clear-on-focus');
+        clearInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                if (this.value === '0' || this.value === '0.00') {
+                    this.value = '';
+                }
+            });
+            
+            input.addEventListener('blur', function() {
+                if (this.value === '' && this.classList.contains('product-quantity')) {
+                    this.value = '';
+                }
+                if (this.value === '' && this.classList.contains('product-price')) {
+                    this.value = '';
+                }
+            });
+        });
+        
+        // Auto-resize para textareas
+        const textareas = productRow.querySelectorAll('textarea');
+        textareas.forEach(textarea => {
+            textarea.addEventListener('input', autoResizeTextarea);
+        });
     }
     
     function updateProductData(productId) {
@@ -156,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function updateProductTotals(productId) {
+    function updateProductTotal(productId) {
         const productRow = document.getElementById(`product-${productId}`);
         if (!productRow) return;
         
@@ -165,6 +213,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const totalCNY = quantity * price;
         const totalUSD = totalCNY / exchangeRate;
+        
+        // Actualizar display del total del producto
+        const totalElement = document.getElementById(`product-total-${productId}`);
+        if (totalElement) {
+            totalElement.innerHTML = `¥${totalCNY.toFixed(2)}<br><small style="font-size: 9px; color: #666;">($${totalUSD.toFixed(2)})</small>`;
+        }
         
         // Actualizar en array
         const productIndex = products.findIndex(p => p.id === productId);
@@ -178,45 +232,163 @@ document.addEventListener('DOMContentLoaded', function() {
         updateAllTotals();
     }
     
+    function addNewFeeLine(isInitial = false) {
+        const feeId = Date.now() + (isInitial ? 0 : Math.random() * 1000);
+        
+        const feeRow = document.createElement('div');
+        feeRow.className = 'agent-fee-row';
+        feeRow.id = `fee-${feeId}`;
+        feeRow.innerHTML = `
+            <div>
+                <input type="text" class="auto-expand-cell agent-editable fee-description clear-on-focus" 
+                       placeholder="Fee description (commission, shipping, etc.)" 
+                       style="width: 100%;">
+            </div>
+            <div>
+                <input type="number" class="empty-price-cell agent-editable fee-amount clear-on-focus" 
+                       placeholder="0.00"
+                       style="width: 100%; text-align: right;"
+                       min="0" step="0.01">
+            </div>
+            <div style="font-size: 11px; text-align: right; padding-right: 5px;">
+                <span class="fee-usd" id="fee-usd-${feeId}">$0.00</span>
+            </div>
+        `;
+        
+        if (!isInitial) {
+            agentFeesContainer.appendChild(feeRow);
+        }
+        
+        // Event listeners para la nueva tarifa
+        const descriptionInput = feeRow.querySelector('.fee-description');
+        const amountInput = feeRow.querySelector('.fee-amount');
+        
+        descriptionInput.addEventListener('input', () => updateFeeData(feeId));
+        amountInput.addEventListener('input', () => updateFeeTotal(feeId));
+        
+        // Clear on focus
+        amountInput.addEventListener('focus', function() {
+            if (this.value === '0' || this.value === '0.00') {
+                this.value = '';
+            }
+        });
+        
+        // Guardar en array
+        agentFees.push({
+            id: feeId,
+            description: '',
+            amountCNY: 0,
+            amountUSD: 0
+        });
+        
+        updateAllTotals();
+    }
+    
+    function removeLastFeeLine() {
+        if (agentFees.length > 1) { // No eliminar la primera
+            const lastFee = agentFees.pop();
+            const feeElement = document.getElementById(`fee-${lastFee.id}`);
+            if (feeElement) {
+                feeElement.remove();
+            }
+            updateAllTotals();
+        } else {
+            alert('At least one fee line must remain.');
+        }
+    }
+    
+    function updateFeeData(feeId) {
+        const feeRow = document.getElementById(`fee-${feeId}`);
+        if (!feeRow) return;
+        
+        const feeIndex = agentFees.findIndex(f => f.id === feeId);
+        if (feeIndex !== -1) {
+            agentFees[feeIndex].description = feeRow.querySelector('.fee-description').value;
+        }
+    }
+    
+    function updateFeeTotal(feeId) {
+        const feeRow = document.getElementById(`fee-${feeId}`);
+        if (!feeRow) return;
+        
+        const amountCNY = parseFloat(feeRow.querySelector('.fee-amount').value) || 0;
+        const amountUSD = amountCNY / exchangeRate;
+        
+        // Actualizar display USD
+        const usdElement = document.getElementById(`fee-usd-${feeId}`);
+        if (usdElement) {
+            usdElement.textContent = `$${amountUSD.toFixed(2)}`;
+        }
+        
+        // Actualizar en array
+        const feeIndex = agentFees.findIndex(f => f.id === feeId);
+        if (feeIndex !== -1) {
+            agentFees[feeIndex].amountCNY = amountCNY;
+            agentFees[feeIndex].amountUSD = amountUSD;
+        }
+        
+        updateAllTotals();
+    }
+    
     function updateAllTotals() {
         // Calcular subtotal productos
         let subtotalCNY = 0;
+        let subtotalUSD = 0;
         
-        products.forEach((product) => {
+        products.forEach(product => {
             subtotalCNY += product.totalCNY;
+            subtotalUSD += product.totalUSD;
         });
         
-        const subtotalUSD = subtotalCNY / exchangeRate;
+        // Calcular total tarifas agente
+        let agentFeesTotalCNY = 0;
+        let agentFeesTotalUSD = 0;
         
-        // Actualizar subtotales
-        document.getElementById('subtotal-cny').textContent = subtotalCNY.toFixed(2);
-        document.getElementById('subtotal-usd').textContent = subtotalUSD.toFixed(2);
-        
-        // Calcular comisión y otros gastos
-        const agentFeeCNY = parseFloat(document.getElementById('agent-fee-cny').value) || 0;
-        const otherCostsCNY = parseFloat(document.getElementById('other-costs-cny').value) || 0;
-        
-        const agentFeeUSD = agentFeeCNY / exchangeRate;
-        const otherCostsUSD = otherCostsCNY / exchangeRate;
-        
-        document.getElementById('agent-fee-usd').textContent = agentFeeUSD.toFixed(2);
-        document.getElementById('other-costs-usd').textContent = otherCostsUSD.toFixed(2);
+        agentFees.forEach(fee => {
+            agentFeesTotalCNY += fee.amountCNY;
+            agentFeesTotalUSD += fee.amountUSD;
+        });
         
         // Calcular totales finales
-        const grandTotalCNY = subtotalCNY + agentFeeCNY + otherCostsCNY;
+        const grandTotalCNY = subtotalCNY + agentFeesTotalCNY;
         const grandTotalUSD = grandTotalCNY / exchangeRate;
         
+        // Actualizar displays
+        document.getElementById('subtotal-cny').textContent = subtotalCNY.toFixed(2);
+        document.getElementById('subtotal-usd').textContent = (subtotalCNY / exchangeRate).toFixed(2);
+        document.getElementById('agent-fees-total-cny').textContent = agentFeesTotalCNY.toFixed(2);
+        document.getElementById('agent-fees-total-usd').textContent = agentFeesTotalUSD.toFixed(2);
         document.getElementById('grand-total-cny').textContent = grandTotalCNY.toFixed(2);
         document.getElementById('grand-total-usd').textContent = grandTotalUSD.toFixed(2);
     }
     
     function updateExchangeRate() {
         exchangeRate = parseFloat(exchangeRateInput.value) || 7.25;
+        
+        // Recalcular todos los totales en USD
         updateAllTotals();
+        
+        // Actualizar totales USD de productos
+        products.forEach(product => {
+            const totalElement = document.getElementById(`product-total-${product.id}`);
+            if (totalElement) {
+                const totalUSD = product.totalCNY / exchangeRate;
+                totalElement.innerHTML = `¥${product.totalCNY.toFixed(2)}<br><small style="font-size: 9px; color: #666;">($${totalUSD.toFixed(2)})</small>`;
+            }
+        });
+        
+        // Actualizar tarifas en USD
+        agentFees.forEach(fee => {
+            const usdElement = document.getElementById(`fee-usd-${fee.id}`);
+            if (usdElement) {
+                const amountUSD = fee.amountCNY / exchangeRate;
+                usdElement.textContent = `$${amountUSD.toFixed(2)}`;
+                fee.amountUSD = amountUSD;
+            }
+        });
     }
     
     function generateShareLink() {
-        // Recolectar todos los datos
         const data = {
             products: products.map(p => ({
                 link: p.link,
@@ -225,26 +397,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 quantity: p.quantity,
                 price: p.price
             })),
+            agentFees: agentFees.map(f => ({
+                description: f.description,
+                amountCNY: f.amountCNY
+            })),
             exchangeRate: exchangeRate,
-            agentFee: parseFloat(document.getElementById('agent-fee-cny').value) || 0,
-            otherCosts: parseFloat(document.getElementById('other-costs-cny').value) || 0,
             timestamp: new Date().toISOString(),
-            version: '1.3'
+            version: '1.4'
         };
         
-        // Codificar datos en Base64
         const dataString = JSON.stringify(data);
         const encodedData = btoa(encodeURIComponent(dataString));
         
-        // Generar URL
         const baseURL = window.location.origin + window.location.pathname;
         const shareURL = `${baseURL}#${encodedData}`;
         
-        // Mostrar enlace
         shareLinkInput.value = shareURL;
         linkSection.style.display = 'block';
-        
-        // Hacer scroll al enlace
         linkSection.scrollIntoView({ behavior: 'smooth' });
     }
     
@@ -254,17 +423,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         navigator.clipboard.writeText(shareLinkInput.value)
             .then(() => {
-                const originalText = copyLinkBtn.textContent;
                 copyLinkBtn.textContent = '✅ COPIED!';
                 copyLinkBtn.style.background = '#27ae60';
                 
                 setTimeout(() => {
-                    copyLinkBtn.textContent = originalText;
+                    copyLinkBtn.textContent = '📋 COPY LINK';
                     copyLinkBtn.style.background = '';
                 }, 2000);
             })
             .catch(err => {
-                console.error('Error copying: ', err);
+                console.error('Error copying:', err);
                 alert('Error copying link. Please copy manually.');
             });
     }
@@ -274,7 +442,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!hash) return;
         
         try {
-            // Decodificar datos
             const decodedString = decodeURIComponent(atob(hash));
             const data = JSON.parse(decodedString);
             
@@ -295,26 +462,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     productRow.id = `product-${productId}`;
                     productRow.innerHTML = `
                         <div>
-                            <textarea class="product-link link-cell" 
-                                   rows="2">${productData.link || ''}</textarea>
+                            <textarea class="product-link link-cell-expand clear-on-focus" 
+                                   rows="1">${productData.link || ''}</textarea>
                         </div>
                         <div>
-                            <textarea class="product-name text-cell" 
-                                   rows="2" required>${productData.name || ''}</textarea>
+                            <textarea class="product-name auto-expand-cell clear-on-focus" 
+                                   rows="1" required>${productData.name || ''}</textarea>
                         </div>
                         <div>
-                            <input type="text" class="product-variant text-cell" 
+                            <input type="text" class="product-variant auto-expand-cell clear-on-focus" 
                                    value="${productData.variant || ''}" 
                                    placeholder="Color/Size/Model">
                         </div>
                         <div>
-                            <input type="number" class="product-quantity number-cell" 
-                                   value="${productData.quantity || 1}" min="1" step="1">
+                            <input type="number" class="product-quantity empty-number-cell clear-on-focus" 
+                                   value="${productData.quantity || ''}" 
+                                   placeholder="Qty" min="1" step="1">
                         </div>
                         <div>
-                            <input type="number" class="product-price price-cell" 
-                                   value="${productData.price || 0}" min="0" step="0.01"
-                                   placeholder="0.00">
+                            <input type="number" class="product-price empty-price-cell clear-on-focus" 
+                                   value="${productData.price || ''}" 
+                                   placeholder="Unit price" min="0" step="0.01">
+                        </div>
+                        <div>
+                            <div class="product-total-cell" id="product-total-${productId}">
+                                ¥0.00
+                            </div>
                         </div>
                         <div>
                             <button type="button" class="btn-remove-compact" 
@@ -326,8 +499,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     productsContainer.appendChild(productRow);
                     
-                    // Guardar en array
-                    const totalCNY = (productData.quantity || 0) * (productData.price || 0);
+                    // Calcular totales iniciales
+                    const quantity = parseFloat(productData.quantity) || 0;
+                    const price = parseFloat(productData.price) || 0;
+                    const totalCNY = quantity * price;
                     const totalUSD = totalCNY / exchangeRate;
                     
                     products.push({
@@ -335,88 +510,123 @@ document.addEventListener('DOMContentLoaded', function() {
                         link: productData.link || '',
                         name: productData.name || '',
                         variant: productData.variant || '',
-                        quantity: productData.quantity || 1,
-                        price: productData.price || 0,
+                        quantity: quantity,
+                        price: price,
                         totalCNY: totalCNY,
                         totalUSD: totalUSD
                     });
                     
-                    // Event listeners
-                    const quantityInput = productRow.querySelector('.product-quantity');
-                    const priceInput = productRow.querySelector('.product-price');
-                    
-                    quantityInput.addEventListener('input', () => updateProductTotals(productId));
-                    priceInput.addEventListener('input', () => updateProductTotals(productId));
-                    
-                    productRow.querySelector('.product-link').addEventListener('input', () => updateProductData(productId));
-                    productRow.querySelector('.product-name').addEventListener('input', () => updateProductData(productId));
-                    productRow.querySelector('.product-variant').addEventListener('input', () => updateProductData(productId));
-                    
-                    // Auto-ajustar textareas
-                    const textareas = productRow.querySelectorAll('textarea');
-                    textareas.forEach(textarea => {
-                        textarea.addEventListener('input', function() {
-                            this.style.height = 'auto';
-                            this.style.height = (this.scrollHeight) + 'px';
-                        });
-                        // Ajustar altura inicial
-                        textarea.style.height = 'auto';
-                        textarea.style.height = (textarea.scrollHeight) + 'px';
-                    });
+                    // Configurar event listeners
+                    setupProductEventListeners(productId);
+                    autoResizeTextareas(productRow);
                 });
-                
-                // Cargar tarifas del agente
-                document.getElementById('agent-fee-cny').value = data.agentFee || 0;
-                document.getElementById('other-costs-cny').value = data.otherCosts || 0;
-                
-                // Actualizar todos los cálculos
-                updateAllTotals();
-                
-                // Mostrar mensaje
-                if (products.length > 0) {
-                    console.log(`Quotation loaded: ${products.length} products`);
-                }
             }
+            
+            // Cargar tarifas del agente
+            if (data.agentFees && data.agentFees.length > 0) {
+                agentFeesContainer.innerHTML = '';
+                agentFees = [];
+                
+                data.agentFees.forEach((feeData, index) => {
+                    const feeId = Date.now() + index + 10000;
+                    
+                    const feeRow = document.createElement('div');
+                    feeRow.className = 'agent-fee-row';
+                    feeRow.id = `fee-${feeId}`;
+                    feeRow.innerHTML = `
+                        <div>
+                            <input type="text" class="auto-expand-cell agent-editable fee-description clear-on-focus" 
+                                   value="${feeData.description || ''}" 
+                                   placeholder="Fee description" 
+                                   style="width: 100%;">
+                        </div>
+                        <div>
+                            <input type="number" class="empty-price-cell agent-editable fee-amount clear-on-focus" 
+                                   value="${feeData.amountCNY || ''}" 
+                                   placeholder="0.00"
+                                   style="width: 100%; text-align: right;"
+                                   min="0" step="0.01">
+                        </div>
+                        <div style="font-size: 11px; text-align: right; padding-right: 5px;">
+                            <span class="fee-usd" id="fee-usd-${feeId}">$0.00</span>
+                        </div>
+                    `;
+                    
+                    agentFeesContainer.appendChild(feeRow);
+                    
+                    const amountCNY = parseFloat(feeData.amountCNY) || 0;
+                    const amountUSD = amountCNY / exchangeRate;
+                    
+                    agentFees.push({
+                        id: feeId,
+                        description: feeData.description || '',
+                        amountCNY: amountCNY,
+                        amountUSD: amountUSD
+                    });
+                    
+                    // Configurar event listeners
+                    const descriptionInput = feeRow.querySelector('.fee-description');
+                    const amountInput = feeRow.querySelector('.fee-amount');
+                    
+                    descriptionInput.addEventListener('input', () => updateFeeData(feeId));
+                    amountInput.addEventListener('input', () => updateFeeTotal(feeId));
+                    
+                    // Actualizar display USD
+                    const usdElement = document.getElementById(`fee-usd-${feeId}`);
+                    if (usdElement) {
+                        usdElement.textContent = `$${amountUSD.toFixed(2)}`;
+                    }
+                });
+            }
+            
+            // Actualizar todos los cálculos
+            updateAllTotals();
+            
         } catch (error) {
             console.error('Error loading URL data:', error);
-            alert('❌ Could not load quotation from link. Please start a new one.');
+            alert('❌ Could not load quotation from link. Starting new quotation.');
         }
     }
     
     function resetAll() {
-        if (confirm('Are you sure you want to clear the entire quotation? All data will be lost.')) {
+        if (confirm('Clear entire quotation? All data will be lost.')) {
             productsContainer.innerHTML = '<div class="product-row-grid empty-message" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d; font-style: italic;">No products added. Click "ADD PRODUCT" to start.</div>';
             products = [];
+            
+            // Resetear tarifas (mantener una línea)
+            agentFeesContainer.innerHTML = '';
+            agentFees = [];
+            addNewFeeLine(true);
             
             // Resetear otros campos
             exchangeRateInput.value = 7.25;
             exchangeRate = 7.25;
-            document.getElementById('agent-fee-cny').value = 0;
-            document.getElementById('other-costs-cny').value = 0;
             
-            // Ocultar sección de enlace
             linkSection.style.display = 'none';
-            
-            // Actualizar totales
             updateAllTotals();
-            
-            // Limpiar URL hash
             window.location.hash = '';
         }
     }
     
-    // Hacer removeProduct accesible globalmente
+    // Funciones auxiliares
+    function autoResizeTextareas(element) {
+        const textareas = element.querySelectorAll('textarea');
+        textareas.forEach(autoResizeTextarea);
+    }
+    
+    function autoResizeTextarea() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    }
+    
+    // Hacer funciones accesibles globalmente
     window.removeProduct = function(productId) {
         if (confirm('Delete this product?')) {
             const productRow = document.getElementById(`product-${productId}`);
-            if (productRow) {
-                productRow.remove();
-            }
+            if (productRow) productRow.remove();
             
-            // Eliminar del array
             products = products.filter(p => p.id !== productId);
             
-            // Si no hay productos, mostrar mensaje
             if (products.length === 0) {
                 productsContainer.innerHTML = '<div class="product-row-grid empty-message" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d; font-style: italic;">No products added. Click "ADD PRODUCT" to start.</div>';
             }
@@ -425,16 +635,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
-    // Auto-guardar en localStorage cada 5 segundos
+    // Auto-guardar
     setInterval(() => {
-        if (products.length > 0) {
+        if (products.length > 0 || agentFees.length > 0) {
             const data = {
                 products: products,
-                exchangeRate: exchangeRate,
-                agentFee: parseFloat(document.getElementById('agent-fee-cny').value) || 0,
-                otherCosts: parseFloat(document.getElementById('other-costs-cny').value) || 0
+                agentFees: agentFees,
+                exchangeRate: exchangeRate
             };
             localStorage.setItem('quotation_auto_save', JSON.stringify(data));
         }
-    }, 5000);
+    }, 3000);
 });
