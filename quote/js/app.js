@@ -9,17 +9,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const exchangeRateInput = document.getElementById('exchange-rate');
     const linkSection = document.getElementById('link-section');
     const shareLinkInput = document.getElementById('share-link');
-    const lineTotalsDiv = document.getElementById('line-totals'); // Ya no se usará
     
     // Datos iniciales
     let products = [];
     let exchangeRate = 7.25;
     
     // Fecha actual
-    document.getElementById('current-date').textContent = new Date().toLocaleDateString('es-ES', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
     });
     
     // Cargar datos desde URL si existen
@@ -54,46 +54,48 @@ document.addEventListener('DOMContentLoaded', function() {
         productRow.innerHTML = `
             <!-- Enlace (40%) -->
             <div>
-                <input type="url" class="product-link product-link-input" 
-                       placeholder="https://detail.1688.com/..."
-                       title="Pega aquí el enlace completo del producto en 1688">
+                <textarea class="product-link link-cell" 
+                       placeholder="https://detail.1688.com/offer/..."
+                       title="Paste full 1688 product link here"
+                       rows="2"></textarea>
             </div>
             
             <!-- Nombre (25%) -->
             <div>
-                <input type="text" class="product-name compact-input" 
-                       placeholder="Nombre del producto"
-                       title="Nombre completo del producto"
-                       required>
+                <textarea class="product-name text-cell" 
+                       placeholder="Complete product name from 1688"
+                       title="Product name (copy from 1688 page)"
+                       rows="2"
+                       required></textarea>
             </div>
             
             <!-- Variante (15%) -->
             <div>
-                <input type="text" class="product-variant compact-input" 
-                       placeholder="Color/Talla/Modelo"
-                       title="Variante o especificación específica">
+                <input type="text" class="product-variant text-cell" 
+                       placeholder="Color/Size/Model"
+                       title="Specific variant (color, size, model number)">
             </div>
             
             <!-- Cantidad (8%) -->
             <div>
-                <input type="number" class="product-quantity compact-input-narrow" 
+                <input type="number" class="product-quantity number-cell" 
                        value="1" min="1" step="1"
-                       title="Cantidad a comprar">
+                       title="Quantity to purchase">
             </div>
             
             <!-- Precio (7%) -->
             <div>
-                <input type="number" class="product-price compact-input-price" 
+                <input type="number" class="product-price price-cell" 
                        value="0" min="0" step="0.01"
                        placeholder="0.00"
-                       title="Precio unitario en CNY (yuanes)">
+                       title="Unit price in CNY (Chinese Yuan)">
             </div>
             
             <!-- Eliminar (5%) -->
             <div>
                 <button type="button" class="btn-remove-compact" 
                         onclick="removeProduct(${productId})"
-                        title="Eliminar este producto">
+                        title="Delete this product">
                     ✕
                 </button>
             </div>
@@ -112,6 +114,15 @@ document.addEventListener('DOMContentLoaded', function() {
         productRow.querySelector('.product-link').addEventListener('input', () => updateProductData(productId));
         productRow.querySelector('.product-name').addEventListener('input', () => updateProductData(productId));
         productRow.querySelector('.product-variant').addEventListener('input', () => updateProductData(productId));
+        
+        // Auto-ajustar altura de textareas
+        const textareas = productRow.querySelectorAll('textarea');
+        textareas.forEach(textarea => {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+        });
         
         // Guardar en array de productos
         products.push({
@@ -218,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
             agentFee: parseFloat(document.getElementById('agent-fee-cny').value) || 0,
             otherCosts: parseFloat(document.getElementById('other-costs-cny').value) || 0,
             timestamp: new Date().toISOString(),
-            version: '1.2'
+            version: '1.3'
         };
         
         // Codificar datos en Base64
@@ -244,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
         navigator.clipboard.writeText(shareLinkInput.value)
             .then(() => {
                 const originalText = copyLinkBtn.textContent;
-                copyLinkBtn.textContent = '✅ COPIADO!';
+                copyLinkBtn.textContent = '✅ COPIED!';
                 copyLinkBtn.style.background = '#27ae60';
                 
                 setTimeout(() => {
@@ -253,8 +264,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 2000);
             })
             .catch(err => {
-                console.error('Error al copiar: ', err);
-                alert('Error al copiar el enlace. Cópialo manualmente.');
+                console.error('Error copying: ', err);
+                alert('Error copying link. Please copy manually.');
             });
     }
     
@@ -284,26 +295,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     productRow.id = `product-${productId}`;
                     productRow.innerHTML = `
                         <div>
-                            <input type="url" class="product-link product-link-input" 
-                                   value="${productData.link || ''}" 
-                                   placeholder="https://detail.1688.com/...">
+                            <textarea class="product-link link-cell" 
+                                   rows="2">${productData.link || ''}</textarea>
                         </div>
                         <div>
-                            <input type="text" class="product-name compact-input" 
-                                   value="${productData.name || ''}" 
-                                   placeholder="Nombre del producto" required>
+                            <textarea class="product-name text-cell" 
+                                   rows="2" required>${productData.name || ''}</textarea>
                         </div>
                         <div>
-                            <input type="text" class="product-variant compact-input" 
+                            <input type="text" class="product-variant text-cell" 
                                    value="${productData.variant || ''}" 
-                                   placeholder="Color/Talla/Modelo">
+                                   placeholder="Color/Size/Model">
                         </div>
                         <div>
-                            <input type="number" class="product-quantity compact-input-narrow" 
+                            <input type="number" class="product-quantity number-cell" 
                                    value="${productData.quantity || 1}" min="1" step="1">
                         </div>
                         <div>
-                            <input type="number" class="product-price compact-input-price" 
+                            <input type="number" class="product-price price-cell" 
                                    value="${productData.price || 0}" min="0" step="0.01"
                                    placeholder="0.00">
                         </div>
@@ -342,6 +351,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     productRow.querySelector('.product-link').addEventListener('input', () => updateProductData(productId));
                     productRow.querySelector('.product-name').addEventListener('input', () => updateProductData(productId));
                     productRow.querySelector('.product-variant').addEventListener('input', () => updateProductData(productId));
+                    
+                    // Auto-ajustar textareas
+                    const textareas = productRow.querySelectorAll('textarea');
+                    textareas.forEach(textarea => {
+                        textarea.addEventListener('input', function() {
+                            this.style.height = 'auto';
+                            this.style.height = (this.scrollHeight) + 'px';
+                        });
+                        // Ajustar altura inicial
+                        textarea.style.height = 'auto';
+                        textarea.style.height = (textarea.scrollHeight) + 'px';
+                    });
                 });
                 
                 // Cargar tarifas del agente
@@ -353,18 +374,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Mostrar mensaje
                 if (products.length > 0) {
-                    console.log(`Cotización cargada: ${products.length} productos`);
+                    console.log(`Quotation loaded: ${products.length} products`);
                 }
             }
         } catch (error) {
-            console.error('Error al cargar datos de URL:', error);
-            alert('❌ No se pudo cargar la cotización del enlace. Comienza una nueva.');
+            console.error('Error loading URL data:', error);
+            alert('❌ Could not load quotation from link. Please start a new one.');
         }
     }
     
     function resetAll() {
-        if (confirm('¿Estás seguro de limpiar toda la cotización? Se perderán todos los datos.')) {
-            productsContainer.innerHTML = '<div class="product-row-grid empty-message" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d; font-style: italic;">No hay productos agregados. Haz clic en "AGREGAR PRODUCTO" para comenzar.</div>';
+        if (confirm('Are you sure you want to clear the entire quotation? All data will be lost.')) {
+            productsContainer.innerHTML = '<div class="product-row-grid empty-message" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d; font-style: italic;">No products added. Click "ADD PRODUCT" to start.</div>';
             products = [];
             
             // Resetear otros campos
@@ -386,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Hacer removeProduct accesible globalmente
     window.removeProduct = function(productId) {
-        if (confirm('¿Eliminar este producto?')) {
+        if (confirm('Delete this product?')) {
             const productRow = document.getElementById(`product-${productId}`);
             if (productRow) {
                 productRow.remove();
@@ -397,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Si no hay productos, mostrar mensaje
             if (products.length === 0) {
-                productsContainer.innerHTML = '<div class="product-row-grid empty-message" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d; font-style: italic;">No hay productos agregados. Haz clic en "AGREGAR PRODUCTO" para comenzar.</div>';
+                productsContainer.innerHTML = '<div class="product-row-grid empty-message" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d; font-style: italic;">No products added. Click "ADD PRODUCT" to start.</div>';
             }
             
             updateAllTotals();
@@ -413,7 +434,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 agentFee: parseFloat(document.getElementById('agent-fee-cny').value) || 0,
                 otherCosts: parseFloat(document.getElementById('other-costs-cny').value) || 0
             };
-            localStorage.setItem('cotizacion_auto_guardada', JSON.stringify(data));
+            localStorage.setItem('quotation_auto_save', JSON.stringify(data));
         }
     }, 5000);
 });
