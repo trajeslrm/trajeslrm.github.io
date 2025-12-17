@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <style>
         /* ANCHOS DE COLUMNA REAJUSTADOS */
-        /* 100% = 35% + 25% + 12% + 6% + 7% + 8% + 7% */
+        /* 100% = 30% + 20% + 10% + 6% + 7% + 8% + 8% + 7% */
         .table-header-fixed {
             position: sticky;
             top: 0;
@@ -18,8 +18,8 @@
             padding: 8px 0;
             border-bottom: 2px solid #3498db;
             display: grid;
-            /* NUEVO: +1 columna para Total por producto */
-            grid-template-columns: 35% 25% 12% 6% 7% 8% 7%;
+            /* 8 COLUMNAS: 30% 20% 10% 6% 7% 8% 8% 7% */
+            grid-template-columns: 30% 20% 10% 6% 7% 8% 8% 7%;
             gap: 3px;
             align-items: center;
             text-align: center;
@@ -28,12 +28,13 @@
         
         .product-row-grid {
             display: grid;
-            grid-template-columns: 35% 25% 12% 6% 7% 8% 7%;
+            /* 8 COLUMNAS: 30% 20% 10% 6% 7% 8% 8% 7% */
+            grid-template-columns: 30% 20% 10% 6% 7% 8% 8% 7%;
             gap: 3px;
             align-items: stretch;
             padding: 4px 0;
             border-bottom: 1px solid #eee;
-            min-height: 60px; /* Altura mínima para mostrar contenido */
+            min-height: 60px;
         }
         
         .product-row-grid:nth-child(even) {
@@ -93,17 +94,17 @@
         .empty-price-cell {
             width: 100%;
             padding: 4px 2px;
-            border: 1px solid #ff9800; /* Naranja para precios editables por agente */
+            border: 1px solid #ff9800;
             border-radius: 3px;
             font-size: 11px;
             box-sizing: border-box;
             text-align: right;
             min-height: 40px;
-            background-color: #fff8e1; /* Fondo naranja claro */
+            background-color: #fff8e1;
         }
         
-        /* Total por producto (calculado automáticamente) */
-        .product-total-cell {
+        /* Total por producto en CNY */
+        .product-total-cny {
             width: 100%;
             padding: 4px 2px;
             border: 1px solid #27ae60;
@@ -113,6 +114,24 @@
             text-align: right;
             min-height: 40px;
             background-color: #f0fff4;
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        
+        /* Total por producto en USD */
+        .product-total-usd {
+            width: 100%;
+            padding: 4px 2px;
+            border: 1px solid #3498db;
+            border-radius: 3px;
+            font-size: 11px;
+            box-sizing: border-box;
+            text-align: right;
+            min-height: 40px;
+            background-color: #e8f4ff;
             font-weight: bold;
             color: #2c3e50;
             display: flex;
@@ -216,14 +235,15 @@
             
             .table-header-fixed,
             .product-row-grid {
-                min-width: 750px; /* Aumentado por nueva columna */
+                min-width: 800px;
             }
             
             .auto-expand-cell,
             .link-cell-expand,
             .empty-number-cell,
             .empty-price-cell,
-            .product-total-cell {
+            .product-total-cny,
+            .product-total-usd {
                 font-size: 14px;
                 min-height: 44px;
             }
@@ -268,7 +288,7 @@
                 font-size: 7pt !important;
                 padding: 1px 0 !important;
                 margin-bottom: 1px !important;
-                grid-template-columns: 35% 25% 12% 6% 7% 8% 7% !important;
+                grid-template-columns: 30% 20% 10% 6% 7% 8% 8% 7% !important;
                 gap: 1px !important;
                 -webkit-print-color-adjust: exact;
             }
@@ -277,7 +297,7 @@
                 font-size: 7pt !important;
                 padding: 0 !important;
                 border-bottom: 0.3px solid #ccc !important;
-                grid-template-columns: 35% 25% 12% 6% 7% 8% 7% !important;
+                grid-template-columns: 30% 20% 10% 6% 7% 8% 8% 7% !important;
                 gap: 1px !important;
                 page-break-inside: avoid !important;
                 align-items: stretch !important;
@@ -289,7 +309,8 @@
             .link-cell-expand,
             .empty-number-cell,
             .empty-price-cell,
-            .product-total-cell {
+            .product-total-cny,
+            .product-total-usd {
                 border: 0.5px solid #999 !important;
                 background: transparent !important;
                 padding: 1px 2px !important;
@@ -424,7 +445,7 @@
                 </p>
                 
                 <div class="products-scroll-container">
-                    <!-- ENCABEZADOS FIJOS (siempre visibles) -->
+                    <!-- ENCABEZADOS FIJOS (siempre visibles) - 8 COLUMNAS -->
                     <div class="table-header-fixed">
                         <div>🔗 1688 LINK</div>
                         <div>📝 PRODUCT NAME</div>
@@ -432,6 +453,7 @@
                         <div>🔢 QTY</div>
                         <div>💰 PRICE (¥)</div>
                         <div>Σ TOTAL (¥)</div>
+                        <div>Σ TOTAL ($)</div>
                         <div>❌</div>
                     </div>
                     
