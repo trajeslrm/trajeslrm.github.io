@@ -39,10 +39,14 @@ document.addEventListener('DOMContentLoaded', function() {
     exchangeRateInput.addEventListener('input', updateExchangeRate);
     
     function initialize() {
+        // Limpiar tarifas iniciales del HTML
+        agentFeesContainer.innerHTML = '';
+        agentFees = [];
+        
         // Cargar datos desde URL si existen
         loadFromURL();
         
-        // Si no hay datos en URL, crear primera línea de tarifa
+        // Si no hay datos en URL, crear primera línea de tarifa DINÁMICA
         if (agentFees.length === 0) {
             addNewFeeLine(true); // true = inicialización
         }
@@ -267,10 +271,10 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
-        // SIEMPRE agregar al DOM (corrección del bug)
+        // SIEMPRE agregar al DOM
         agentFeesContainer.appendChild(feeRow);
         
-        // Event listeners para la nueva tarifa
+        // Configurar event listeners inmediatamente
         const descriptionInput = feeRow.querySelector('.fee-description');
         const amountInput = feeRow.querySelector('.fee-amount');
         
