@@ -327,6 +327,20 @@
                 resize: none !important;
             }
             
+            /* ESPECIALMENTE PARA TEXTAREAS EN PDF - SE EXPANDEN COMPLETAMENTE */
+            .link-cell-expand,
+            .auto-expand-cell {
+                height: auto !important;
+                min-height: 20px !important;
+                max-height: none !important;
+                overflow: visible !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                white-space: pre-wrap !important;
+                word-wrap: break-word !important;
+                word-break: break-all !important;
+            }
+            
             /* Enlaces especialmente visibles en impresión */
             .link-cell-expand {
                 font-family: 'Courier New', monospace !important;
@@ -477,22 +491,8 @@
                 
                 <!-- Contenedor para múltiples tarifas -->
                 <div id="agent-fees-container" class="agent-fees-container">
-                    <!-- Tarifas se agregarán aquí dinámicamente -->
-                    <div class="agent-fee-row">
-                        <div>
-                            <input type="text" class="auto-expand-cell agent-editable fee-description" 
-                                   placeholder="Service fee/commission" 
-                                   style="width: 100%;">
-                        </div>
-                        <div>
-                            <input type="number" class="empty-price-cell agent-editable fee-amount" 
-                                   placeholder="0.00"
-                                   style="width: 100%; text-align: right;">
-                        </div>
-                        <div style="font-size: 11px; text-align: right; padding-right: 5px;">
-                            <span class="fee-usd">$0.00</span>
-                        </div>
-                    </div>
+                    <!-- Tarifas se agregarán aquí dinámicamente por JavaScript -->
+                    <!-- NO HAY HTML ESTÁTICO AQUÍ - TODO ES DINÁMICO -->
                 </div>
                 
                 <!-- Botón para agregar más tarifas -->
