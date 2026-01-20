@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¡Ayúdanos a Crecer! | LRM Trajes</title>
+  <style>
+    :root {
+      --primary: #0056b3;
+      --secondary: #28a745;
+      --danger: #e74c3c;
+      --light: #f8f9fa;
+      --dark: #333;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+      color: var(--dark);
+      line-height: 1.6;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 30px 0;
+    }
+    h1 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--secondary);
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: white;      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+    h3 {
+      color: var(--dark);
+      margin: 15px 0 10px;
+      font-size: 1.2rem;
+    }
+    p {
+      margin-bottom: 12px;
+    }
+    .highlight {
+      background-color: #fff9e6;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .rewards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .reward-card {
+      background: var(--light);
+      border: 2px solid #dee2e6;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .reward-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+    .reward-amount {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: var(--secondary);
+      margin-bottom: 10px;
+    }
+    .reward-desc {
+      font-weight: 600;      margin-bottom: 8px;
+    }
+    .limit {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-top: 8px;
+    }
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 10px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #003d82;
+    }
+    .contact-info {
+      background: #e3f2fd;
+      padding: 15px;
+      border-left: 4px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      margin: 15px 0;
+    }
+    footer {
+      text-align: center;
+      padding: 25px 0 15px;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      .subtitle { font-size: 1rem; }
+      .reward-amount { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>¡AYÚDANOS A CRECER!</h1>
+      <div class="subtitle">De "No tenemos tu talla" a "¡Sí, tenemos justo lo que buscas!"</div>
+    </header>
+    <div class="card">
+      <h2>¿Por qué esta campaña?</h2>
+      <p>En <strong>LRM Trajes</strong>, llevamos 9 meses atendiendo a cientos de clientes en Barquisimeto. Pero cada día perdemos ventas porque…</p>
+      <ul style="margin-left: 20px; margin-bottom: 15px;">
+        <li>❌ No tenemos tallas grandes (8XL, 9XL, 10XL)</li>
+        <li>❌ No tenemos suficientes trajes para niños</li>
+        <li>❌ Nuestro inventario es limitado</li>
+      </ul>
+      <p>Queremos comprar <span class="highlight">100 nuevos conjuntos de trajes</span> directamente desde China, ¡y tú puedes ser parte de este crecimiento!</p>
+    </div>
+
+    <div class="card">
+      <h2>¿Cómo funciona?</h2>
+      <p>Esta no es una donación. Es una <span class="highlight">inversión inteligente</span> donde <strong>todos ganan</strong>:</p>
+      <ul style="margin-left: 20px; margin-bottom: 15px;">
+        <li>✅ Tú recibes <strong>alquileres gratis o con descuento</strong></li>
+        <li>✅ Nosotros obtenemos capital sin deudas</li>
+        <li>✅ Todos tendrán más opciones, mejores precios y mejor servicio</li>
+      </ul>
+      <p>Los trajes llegarán en ~3 meses. Las recompensas se activan <strong>solo después de su llegada</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h2>Recompensas (¡con cupos limitados!)</h2>
+      <div class="rewards-grid">
+        <div class="reward-card">
+          <div class="reward-amount">$100</div>
+          <div class="reward-desc">8 alquileres gratis en 1 año</div>
+          <small>Valor real: $160+</small>
+          <div class="limit">Solo 20 cupos disponibles</div>
+        </div>
+        <div class="reward-card">
+          <div class="reward-amount">$40</div>
+          <div class="reward-desc">3 alquileres gratis en 1 año</div>
+          <small>Valor real: $60+</small>
+          <div class="limit">Solo 20 cupos disponibles</div>
+        </div>
+        <div class="reward-card">
+          <div class="reward-amount">$20</div>
+          <div class="reward-desc">1 alquiler gratis + descuentos</div>
+          <small>Ahorro inmediato</small>
+          <div class="limit">Solo 20 cupos disponibles</div>
+        </div>
+      </div>
+      <p><em>¿Quieres aportar otro monto? ¡Escríbenos! Negociamos recompensas personalizadas.</em></p>
+      <p><strong>Importante:</strong> Todos los alquileres gratis requieren <span class="highlight">garantía de $30</span> (se devuelve al devolver el traje en buen estado).</p>
+    </div>
+
+    <div class="card">
+      <h2>¿Cómo participar?</h2>      <ol style="margin-left: 20px; margin-bottom: 15px;">
+        <li>Elige tu nivel de aporte</li>
+        <li>Realiza tu pago por <strong>Pago Móvil</strong> o <strong>Binance (USDT)</strong></li>
+        <li>Llena el formulario para registrar tu aporte y preferencias</li>
+        <li>Recibirás tu <strong>cupón físico exclusivo</strong> con tus alquileres</li>
+      </ol>
+
+      <div class="contact-info">
+        <p><strong>Contacto y pagos:</strong> WhatsApp <a href="https://wa.me/584129873630" style="color: var(--primary); font-weight: 600;">0412-987-3630</a></p>
+        <p><strong>Métodos aceptados:</strong> Pago Móvil (Venezuela) o Binance (USDT)</p>
+      </div>
+
+      <p style="text-align: center; margin-top: 20px;">
+        <a href="https://docs.google.com/forms/d/e/TU_FORMULARIO_AQUI" target="_blank" class="btn">👉 LLENAR FORMULARIO DE APOYO</a>
+      </p>
+      <p style="text-align: center; margin-top: 10px; font-size: 0.9rem;">
+        <a href="https://docs.google.com/spreadsheets/d/TU_HOJA_PUBLICA_AQUI" target="_blank" style="color: var(--primary);">Ver aportes en tiempo real (transparencia total)</a>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Compromiso de transparencia</h2>
+      <p>Publicaremos en TikTok y en nuestra hoja pública:</p>
+      <ul style="margin-left: 20px;">
+        <li>📸 Capturas de los pagos a China</li>
+        <li>📦 Seguimiento del envío</li>
+        <li>🧾 Facturas (con datos sensibles ocultos)</li>
+        <li>🎯 Lista de trajes comprados según sus votos</li>
+      </ul>
+      <p>Si no alcanzamos el mínimo viable, <strong>devolvemos el 100% de los fondos</strong>.</p>
+    </div>
+
+    <footer>
+      <p>LRM Trajes – Vargas con 18, Edif. Enmapolar, Piso 1, Local 42 – Barquisimeto</p>
+      <p>Campaña de financiamiento colectivo | Para uso exclusivo de clientes y comunidad</p>
+    </footer>
+  </div>
+
+</body>
+</html>
