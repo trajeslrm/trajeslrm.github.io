@@ -19,7 +19,7 @@
         
         body {
             font-size: 9pt;
-            line-height: 1.05;
+            line-height: 1.1;
             color: #333;
             background: white;
             padding: 0;
@@ -29,13 +29,67 @@
         .container {
             width: 8.5in;
             height: 11in;
-            padding: 15px 20px;
+            padding: 20px 25px;
             margin: 0 auto;
             position: relative;
             background: white;
         }
         
-        /* ESTILOS PARA DISPOSITIVOS MÓVILES */
+        /* ===== JERARQUÍA DE TÍTULOS ===== */
+        .document-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px solid #0056b3;
+            padding-bottom: 10px;
+        }
+        
+        .document-subtitle {
+            font-size: 1rem;
+            color: #28a745;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .section-main-title {
+            font-size: 1.3rem;
+            color: #0056b3;
+            margin: 20px 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e9ecef;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .section-main-title:before {
+            content: "▌";
+            color: #28a745;
+            margin-right: 8px;
+        }
+        
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #495057;
+            margin: 15px 0 8px 0;
+            font-weight: 600;
+            padding-left: 15px;
+            border-left: 3px solid #007bff;
+        }
+        
+        .section-minor-title {
+            font-size: 1rem;
+            color: #6c757d;
+            margin: 10px 0 5px 0;
+            font-weight: 600;
+        }
+        
+        /* ===== ESTILOS PARA DISPOSITIVOS MÓVILES ===== */
         @media screen and (max-width: 768px) {
             body {
                 font-size: 14pt;
@@ -51,219 +105,183 @@
                 width: 100%;
                 height: auto;
                 max-width: 100%;
-                padding: 20px;
+                padding: 25px;
                 margin: 0;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                border-radius: 12px;
             }
             
-            .header {
-                padding-bottom: 15px;
-                margin-bottom: 20px;
-            }
-            
-            .logo {
+            .document-title {
                 font-size: 2.2rem;
-                margin-bottom: 8px;
+                margin-bottom: 10px;
             }
             
-            .subtitle {
-                font-size: 1.1rem;
-                line-height: 1.3;
+            .document-subtitle {
+                font-size: 1.2rem;
+                margin-bottom: 30px;
+            }
+            
+            .section-main-title {
+                font-size: 1.6rem;
+                margin: 25px 0 15px 0;
+            }
+            
+            .section-subtitle {
+                font-size: 1.3rem;
+                margin: 20px 0 10px 0;
+            }
+            
+            .section-minor-title {
+                font-size: 1.2rem;
+                margin: 15px 0 8px 0;
             }
             
             .transformation-container {
                 flex-direction: column;
-                padding: 15px;
-                margin: 15px 0;
-                gap: 15px;
+                padding: 20px;
+                margin: 20px 0;
+                gap: 20px;
             }
             
             .state-a, .state-b {
                 width: 100%;
-                padding: 12px;
+                padding: 20px;
             }
             
             .arrow {
                 transform: rotate(90deg);
-                padding: 10px 0;
-                font-size: 2rem;
-            }
-            
-            .section {
-                margin-bottom: 20px;
-            }
-            
-            .section-title {
-                font-size: 1.3rem;
-                margin-bottom: 10px;
-                padding-bottom: 5px;
-            }
-            
-            p {
-                font-size: 1.1rem;
-                line-height: 1.4;
-                margin-bottom: 10px;
+                padding: 15px 0;
+                font-size: 2.5rem;
             }
             
             .revenue-comparison {
                 grid-template-columns: 1fr;
-                gap: 15px;
-                margin: 15px 0;
+                gap: 20px;
+                margin: 20px 0;
             }
             
             .revenue-box {
-                padding: 15px;
+                padding: 20px;
                 font-size: 1.1rem;
             }
             
             .revenue-value {
-                font-size: 1.8rem;
-                margin-bottom: 5px;
+                font-size: 2rem;
+                margin-bottom: 8px;
             }
             
             .campaign-box {
-                padding: 15px;
-                margin: 15px 0;
+                padding: 20px;
+                margin: 20px 0;
                 font-size: 1.1rem;
             }
             
             .reward-grid {
                 grid-template-columns: 1fr;
-                gap: 10px;
-                margin: 15px 0;
+                gap: 15px;
+                margin: 20px 0;
             }
             
             .reward-item {
-                padding: 12px;
+                padding: 20px;
                 font-size: 1.1rem;
             }
             
             .reward-value {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
             
             .steps-container {
-                margin: 15px 0;
+                margin: 20px 0;
             }
             
             .step {
-                margin-bottom: 12px;
+                margin-bottom: 15px;
                 font-size: 1.1rem;
-                align-items: flex-start;
             }
             
             .step-number {
-                width: 28px;
-                height: 28px;
-                line-height: 28px;
-                font-size: 1rem;
-                margin-right: 12px;
-                flex-shrink: 0;
+                width: 35px;
+                height: 35px;
+                line-height: 35px;
+                font-size: 1.2rem;
+                margin-right: 15px;
             }
             
-            .emotional-highlight {
-                padding: 12px 15px;
-                margin: 15px 0;
-                font-size: 1.1rem;
-                line-height: 1.4;
+            .callout-box {
+                padding: 20px;
+                margin: 20px 0;
             }
             
             .footer {
                 position: static;
-                margin-top: 25px;
-                padding-top: 15px;
+                margin-top: 30px;
+                padding-top: 20px;
                 font-size: 0.9rem;
             }
             
-            /* Botón de impresión para móvil */
             .print-btn {
                 position: fixed;
-                bottom: 20px;
-                right: 20px;
+                bottom: 25px;
+                right: 25px;
                 background: #007bff;
                 color: white;
                 border: none;
-                padding: 12px 20px;
+                padding: 15px 25px;
                 border-radius: 50px;
                 font-weight: 600;
                 cursor: pointer;
-                box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+                box-shadow: 0 5px 15px rgba(0,123,255,0.3);
                 z-index: 1000;
                 display: flex;
                 align-items: center;
-                gap: 8px;
-                font-size: 1rem;
-            }
-            
-            /* Mejorar elementos pequeños */
-            .benefit-tag {
-                font-size: 0.9rem;
-                padding: 3px 8px;
-            }
-            
-            small {
-                font-size: 0.9rem;
-            }
-            
-            /* Ajustar texto centrado final */
-            div[style*="text-align: center"] {
-                padding: 15px;
-                margin: 20px 0;
+                gap: 10px;
                 font-size: 1.1rem;
-            }
-            
-            div[style*="text-align: center"] p {
-                font-size: 1.1rem;
-                line-height: 1.4;
-            }
-            
-            div[style*="font-size: 1.1rem"] {
-                font-size: 1.3rem !important;
             }
         }
         
-        /* ESTILOS PARA PANTALLAS GRANDES */
+        /* ===== ESTILOS PARA PANTALLAS GRANDES ===== */
         @media screen and (min-width: 769px) {
             body {
-                background: #f5f7fa;
-                padding: 20px;
+                background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+                padding: 30px;
                 font-size: 10pt;
-                line-height: 1.1;
+                line-height: 1.2;
             }
             
             .container {
                 background: white;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-                border-radius: 8px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+                border-radius: 10px;
             }
             
             .print-btn {
                 position: fixed;
-                bottom: 20px;
-                right: 20px;
+                bottom: 25px;
+                right: 25px;
                 background: #007bff;
                 color: white;
                 border: none;
-                padding: 10px 18px;
+                padding: 12px 22px;
                 border-radius: 50px;
                 font-weight: 600;
                 cursor: pointer;
-                box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+                box-shadow: 0 5px 15px rgba(0,123,255,0.3);
                 z-index: 1000;
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                gap: 10px;
+                font-size: 1rem;
             }
         }
         
-        /* ESTILOS PARA IMPRESIÓN */
+        /* ===== ESTILOS PARA IMPRESIÓN ===== */
         @media print {
             body {
                 background: white !important;
                 padding: 0 !important;
                 font-size: 9pt !important;
-                line-height: 1.05 !important;
+                line-height: 1.1 !important;
             }
             
             .container {
@@ -279,51 +297,41 @@
             }
         }
         
-        /* ELEMENTOS COMUNES */
-        .header {
-            text-align: center;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #007bff;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #007bff;
-            margin-bottom: 2px;
-        }
-        
-        .logo span {
-            color: #28a745;
-        }
-        
-        .subtitle {
-            font-size: 0.9rem;
-            color: #6c757d;
-            font-style: italic;
-        }
-        
+        /* ===== ELEMENTOS COMUNES ===== */
         .transformation-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 8px 0;
-            padding: 8px;
+            margin: 15px 0 25px 0;
+            padding: 15px;
             background: linear-gradient(to right, #ffeaa7, #a29bfe);
-            border-radius: 5px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
         
         .state-a, .state-b {
             text-align: center;
-            padding: 5px;
+            padding: 15px;
             flex: 1;
+            border-radius: 6px;
+        }
+        
+        .state-a {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid #e74c3c;
+        }
+        
+        .state-b {
+            background: rgba(39, 174, 96, 0.1);
+            border: 2px solid #27ae60;
         }
         
         .state-title {
             font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 3px;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .state-a .state-title {
@@ -335,146 +343,154 @@
         }
         
         .arrow {
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: #007bff;
-            padding: 0 10px;
+            padding: 0 20px;
+            font-weight: bold;
         }
         
         .section {
-            margin-bottom: 8px;
+            margin-bottom: 15px;
             page-break-inside: avoid;
         }
         
-        .section-title {
-            font-size: 0.95rem;
-            color: #007bff;
-            margin-bottom: 4px;
-            padding-bottom: 2px;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            align-items: center;
-        }
-        
-        .section-title i {
-            margin-right: 5px;
-            font-size: 0.9rem;
-        }
-        
         p {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .highlight {
+            background-color: #fff9e6;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: 600;
         }
         
         .revenue-comparison {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
-            margin: 6px 0;
+            gap: 15px;
+            margin: 15px 0;
         }
         
         .revenue-box {
-            padding: 6px;
-            border-radius: 4px;
+            padding: 15px;
+            border-radius: 8px;
             text-align: center;
             font-weight: bold;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
         }
         
         .current-revenue {
-            background: #ffeaa7;
-            border: 1px solid #fdcb6e;
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            border: 2px solid #fdcb6e;
         }
         
         .future-revenue {
-            background: #a3e4d7;
-            border: 1px solid #45b39d;
+            background: linear-gradient(135deg, #a3e4d7, #45b39d);
+            border: 2px solid #45b39d;
         }
         
         .revenue-value {
-            font-size: 1.1rem;
-            margin-bottom: 2px;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
         
         .campaign-box {
             background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 8px;
-            margin: 6px 0;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         
         .reward-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
-            margin: 6px 0;
+            gap: 10px;
+            margin: 15px 0;
         }
         
         .reward-item {
             text-align: center;
-            padding: 4px;
-            border: 1px solid #e9ecef;
-            border-radius: 3px;
-            font-size: 0.85em;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            background: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .reward-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .reward-value {
             color: #28a745;
             font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
         }
         
         .benefit-tag {
             display: inline-block;
-            background: #28a745;
+            background: linear-gradient(135deg, #28a745, #1e7e34);
             color: white;
-            padding: 1px 4px;
-            border-radius: 3px;
-            font-size: 0.8em;
-            margin-left: 3px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-left: 5px;
+            font-weight: 600;
         }
         
         .steps-container {
-            margin: 6px 0;
+            margin: 15px 0;
         }
         
         .step {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 4px;
-            font-size: 0.9em;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
         }
         
         .step-number {
             background: #007bff;
             color: white;
-            width: 18px;
-            height: 18px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
             text-align: center;
-            line-height: 18px;
-            margin-right: 6px;
+            line-height: 25px;
+            margin-right: 10px;
             flex-shrink: 0;
-            font-size: 0.8em;
+            font-weight: bold;
         }
         
         .footer {
             text-align: center;
-            margin-top: 8px;
-            padding-top: 6px;
+            margin-top: 20px;
+            padding-top: 15px;
             border-top: 1px solid #e9ecef;
             color: #6c757d;
-            font-size: 0.75em;
+            font-size: 0.8em;
             position: absolute;
-            bottom: 15px;
-            left: 20px;
-            right: 20px;
+            bottom: 20px;
+            left: 25px;
+            right: 25px;
         }
         
-        .emotional-highlight {
-            background: #fff9e6;
-            border-left: 3px solid #f39c12;
-            padding: 6px 8px;
-            margin: 5px 0;
-            font-style: italic;
-            border-radius: 0 3px 3px 0;
+        .callout-box {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-left: 5px solid #1976d2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
         }
         
         .pain-point {
@@ -486,207 +502,238 @@
             color: #27ae60;
             font-weight: bold;
         }
+        
+        .icon-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #007bff;
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .info-row {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+        
+        .data-point {
+            background: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <button class="print-btn" onclick="window.print()">
+        <i class="fas fa-print"></i> Imprimir PDF
+    </button>
+    
     <div class="container">
-        <!-- ENCABEZADO CON PROPÓSITO -->
-        <div class="header">
-            <div class="logo">LRM<span>TRAJES</span></div>
-            <div class="subtitle">Propuesta para transformar nuestro "NO TENEMOS" en "¡SÍ, TENEMOS JUSTO LO QUE BUSCAS!"</div>
-        </div>
+        <!-- TÍTULO PRINCIPAL CON DOMINANCIA -->
+        <div class="document-title">PROPUESTA DE TRANSFORMACIÓN</div>
+        <div class="document-subtitle">De "NO TENEMOS" a "¡SÍ, TENEMOS JUSTO LO QUE BUSCAS!"</div>
         
-        <!-- TRANSFORMACIÓN VISUAL -->
+        <!-- SECCIÓN 1: DIAGNÓSTICO ACTUAL -->
+        <div class="section-main-title">1. DIAGNÓSTICO DE LA SITUACIÓN ACTUAL</div>
+        
         <div class="transformation-container">
             <div class="state-a">
-                <div class="state-title">ESTADO ACTUAL</div>
-                <div style="font-size: 0.85em;">
+                <div class="state-title">ESTADO ACTUAL (PROBLEMA)</div>
+                <div style="font-size: 0.95rem; line-height: 1.4;">
                     ❌ "No tenemos tu talla"<br>
                     ❌ "No tenemos para niños"<br>
-                    ❌ Inventario limitado
+                    ❌ Inventario limitado<br>
+                    ❌ Pérdida diaria de ventas
                 </div>
             </div>
             
-            <div class="arrow">→</div>
+            <div class="arrow">⮕</div>
             
             <div class="state-b">
-                <div class="state-title">ESTADO DESEADO</div>
-                <div style="font-size: 0.85em;">
-                    ✅ Tallas 8XL-10XL<br>
-                    ✅ Tallas niños<br>
-                    ✅ 100 trajes nuevos
+                <div class="state-title">ESTADO DESEADO (SOLUCIÓN)</div>
+                <div style="font-size: 0.95rem; line-height: 1.4;">
+                    ✅ Tallas especiales 8XL-10XL<br>
+                    ✅ Tallas para niños<br>
+                    ✅ 100 trajes nuevos<br>
+                    ✅ Captura de mercado completo
                 </div>
             </div>
         </div>
         
-        <!-- IMPACTO EN FACTURACIÓN -->
-        <div class="section">
-            <div class="section-title">
-                <i class="fas fa-money-bill-wave"></i> TRANSFORMACIÓN EN FACTURACIÓN
+        <!-- SECCIÓN 2: IMPACTO FINANCIERO -->
+        <div class="section-main-title">2. IMPACTO FINANCIERO PROYECTADO</div>
+        
+        <div class="section-subtitle">Comparación de Facturación Actual vs. Potencial</div>
+        
+        <div class="revenue-comparison">
+            <div class="revenue-box current-revenue">
+                <div class="revenue-value">$2,250</div>
+                <div>Facturación Actual</div>
+                <div style="font-size: 0.9rem; margin-top: 5px;">(150 alquileres × $15 c/u)</div>
             </div>
             
-            <div class="revenue-comparison">
-                <div class="revenue-box current-revenue">
-                    <div class="revenue-value">$2,250</div>
-                    <div>Actual (150 alquileres × $15)</div>
-                </div>
-                
-                <div class="revenue-box future-revenue">
-                    <div class="revenue-value">$8,000+</div>
-                    <div>Potencial (400 alquileres × $20*)</div>
-                </div>
-            </div>
-            
-            <p><em>*Precio actualizado a $20 desde enero 2025</em></p>
-            
-            <div class="emotional-highlight">
-                <p>Hoy perdemos ventas cada día. Mañana <span class="opportunity">capturaremos TODO el mercado</span> que actualmente rechazamos.</p>
+            <div class="revenue-box future-revenue">
+                <div class="revenue-value">$8,000+</div>
+                <div>Facturación Potencial</div>
+                <div style="font-size: 0.9rem; margin-top: 5px;">(400 alquileres × $20 c/u)*</div>
             </div>
         </div>
         
-        <!-- CÓMO LO LOGRAMOS -->
-        <div class="section">
-            <div class="section-title">
-                <i class="fas fa-handshake"></i> CÓMO LO CONSEGUIMOS: FINANCIAMIENTO COLECTIVO
-            </div>
+        <p><em>* Precio actualizado a $20 desde enero 2025</em></p>
+        
+        <div class="callout-box">
+            <p><strong>ANÁLISIS:</strong> Hoy perdemos ventas cada día por falta de inventario. 
+            Mañana <span class="opportunity">capturaremos el 100% del mercado</span> que actualmente rechazamos, 
+            incrementando nuestra facturación en <span class="highlight">+255%</span>.</p>
+        </div>
+        
+        <!-- SECCIÓN 3: ESTRATEGIA DE FINANCIAMIENTO -->
+        <div class="section-main-title">3. ESTRATEGIA: FINANCIAMIENTO COLECTIVO INTELIGENTE</div>
+        
+        <div class="section-subtitle">Modelo Ganar-Ganar con Nuestros Clientes</div>
+        
+        <div class="campaign-box">
+            <p><strong>Meta de financiamiento:</strong> <span class="highlight">$2,200 USD</span></p>
+            <p><strong>Objetivo:</strong> Compra de <span class="highlight">100 conjuntos en China</span> ($20 por traje + $2 envío).</p>
             
-            <div class="campaign-box">
-                <p><strong>Meta:</strong> <span class="opportunity">$2,200 USD</span> para comprar <strong>100 conjuntos en China</strong> ($20 por traje + $2 envío).</p>
-                
-                <p><strong>Mecánica:</strong> Nuestros propios clientes aportan y reciben <strong>recompensas EXCLUSIVAS</strong>:</p>
-                
-                <div class="reward-grid">
-                    <div class="reward-item">
-                        <div class="reward-value">$100</div>
-                        <div>8 alquileres en 1 año</div>
-                        <small>(Valor: $160)</small>
-                    </div>
-                    <div class="reward-item">
-                        <div class="reward-value">$40</div>
-                        <div>3 alquileres en 1 año</div>
-                        <small>(Valor: $60)</small>
-                    </div>
-                    <div class="reward-item">
-                        <div class="reward-value">$20</div>
-                        <div>1 alquiler + descuentos</div>
-                        <small>(Ahorro inmediato)</small>
+            <div class="section-minor-title">Mecánica de Recompensas para Aportantes:</div>
+            
+            <div class="reward-grid">
+                <div class="reward-item">
+                    <div class="reward-value">$100</div>
+                    <div><strong>8 alquileres</strong> en 1 año</div>
+                    <small>Valor real: $160</small>
+                    <div style="margin-top: 5px; font-size: 0.9rem;">
+                        <span class="benefit-tag">60% DESCUENTO</span>
                     </div>
                 </div>
-                
-                <p><strong>Beneficio para ellos:</strong> Alquileres más económicos <span class="benefit-tag">+50% descuento</span></p>
-                <p><strong>Beneficio para nosotros:</strong> Capital sin deuda + clientes garantizados</p>
+                <div class="reward-item">
+                    <div class="reward-value">$40</div>
+                    <div><strong>3 alquileres</strong> en 1 año</div>
+                    <small>Valor real: $60</small>
+                    <div style="margin-top: 5px; font-size: 0.9rem;">
+                        <span class="benefit-tag">50% DESCUENTO</span>
+                    </div>
+                </div>
+                <div class="reward-item">
+                    <div class="reward-value">$20</div>
+                    <div><strong>1 alquiler</strong> + descuentos</div>
+                    <small>Ahorro inmediato</small>
+                    <div style="margin-top: 5px; font-size: 0.9rem;">
+                        <span class="benefit-tag">OFERTA ESPECIAL</span>
+                    </div>
+                </div>
             </div>
             
-            <div class="emotional-highlight">
-                <p>No pedimos donación. <span class="opportunity">Ofrecemos inversión inteligente:</span> Ellos ahorran dinero, nosotros crecemos.</p>
+            <div style="margin-top: 15px;">
+                <p><strong>Beneficio para clientes:</strong> Alquileres más económicos <span class="benefit-tag">+50% descuento</span></p>
+                <p><strong>Beneficio para LRM Trajes:</strong> Capital sin deudas + clientes fidelizados</p>
             </div>
         </div>
         
-        <!-- INTELIGENCIA COLECTIVA -->
-        <div class="section">
-            <div class="section-title">
-                <i class="fas fa-lightbulb"></i> INTELIGENCIA COLECTIVA: COMPRA INTELIGENTE
-            </div>
-            
-            <p><strong>Innovación clave:</strong> Los aportantes <span class="opportunity">sugieren tallas y colores</span> que necesitarán.</p>
-            
-            <div style="display: flex; align-items: center; margin: 4px 0; font-size: 0.9em;">
-                <div style="background: #3498db; color: white; padding: 2px 6px; border-radius: 3px; margin-right: 6px;">
-                    <i class="fas fa-vote-yea"></i>
-                </div>
-                <div>Compramos EXACTAMENTE lo que nuestro mercado YA está pidiendo</div>
-            </div>
-            
-            <div style="display: flex; align-items: center; margin: 4px 0; font-size: 0.9em;">
-                <div style="background: #9b59b6; color: white; padding: 2px 6px; border-radius: 3px; margin-right: 6px;">
-                    <i class="fas fa-chart-bar"></i>
-                </div>
-                <div>Data real de 150 clientes + nuevas preferencias = compra sin error</div>
-            </div>
-            
-            <p>Ejemplo práctico: Si 20 personas piden talla 8XL azul marino, <span class="opportunity">sabemos comprar 20 trajes azul marino talla 8XL</span>.</p>
+        <div class="callout-box">
+            <p><strong>INVERSIÓN INTELIGENTE, NO DONACIÓN:</strong> 
+            Ofrecemos una oportunidad donde <span class="opportunity">todos ganan</span>. 
+            Nuestros clientes ahorran dinero en sus futuros alquileres, y nosotros obtenemos capital para crecer.</p>
         </div>
         
-        <!-- PASOS CONCRETOS -->
-        <div class="section">
-            <div class="section-title">
-                <i class="fas fa-list-check"></i> PASOS PARA HACERLO REALIDAD
+        <!-- SECCIÓN 4: INTELIGENCIA DE MERCADO -->
+        <div class="section-main-title">4. INTELIGENCIA COLECTIVA DE MERCADO</div>
+        
+        <div class="section-subtitle">Compra Precisa Basada en Datos Reales</div>
+        
+        <div class="info-row">
+            <div class="icon-badge">
+                <i class="fas fa-vote-yea"></i>
+            </div>
+            <div><strong>Innovación clave:</strong> Los aportantes sugieren <span class="highlight">tallas y colores específicos</span> que necesitarán.</div>
+        </div>
+        
+        <div class="info-row">
+            <div class="icon-badge">
+                <i class="fas fa-chart-bar"></i>
+            </div>
+            <div><strong>Ventaja competitiva:</strong> Data real de 150 clientes + nuevas preferencias = <span class="highlight">compra sin error</span>.</div>
+        </div>
+        
+        <div style="margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+            <p><strong>EJEMPLO PRÁCTICO:</strong></p>
+            <p>Si recibimos solicitudes de <span class="data-point">20 personas</span> que necesitan 
+            <span class="data-point">talla 8XL azul marino</span>, compramos exactamente 
+            <span class="data-point">20 trajes azul marino talla 8XL</span>.</p>
+            <p><em>Resultado: Cero inventario obsoleto, 100% satisfacción del cliente.</em></p>
+        </div>
+        
+        <!-- SECCIÓN 5: PLAN DE ACCIÓN -->
+        <div class="section-main-title">5. PLAN DE ACCIÓN DETALLADO</div>
+        
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>
+                    <strong>PREPARACIÓN (Semana 1):</strong><br>
+                    Crear formulario Google para recolección de datos + hoja pública de transparencia
+                </div>
             </div>
             
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div><strong>Preparar:</strong> Formulario Google + hoja pública de transparencia</div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div><strong>Material:</strong> Grabar video TikTok emocional (antes/después)</div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div><strong>Lanzar:</strong> TikTok + WhatsApp a clientes + cartel en local</div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div><strong>Ejecutar:</strong> 30 días de campaña + actualizaciones diarias</div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <div><strong>Comprar:</strong> Con datos recolectados, pedido inteligente a China</div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>
+                    <strong>MATERIAL (Semana 1):</strong><br>
+                    Grabar video emotivo para TikTok (formato antes/después)
                 </div>
             </div>
             
-            <div class="emotional-highlight">
-                <p><strong>Lo que propongo:</strong> Una campaña donde <span class="opportunity">todos ganan</span>. Ellos obtienen alquileres económicos. Nosotros crecemos con capital inteligente.</p>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div>
+                    <strong>LANZAMIENTO (Semana 2):</strong><br>
+                    Campaña en TikTok + WhatsApp a clientes actuales + cartel en local
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div>
+                    <strong>EJECUCIÓN (Semanas 2-5):</strong><br>
+                    30 días de campaña activa + actualizaciones diarias de progreso
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">5</div>
+                <div>
+                    <strong>COMPRA INTELIGENTE (Semana 6):</strong><br>
+                    Con datos recolectados, realizar pedido preciso a China
+                </div>
             </div>
         </div>
         
-        <!-- CONCLUSIÓN EMOCIONAL -->
-        <div style="text-align: center; margin-top: 10px; padding: 8px; background: #e8f4fd; border-radius: 4px;">
-            <p style="font-style: italic; margin-bottom: 4px;">
-                "De las 150 personas que confiaron en nosotros, si solo 22 aportan $100...
+        <!-- CONCLUSIÓN FINAL -->
+        <div class="callout-box" style="background: linear-gradient(135deg, #d4edda, #c3e6cb); border-left-color: #28a745;">
+            <p style="text-align: center; font-size: 1.1rem;">
+                <strong>RESUMEN EJECUTIVO:</strong><br>
+                Esta propuesta convierte un problema (inventario limitado) en una oportunidad 
+                (crecimiento financiado por nuestros propios clientes). 
+                Implementamos un sistema donde <span class="opportunity">todos ganan</span>: 
+                ellos obtienen alquileres más económicos, nosotros crecemos con capital inteligente.
             </p>
-            <p style="font-weight: bold; color: #007bff; font-size: 1.1rem;">
-                ¡Ya tenemos los $2,200 para transformar LRM Trajes!"
-            </p>
         </div>
         
+        <!-- PIE DE PÁGINA -->
         <div class="footer">
-            <p>LRM Trajes - Vargas con 18, Edificio Enmapolar, Local 42, Barquisimeto</p>
-            <p>Propuesta estratégica: Transformar limitación en oportunidad • 1 página</p>
+            <p>LRM TRAJES - Propuesta de Transformación - Versión 1.0 - Generado el <script>document.write(new Date().toLocaleDateString('es-ES'));</script></p>
+            <p>Contacto: info@lrmtrajes.com | Para uso interno y presentación a inversionistas</p>
         </div>
     </div>
-
-    <!-- BOTÓN DE IMPRESIÓN (SOLO PARA PANTALLA) -->
-    <button class="print-btn" onclick="window.print()">
-        <i class="fas fa-print"></i> Exportar a PDF
-    </button>
-
-    <script>
-        // Ocultar botón en impresión
-        window.addEventListener('beforeprint', function() {
-            document.querySelector('.print-btn').style.display = 'none';
-            console.log("Configuración óptima para PDF:");
-            console.log("1. Destino: Guardar como PDF");
-            console.log("2. Márgenes: Mínimo (5mm)");
-            console.log("3. Tamaño: Carta (8.5x11 pulgadas)");
-            console.log("4. Gráficos de fondo: ACTIVAR");
-        });
-        
-        window.addEventListener('afterprint', function() {
-            document.querySelector('.print-btn').style.display = 'flex';
-        });
-        
-        // Detectar móvil y mostrar mensaje útil
-        if (window.innerWidth <= 768) {
-            console.log("Vista móvil activada - Todo se ve bien sin zoom");
-            console.log("Para versión PDF (tamaño carta), usa el botón 'Exportar a PDF'");
-        }
-    </script>
 </body>
 </html>
