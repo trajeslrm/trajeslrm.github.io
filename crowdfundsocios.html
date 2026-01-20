@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LRM Trajes - Propuesta de Transformación</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 0.4cm;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            font-size: 9pt;
+            line-height: 1.05;
+            color: #333;
+            background: white;
+            padding: 0;
+            width: 100%;
+        }
+        
+        .container {
+            width: 8.5in;
+            height: 11in;
+            padding: 15px 20px;
+            margin: 0 auto;
+            position: relative;
+            background: white;
+        }
+        
+        @media screen {
+            body {
+                background: #f5f7fa;
+                padding: 20px;
+                font-size: 10pt;
+                line-height: 1.1;
+            }
+            
+            .container {
+                background: white;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+                border-radius: 8px;
+            }
+            
+            .print-btn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #007bff;
+                color: white;
+                border: none;
+                padding: 10px 18px;
+                border-radius: 50px;
+                font-weight: 600;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+        }
+        
+        /* ENCABEZADO EMOCIONAL */
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #007bff;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #007bff;
+            margin-bottom: 2px;
+        }
+        
+        .logo span {
+            color: #28a745;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        /* TRANSFORMACIÓN VISUAL */
+        .transformation-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px;
+            background: linear-gradient(to right, #ffeaa7, #a29bfe);
+            border-radius: 5px;
+        }
+        
+        .state-a, .state-b {
+            text-align: center;
+            padding: 5px;
+            flex: 1;
+        }
+        
+        .state-title {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+        
+        .state-a .state-title {
+            color: #e74c3c;
+        }
+        
+        .state-b .state-title {
+            color: #27ae60;
+        }
+        
+        .arrow {
+            font-size: 1.5rem;
+            color: #007bff;
+            padding: 0 10px;
+        }
+        
+        /* SECCIONES */
+        .section {
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+        }
+        
+        .section-title {
+            font-size: 0.95rem;
+            color: #007bff;
+            margin-bottom: 4px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+        
+        p {
+            margin-bottom: 5px;
+        }
+        
+        /* DATOS DE FACTURACIÓN */
+        .revenue-comparison {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin: 6px 0;
+        }
+        
+        .revenue-box {
+            padding: 6px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .current-revenue {
+            background: #ffeaa7;
+            border: 1px solid #fdcb6e;
+        }
+        
+        .future-revenue {
+            background: #a3e4d7;
+            border: 1px solid #45b39d;
+        }
+        
+        .revenue-value {
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+        
+        /* CÓMO LO LOGRAMOS */
+        .campaign-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 6px 0;
+        }
+        
+        .reward-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            margin: 6px 0;
+        }
+        
+        .reward-item {
+            text-align: center;
+            padding: 4px;
+            border: 1px solid #e9ecef;
+            border-radius: 3px;
+            font-size: 0.85em;
+        }
+        
+        .reward-value {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .benefit-tag {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-left: 3px;
+        }
+        
+        /* PASOS A SEGUIR */
+        .steps-container {
+            margin: 6px 0;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 4px;
+            font-size: 0.9em;
+        }
+        
+        .step-number {
+            background: #007bff;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            margin-right: 6px;
+            flex-shrink: 0;
+            font-size: 0.8em;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 0.75em;
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            right: 20px;
+        }
+        
+        /* ELEMENTOS EMOCIONALES */
+        .emotional-highlight {
+            background: #fff9e6;
+            border-left: 3px solid #f39c12;
+            padding: 6px 8px;
+            margin: 5px 0;
+            font-style: italic;
+            border-radius: 0 3px 3px 0;
+        }
+        
+        .pain-point {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .opportunity {
+            color: #27ae60;
+            font-weight: bold;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ENCABEZADO CON PROPÓSITO -->
+        <div class="header">
+            <div class="logo">LRM<span>TRAJES</span></div>
+            <div class="subtitle">Propuesta para transformar nuestro "NO TENEMOS" en "¡SÍ, TENEMOS JUSTO LO QUE BUSCAS!"</div>
+        </div>
+        
+        <!-- TRANSFORMACIÓN VISUAL -->
+        <div class="transformation-container">
+            <div class="state-a">
+                <div class="state-title">ESTADO ACTUAL</div>
+                <div style="font-size: 0.85em;">
+                    ❌ "No tenemos tu talla"<br>
+                    ❌ "No tenemos para niños"<br>
+                    ❌ Inventario limitado
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <div class="state-b">
+                <div class="state-title">ESTADO DESEADO</div>
+                <div style="font-size: 0.85em;">
+                    ✅ Tallas 8XL-10XL<br>
+                    ✅ Tallas niños<br>
+                    ✅ 100 trajes nuevos
+                </div>
+            </div>
+        </div>
+        
+        <!-- IMPACTO EN FACTURACIÓN -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-money-bill-wave"></i> TRANSFORMACIÓN EN FACTURACIÓN
+            </div>
+            
+            <div class="revenue-comparison">
+                <div class="revenue-box current-revenue">
+                    <div class="revenue-value">$2,250</div>
+                    <div>Actual (150 alquileres × $15)</div>
+                </div>
+                
+                <div class="revenue-box future-revenue">
+                    <div class="revenue-value">$8,000+</div>
+                    <div>Potencial (400 alquileres × $20*)</div>
+                </div>
+            </div>
+            
+            <p><em>*Precio actualizado a $20 desde enero 2025</em></p>
+            
+            <div class="emotional-highlight">
+                <p>Hoy perdemos ventas cada día. Mañana <span class="opportunity">capturaremos TODO el mercado</span> que actualmente rechazamos.</p>
+            </div>
+        </div>
+        
+        <!-- CÓMO LO LOGRAMOS -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-handshake"></i> CÓMO LO CONSEGUIMOS: FINANCIAMIENTO COLECTIVO
+            </div>
+            
+            <div class="campaign-box">
+                <p><strong>Meta:</strong> <span class="opportunity">$2,200 USD</span> para comprar <strong>100 conjuntos en China</strong> ($20 por traje + $2 envío).</p>
+                
+                <p><strong>Mecánica:</strong> Nuestros propios clientes aportan y reciben <strong>recompensas EXCLUSIVAS</strong>:</p>
+                
+                <div class="reward-grid">
+                    <div class="reward-item">
+                        <div class="reward-value">$100</div>
+                        <div>8 alquileres en 1 año</div>
+                        <small>(Valor: $160)</small>
+                    </div>
+                    <div class="reward-item">
+                        <div class="reward-value">$40</div>
+                        <div>3 alquileres en 1 año</div>
+                        <small>(Valor: $60)</small>
+                    </div>
+                    <div class="reward-item">
+                        <div class="reward-value">$20</div>
+                        <div>1 alquiler + descuentos</div>
+                        <small>(Ahorro inmediato)</small>
+                    </div>
+                </div>
+                
+                <p><strong>Beneficio para ellos:</strong> Alquileres más económicos <span class="benefit-tag">+50% descuento</span></p>
+                <p><strong>Beneficio para nosotros:</strong> Capital sin deuda + clientes garantizados</p>
+            </div>
+            
+            <div class="emotional-highlight">
+                <p>No pedimos donación. <span class="opportunity">Ofrecemos inversión inteligente:</span> Ellos ahorran dinero, nosotros crecemos.</p>
+            </div>
+        </div>
+        
+        <!-- INTELIGENCIA COLECTIVA -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-lightbulb"></i> INTELIGENCIA COLECTIVA: COMPRA INTELIGENTE
+            </div>
+            
+            <p><strong>Innovación clave:</strong> Los aportantes <span class="opportunity">sugieren tallas y colores</span> que necesitarán.</p>
+            
+            <div style="display: flex; align-items: center; margin: 4px 0; font-size: 0.9em;">
+                <div style="background: #3498db; color: white; padding: 2px 6px; border-radius: 3px; margin-right: 6px;">
+                    <i class="fas fa-vote-yea"></i>
+                </div>
+                <div>Compramos EXACTAMENTE lo que nuestro mercado YA está pidiendo</div>
+            </div>
+            
+            <div style="display: flex; align-items: center; margin: 4px 0; font-size: 0.9em;">
+                <div style="background: #9b59b6; color: white; padding: 2px 6px; border-radius: 3px; margin-right: 6px;">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div>Data real de 150 clientes + nuevas preferencias = compra sin error</div>
+            </div>
+            
+            <p>Ejemplo práctico: Si 20 personas piden talla 8XL azul marino, <span class="opportunity">sabemos comprar 20 trajes azul marino talla 8XL</span>.</p>
+        </div>
+        
+        <!-- PASOS CONCRETOS -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-list-check"></i> PASOS PARA HACERLO REALIDAD
+            </div>
+            
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div><strong>Preparar:</strong> Formulario Google + hoja pública de transparencia</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div><strong>Material:</strong> Grabar video TikTok emocional (antes/después)</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div><strong>Lanzar:</strong> TikTok + WhatsApp a clientes + cartel en local</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div><strong>Ejecutar:</strong> 30 días de campaña + actualizaciones diarias</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div><strong>Comprar:</strong> Con datos recolectados, pedido inteligente a China</div>
+                </div>
+            </div>
+            
+            <div class="emotional-highlight">
+                <p><strong>Lo que propongo:</strong> Una campaña donde <span class="opportunity">todos ganan</span>. Ellos obtienen alquileres económicos. Nosotros crecemos con capital inteligente.</p>
+            </div>
+        </div>
+        
+        <!-- CONCLUSIÓN EMOCIONAL -->
+        <div style="text-align: center; margin-top: 10px; padding: 8px; background: #e8f4fd; border-radius: 4px;">
+            <p style="font-style: italic; margin-bottom: 4px;">
+                "De las 150 personas que confiaron en nosotros, si solo 22 aportan $100...
+            </p>
+            <p style="font-weight: bold; color: #007bff; font-size: 1.1rem;">
+                ¡Ya tenemos los $2,200 para transformar LRM Trajes!"
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>LRM Trajes - Vargas con 18, Edificio Enmapolar, Local 42, Barquisimeto</p>
+            <p>Propuesta estratégica: Transformar limitación en oportunidad • 1 página</p>
+        </div>
+    </div>
+
+    <button class="print-btn" onclick="window.print()" style="display: none;">
+        <i class="fas fa-print"></i> Exportar a PDF
+    </button>
+
+    <script>
+        if (!window.matchMedia('print').matches) {
+            document.querySelector('.print-btn').style.display = 'flex';
+        }
+        
+        window.addEventListener('beforeprint', function() {
+            console.log("Configuración óptima:");
+            console.log("1. PDF con márgenes mínimos (5mm)");
+            console.log("2. Tamaño carta - Todo en 1 página");
+            console.log("3. Activar gráficos de fondo");
+        });
+    </script>
+</body>
+</html>
