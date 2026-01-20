@@ -35,7 +35,196 @@
             background: white;
         }
         
-        @media screen {
+        /* ESTILOS PARA DISPOSITIVOS MÓVILES */
+        @media screen and (max-width: 768px) {
+            body {
+                font-size: 14pt;
+                line-height: 1.4;
+                padding: 15px;
+                background: #f5f7fa;
+                width: 100%;
+                height: auto;
+                min-height: 100vh;
+            }
+            
+            .container {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+                padding: 20px;
+                margin: 0;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding-bottom: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+                margin-bottom: 8px;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+                line-height: 1.3;
+            }
+            
+            .transformation-container {
+                flex-direction: column;
+                padding: 15px;
+                margin: 15px 0;
+                gap: 15px;
+            }
+            
+            .state-a, .state-b {
+                width: 100%;
+                padding: 12px;
+            }
+            
+            .arrow {
+                transform: rotate(90deg);
+                padding: 10px 0;
+                font-size: 2rem;
+            }
+            
+            .section {
+                margin-bottom: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+            }
+            
+            p {
+                font-size: 1.1rem;
+                line-height: 1.4;
+                margin-bottom: 10px;
+            }
+            
+            .revenue-comparison {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin: 15px 0;
+            }
+            
+            .revenue-box {
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+            
+            .revenue-value {
+                font-size: 1.8rem;
+                margin-bottom: 5px;
+            }
+            
+            .campaign-box {
+                padding: 15px;
+                margin: 15px 0;
+                font-size: 1.1rem;
+            }
+            
+            .reward-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                margin: 15px 0;
+            }
+            
+            .reward-item {
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+            
+            .reward-value {
+                font-size: 1.5rem;
+            }
+            
+            .steps-container {
+                margin: 15px 0;
+            }
+            
+            .step {
+                margin-bottom: 12px;
+                font-size: 1.1rem;
+                align-items: flex-start;
+            }
+            
+            .step-number {
+                width: 28px;
+                height: 28px;
+                line-height: 28px;
+                font-size: 1rem;
+                margin-right: 12px;
+                flex-shrink: 0;
+            }
+            
+            .emotional-highlight {
+                padding: 12px 15px;
+                margin: 15px 0;
+                font-size: 1.1rem;
+                line-height: 1.4;
+            }
+            
+            .footer {
+                position: static;
+                margin-top: 25px;
+                padding-top: 15px;
+                font-size: 0.9rem;
+            }
+            
+            /* Botón de impresión para móvil */
+            .print-btn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #007bff;
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 50px;
+                font-weight: 600;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 1rem;
+            }
+            
+            /* Mejorar elementos pequeños */
+            .benefit-tag {
+                font-size: 0.9rem;
+                padding: 3px 8px;
+            }
+            
+            small {
+                font-size: 0.9rem;
+            }
+            
+            /* Ajustar texto centrado final */
+            div[style*="text-align: center"] {
+                padding: 15px;
+                margin: 20px 0;
+                font-size: 1.1rem;
+            }
+            
+            div[style*="text-align: center"] p {
+                font-size: 1.1rem;
+                line-height: 1.4;
+            }
+            
+            div[style*="font-size: 1.1rem"] {
+                font-size: 1.3rem !important;
+            }
+        }
+        
+        /* ESTILOS PARA PANTALLAS GRANDES */
+        @media screen and (min-width: 769px) {
             body {
                 background: #f5f7fa;
                 padding: 20px;
@@ -68,7 +257,29 @@
             }
         }
         
-        /* ENCABEZADO EMOCIONAL */
+        /* ESTILOS PARA IMPRESIÓN */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0 !important;
+                font-size: 9pt !important;
+                line-height: 1.05 !important;
+            }
+            
+            .container {
+                box-shadow: none !important;
+                padding: 15px 20px !important;
+                max-width: 8.5in !important;
+                height: 11in !important;
+                border-radius: 0 !important;
+            }
+            
+            .print-btn {
+                display: none !important;
+            }
+        }
+        
+        /* ELEMENTOS COMUNES */
         .header {
             text-align: center;
             margin-bottom: 10px;
@@ -93,7 +304,6 @@
             font-style: italic;
         }
         
-        /* TRANSFORMACIÓN VISUAL */
         .transformation-container {
             display: flex;
             justify-content: space-between;
@@ -130,7 +340,6 @@
             padding: 0 10px;
         }
         
-        /* SECCIONES */
         .section {
             margin-bottom: 8px;
             page-break-inside: avoid;
@@ -155,7 +364,6 @@
             margin-bottom: 5px;
         }
         
-        /* DATOS DE FACTURACIÓN */
         .revenue-comparison {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -185,7 +393,6 @@
             margin-bottom: 2px;
         }
         
-        /* CÓMO LO LOGRAMOS */
         .campaign-box {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
@@ -224,7 +431,6 @@
             margin-left: 3px;
         }
         
-        /* PASOS A SEGUIR */
         .steps-container {
             margin: 6px 0;
         }
@@ -249,7 +455,6 @@
             font-size: 0.8em;
         }
         
-        /* FOOTER */
         .footer {
             text-align: center;
             margin-top: 8px;
@@ -263,7 +468,6 @@
             right: 20px;
         }
         
-        /* ELEMENTOS EMOCIONALES */
         .emotional-highlight {
             background: #fff9e6;
             border-left: 3px solid #f39c12;
@@ -458,21 +662,31 @@
         </div>
     </div>
 
-    <button class="print-btn" onclick="window.print()" style="display: none;">
+    <!-- BOTÓN DE IMPRESIÓN (SOLO PARA PANTALLA) -->
+    <button class="print-btn" onclick="window.print()">
         <i class="fas fa-print"></i> Exportar a PDF
     </button>
 
     <script>
-        if (!window.matchMedia('print').matches) {
-            document.querySelector('.print-btn').style.display = 'flex';
-        }
-        
+        // Ocultar botón en impresión
         window.addEventListener('beforeprint', function() {
-            console.log("Configuración óptima:");
-            console.log("1. PDF con márgenes mínimos (5mm)");
-            console.log("2. Tamaño carta - Todo en 1 página");
-            console.log("3. Activar gráficos de fondo");
+            document.querySelector('.print-btn').style.display = 'none';
+            console.log("Configuración óptima para PDF:");
+            console.log("1. Destino: Guardar como PDF");
+            console.log("2. Márgenes: Mínimo (5mm)");
+            console.log("3. Tamaño: Carta (8.5x11 pulgadas)");
+            console.log("4. Gráficos de fondo: ACTIVAR");
         });
+        
+        window.addEventListener('afterprint', function() {
+            document.querySelector('.print-btn').style.display = 'flex';
+        });
+        
+        // Detectar móvil y mostrar mensaje útil
+        if (window.innerWidth <= 768) {
+            console.log("Vista móvil activada - Todo se ve bien sin zoom");
+            console.log("Para versión PDF (tamaño carta), usa el botón 'Exportar a PDF'");
+        }
     </script>
 </body>
 </html>
