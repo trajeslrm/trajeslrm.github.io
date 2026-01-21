@@ -131,7 +131,7 @@ color: #6c757d;
 font-size: 0.9rem;
 margin-top: 10px;
 }
-footer {
+.footer {
 text-align: center;
 padding: 25px 0 15px;
 color: #6c757d;
@@ -162,6 +162,31 @@ align-items: center;
 justify-content: center;
 font-weight: bold;
 }
+/* Estilos para el video embebido */
+.video-container {
+position: relative;
+padding-bottom: 56.25%; /* 16:9 */
+height: 0;
+overflow: hidden;
+margin: 20px 0;
+}
+.video-container iframe {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+border: none;
+}
+/* Estilos para el contador de Google Sheets */
+.sheets-embed {
+width: 100%;
+height: 400px;
+border: none;
+margin: 20px 0;
+border-radius: 8px;
+box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
 @media (max-width: 600px) {
 h1 { font-size: 1.8rem; }
 .subtitle { font-size: 1rem; }
@@ -169,8 +194,7 @@ h1 { font-size: 1.8rem; }
 .card { padding: 20px; }
 .steps-list li {
 padding-left: 45px;
-}
-.steps-list li:before {
+}.steps-list li:before {
 width: 28px;
 height: 28px;
 font-size: 0.9rem;
@@ -181,6 +205,7 @@ font-size: 0.9rem;
 <body>
 
 <div class="container">
+
 <header>
 <h1>¡AYÚDANOS A CRECER!</h1>
 <div class="subtitle">De "<span class="no-talla">No tenemos tu talla</span>" a "<span class="si-tenemos">¡Sí, tenemos justo lo que buscas!</span>"</div>
@@ -195,6 +220,7 @@ font-size: 0.9rem;
 Pero <em>no podemos hacerlo solos</em>.</p>
 
 <p>Hoy te invitamos a <span class="highlight">garantizar tu propio acceso</span> a los trajes que necesitas, cuando los necesites, <strong>al mejor precio posible en Barquisimeto</strong>.</p>
+
 <p><strong>✅ Haz un aporte hoy y recibe alquileres gratis durante todo el año:</strong></p>
 <ul style="margin-left: 20px; margin-top: 10px;">
 <li><strong>$20</strong> → 1 alquiler gratis</li>
@@ -217,8 +243,7 @@ Con ella, aseguras que <em>cuando tú necesites un traje, lo encuentres listo, e
 <small>Valor real: $160+</small>
 <div class="limit">Solo 20 cupos disponibles</div>
 </div>
-<div class="reward-card">
-<div class="reward-amount">$40</div>
+<div class="reward-card"><div class="reward-amount">$40</div>
 <div class="reward-desc">3 alquileres gratis en 1 año</div>
 <small>Valor real: $60+</small>
 <div class="limit">Solo 50 cupos disponibles</div>
@@ -234,7 +259,14 @@ Con ella, aseguras que <em>cuando tú necesites un traje, lo encuentres listo, e
 </div>
 
 <div class="card">
-<h2>¿Cómo participar?</h2>
+<h2>¡Mira nuestro video!</h2>
+<div class="video-container">
+<iframe src="https://www.tiktok.com/embed/v2/7456789012345678901" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+
+<div class="card">
+<h2>¿Cómo participar? (3 pasos simples)</h2>
 <ol class="steps-list">
 <li>
 <strong>Deposita tu aporte</strong> en una de nuestras cuentas:<br>
@@ -243,36 +275,35 @@ Con ella, aseguras que <em>cuando tú necesites un traje, lo encuentres listo, e
 </li>
 <li>
 <strong>Reporta tu pago</strong> en nuestro formulario oficial para registrarte como colaborador y recibir tu cupón:<br>
-<a href="https://docs.google.com/forms/d/e/TU_FORMULARIO_AQUI" target="_blank" style="color: var(--primary);">👉 LLENAR FORMULARIO DE REGISTRO</a></li>
+<a href="https://docs.google.com/forms/d/e/TU_FORMULARIO_AQUI" target="_blank" class="btn">👉 LLENAR FORMULARIO DE REGISTRO</a>
+</li>
 <li>
-<strong>Revisa esta página y nuestra hoja pública</strong> para estar al tanto del progreso, la fecha de cierre y las instrucciones para retirar tu cupón físico una vez finalizada la campaña.<br>
-<a href="https://docs.google.com/spreadsheets/d/TU_HOJA_PUBLICA_AQUI" target="_blank" style="color: var(--primary);">Ver transparencia y avances</a>
+<strong>¡Eso es todo!</strong> Una vez que llenes el formulario, recibirás un correo o mensaje con instrucciones para retirar tu cupón físico en nuestra tienda.
 </li>
 </ol>
 </div>
 
 <div class="card">
-<h2>Importante: Tiempo de entrega</h2>
-<p>Una vez completada la recolección de fondos, el proceso de compra e importación tomará aproximadamente <strong>3 meses</strong> (por envío marítimo económico desde China).</p>
-<p><strong>Las recompensas solo se activarán después de que los trajes lleguen a Venezuela.</strong></p>
+<h2>Progreso de la Campaña (Actualizado en tiempo real)</h2>
+<p>Mira cuántos colaboradores ya han hecho su aporte:</p>
+<iframe class="sheets-embed" src="https://docs.google.com/spreadsheets/d/TU_HOJA_PUBLICA_AQUI/pubhtml?widget=true&headers=false"></iframe>
 </div>
 
 <div class="card">
+<h2>Importante: Tiempo de entrega</h2>
+<p>Una vez completada la recolección de fondos, el proceso de compra e importación tomará aproximadamente <strong>3 meses</strong> (por envío marítimo económico desde China).</p>
+<p><strong>Las recompensas solo se activarán después de que los trajes lleguen a Venezuela.</strong></p></div>
+
+<div class="card">
 <h2>Compromiso de transparencia</h2>
-<p>Publicaremos en TikTok y en nuestra hoja pública:</p>
-<ul style="margin-left: 20px;">
-<li>📸 Capturas de los pagos a China</li>
-<li>📦 Seguimiento del envío</li>
-<li>🧾 Facturas (con datos sensibles ocultos)</li>
-<li>🎯 Lista de trajes comprados según sus votos</li>
-</ul>
-<p>Si no alcanzamos el mínimo viable, <strong>devolvemos el 100% de los fondos</strong>.</p>
+<p>Todo lo que hagamos será visible en este mismo sitio. No hay nada oculto.</p>
 </div>
 
 <footer>
 <p>LRM Trajes – Vargas con 18, Edif. Merpolara, Piso 1, Local 42 – Barquisimeto</p>
 <p>Campaña de financiamiento colectivo | Para uso exclusivo de clientes y comunidad</p>
 </footer>
+
 </div>
 
 </body>
