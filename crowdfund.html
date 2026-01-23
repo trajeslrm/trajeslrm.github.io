@@ -4,12 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>¡Ayúdanos a Crecer! | LRM Trajes</title>
-<style><!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>¡Ayúdanos a Crecer! | LRM Trajes</title>
 <style>
 :root {
 --primary: #0056b3;
@@ -171,22 +165,27 @@ align-items: center;
 justify-content: center;
 font-weight: bold;
 }
-/* Estilos para el video embebido */
-.video-container {
-position: relative;
-padding-bottom: 56.25%; /* 16:9 */
-height: 0;
-overflow: hidden;
-margin: 20px 0;
+/* Contenedor vertical 9:16 para TikTok */
+.video-container-vertical {
+    position: relative;
+    width: 280px;
+    height: 500px;
+    margin: 20px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: #000;
 }
-.video-container iframe {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-border: none;
+
+.video-container-vertical iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
 }
+
 /* Estilos para el contador de Google Sheets */
 .sheets-embed {
 width: 100%;
@@ -209,6 +208,11 @@ width: 28px;
 height: 28px;
 font-size: 0.9rem;
 }
+.video-container-vertical {
+    width: 90%;
+    max-width: 320px;
+    height: 570px;
+}
 }
 </style>
 </head>
@@ -227,7 +231,7 @@ font-size: 0.9rem;
 ¿Te tocó irte con las manos vacías, buscar en otro lado, o presentarte en tu evento sin el look que querías?</p>
 
 <p><strong>Eso va a cambiar.</strong><br>
-Con tu ayuda!</em>.</p>
+Con tu ayuda!</p>
 
 <p>Hoy te invitamos a <span class="highlight">garantizar tu propio acceso</span> a los trajes que necesitas, cuando los necesites, <strong>al mejor precio posible en Barquisimeto</strong>.</p>
 
