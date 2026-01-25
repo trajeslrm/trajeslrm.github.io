@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Recolecta LRM: ¡Más trajes, más estilo para ti!</title>
+<title>Recolecta Feb-2026: ¡Más trajes, para ti!</title>
 <style>
 :root {
 --primary: #0056b3;
@@ -29,9 +29,40 @@ max-width: 900px;
 margin: 0 auto;
 padding: 20px;
 }
+.hero-section {
+    background: white;
+    border-radius: 12px;
+    padding: 35px 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    border-top: 8px solid var(--primary);
+}
+.hero-question {
+    font-size: 1.8rem;
+    color: var(--danger);
+    margin-bottom: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+.hero-question strong {
+    color: var(--danger);
+}
+.hero-change {
+    font-size: 2rem;
+    color: var(--secondary);
+    font-weight: 800;
+    margin: 20px 0 10px;
+}
+.hero-help {
+    font-size: 1.5rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin-top: 10px;
+}
 header {
 text-align: center;
-padding: 30px 0;
+padding: 20px 0 10px;
 }
 h1 {
 font-size: 2.2rem;
@@ -219,6 +250,15 @@ border-radius: 8px;
 box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 @media (max-width: 600px) {
+.hero-question {
+    font-size: 1.5rem;
+}
+.hero-change {
+    font-size: 1.7rem;
+}
+.hero-help {
+    font-size: 1.3rem;
+}
 h1 { font-size: 1.8rem; }
 .subtitle { font-size: 1rem; }
 .cta-phrase { font-size: 1.2rem; }
@@ -244,15 +284,31 @@ font-size: 0.9rem;
 
 <div class="container">
 
+<!-- SECCIÓN HERO CON LA FRASE PRINCIPAL -->
+<div class="hero-section">
+    <div class="hero-question">
+        <strong>¿Alguna vez llegaste a alquilar un traje… y no teníamos tu talla?</strong><br>
+        ¿Te tocó irte con las manos vacías, buscar en otro lado, o presentarte en tu evento sin el look que querías?
+    </div>
+    
+    <div class="hero-change">
+        ¡Eso va a cambiar!
+    </div>
+    
+    <div class="hero-help">
+        Con tu ayuda.
+    </div>
+</div>
+
 <header>
-<h1>RECOLECTA LRM: Objetivo 2200 USD</h1>
-<div class="subtitle">De "<span class="no-talla">No tenemos tu talla</span>" a "<span class="si-tenemos">¡Sí, tenemos justo lo que buscas!</span>"</div>
+<h1>RECOLECTA: 2200$</h1>
+<div class="subtitle">De "<span class="no-talla">No tenemos tu talla</span>" a "<span class="si-tenemos">¡Sí, tenemos lo que buscas!</span>"</div>
 <div class="cta-phrase">
-    ¡Invierte en tu estilo: recibe alquileres GRATIS todo el año!
+    ¡Aporta Dinero: recibe alquileres GRATIS!
 </div>
 <div class="dates-box">
     🗓️ <strong>CAMPAÑA ACTIVA:</strong> Del 1 de febrero al 28 de febrero de 2026<br>
-    💰 <strong>CON LO RECAUDADO COMPRAREMOS EN CHINA</strong> los trajes que alcancemos.
+    💰 <strong>CON LO RECAUDADO COMPRAREMOS</strong> los trajes que alcancemos.
 </div>
 </header>
 
@@ -274,15 +330,15 @@ Con tu ayuda!</p>
 </ul>
 
 <p><strong>Tu aporte no es una donación… es una inversión en ti mismo.</strong><br>
-Con ella, aseguras que <em>cuando tú necesites un traje, lo encuentres listo, en tu talla, en tu color, y sin pagar de más</em>.</p>
+Con ella, aseguras que <em>cuando tú necesites un traje, lo tengamos, en tu talla, en tu color, y sin pagar de más</em>.</p>
 
-<p>Además, nos ayudas a comprar <strong>más trajes basados en lo que ustedes piden</strong>. Así, todos ganamos.</p>
+<p>Además, nos ayudas a comprar <strong>más trajes basados en lo buscas</strong>. Así, todos ganamos.</p>
 
-<p><strong>📅 IMPORTANTE:</strong> La recolección finaliza el <strong>28 de febrero de 2026</strong>. Con el monto total recaudado en ese mes, haremos el pedido a China para traer la mayor cantidad de trajes posibles.</p>
+<p><strong>📅 IMPORTANTE:</strong> La recolección finaliza el <strong>28 de febrero de 2026</strong>. Con el monto total recaudado en ese mes, haremos el pedido para traer la mayor cantidad de trajes posibles.</p>
 </div>
 
 <div class="card">
-<h2>Recompensas (¡con cupos limitados!)</h2>
+<h2>Recompensas (¡Limitados!)</h2>
 <div class="rewards-grid">
 <div class="reward-card">
 <div class="reward-amount">$100</div>
@@ -307,7 +363,7 @@ Con ella, aseguras que <em>cuando tú necesites un traje, lo encuentres listo, e
 </div>
 
 <div class="card">
-<h2>¡Mira nuestro video!</h2>
+<h2>Dudas?....¡Mira este video!</h2>
 <div class="video-container-vertical">
 <iframe 
     src="https://www.tiktok.com/embed/v2/7599395574252719381" 
@@ -322,7 +378,7 @@ Con ella, aseguras que <em>cuando tú necesites un traje, lo encuentres listo, e
 </div>
 
 <div class="card">
-<h2>¿Cómo participar? (3 pasos simples)</h2>
+<h2>¿Cómo participar? (3 pasos)</h2>
 <ol class="steps-list">
 <li>
 <strong>Deposita tu aporte</strong> en una de nuestras cuentas:<br>
@@ -340,8 +396,8 @@ Con ella, aseguras que <em>cuando tú necesites un traje, lo encuentres listo, e
 </div>
 
 <div class="card">
-<h2>Progreso de la Campaña (Actualizado en tiempo real)</h2>
-<p>Mira cuántos colaboradores ya han hecho su aporte:</p>
+<h2>Progreso de la Campaña</h2>
+<p>Mira cuántas personas han aportado:</p>
 <iframe class="sheets-embed" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSJ-yTnK0lfNGZQOu9Rm1996bkSigXVnSp6aU5_XWRjFXJd1bKX3xZdMUHGnnfuzcIE7SWMzmA2xNEM/pubhtml?gid=196474228&single=true"></iframe>
 </div>
 
