@@ -29,9 +29,40 @@ max-width: 900px;
 margin: 0 auto;
 padding: 20px;
 }
+.hero-section {
+    background: white;
+    border-radius: 12px;
+    padding: 35px 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    border-top: 8px solid var(--primary);
+}
+.hero-question {
+    font-size: 1.8rem;
+    color: var(--danger);
+    margin-bottom: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+.hero-question strong {
+    color: var(--danger);
+}
+.hero-change {
+    font-size: 2rem;
+    color: var(--secondary);
+    font-weight: 800;
+    margin: 20px 0 10px;
+}
+.hero-help {
+    font-size: 1.5rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin-top: 10px;
+}
 header {
 text-align: center;
-padding: 30px 0;
+padding: 20px 0 10px;
 }
 h1 {
 font-size: 2.2rem;
@@ -219,6 +250,15 @@ border-radius: 8px;
 box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 @media (max-width: 600px) {
+.hero-question {
+    font-size: 1.5rem;
+}
+.hero-change {
+    font-size: 1.7rem;
+}
+.hero-help {
+    font-size: 1.3rem;
+}
 h1 { font-size: 1.8rem; }
 .subtitle { font-size: 1rem; }
 .cta-phrase { font-size: 1.2rem; }
@@ -244,29 +284,35 @@ font-size: 0.9rem;
 
 <div class="container">
 
+<!-- SECCIÓN HERO CON LA FRASE PRINCIPAL -->
+<div class="hero-section">
+    <div class="hero-question">
+        <strong>¿Llegaste a alquilar un traje… y no teníamos lo que querias?</strong>      
+    </div>
+    
+    <div class="hero-change">
+        ¡Eso va a cambiar!
+    </div>
+    
+    <div class="hero-help">
+        Con tu ayuda.
+    </div>
+</div>
+
 <header>
 <h1>RECOLECTA: 2200$</h1>
-<div class="subtitle">De "<span class="no-talla">No tenemos tu talla</span>" a "<span class="si-tenemos">¡Sí, tenemos lo que buscas!</span>"</div>
+<div class="subtitle">De "<span class="no-talla">No tenemos 😓</span>" a "<span class="si-tenemos">¡Sí, tenemos lo que buscas!</span>"</div>
 <div class="cta-phrase">
     ¡Aporta Dinero: recibe alquileres GRATIS!
-</div>
-<div class="dates-box">
-    🗓️ <strong>CAMPAÑA ACTIVA:</strong> Del 1 de febrero al 28 de febrero de 2026<br>
-    💰 <strong>CON LO RECAUDADO COMPRAREMOS</strong> los trajes que alcancemos.
 </div>
 </header>
 
 <div class="card">
 <h2>¿Por qué esta campaña?</h2>
-<p><strong>¿Alguna vez llegaste a alquilar un traje… y no teníamos tu talla?</strong><br>
-¿Te tocó irte con las manos vacías, buscar en otro lado, o presentarte en tu evento sin el look que querías?</p>
 
-<p><strong>Eso va a cambiar.</strong><br>
-Con tu ayuda!</p>
+<p>Para <span class="highlight">garantizar tu propio acceso</span> a los trajes que necesitas, cuando los necesites, <strong>al mejor precio posible en Barquisimeto</strong>.</p>
 
-<p>Hoy te invitamos a <span class="highlight">garantizar tu propio acceso</span> a los trajes que necesitas, cuando los necesites, <strong>al mejor precio posible en Barquisimeto</strong>.</p>
-
-<p><strong>✅ Haz un aporte hoy y recibe alquileres gratis durante todo el año:</strong></p>
+<p><strong>✅ Haz un aporte hoy y recibe alquileres gratis:</strong></p>
 <ul style="margin-left: 20px; margin-top: 10px;">
 <li><strong>$20</strong> → 1 alquiler gratis</li>
 <li><strong>$40</strong> → 3 alquileres gratis</li>
@@ -278,9 +324,16 @@ Con ella, aseguras que <em>cuando tú necesites un traje, lo tengamos, en tu tal
 
 <p>Además, nos ayudas a comprar <strong>más trajes basados en lo buscas</strong>. Así, todos ganamos.</p>
 
-<p><strong>📅 IMPORTANTE:</strong> La recolección finaliza el <strong>28 de febrero de 2026</strong>. Con el monto total recaudado en ese mes, haremos el pedido para traer la mayor cantidad de trajes posibles.</p>
 </div>
 
+
+<div class="card">    
+<div class="dates-box">
+    🗓️ <strong>CAMPAÑA ACTIVA:</strong> Del 1 de febrero al 28 de febrero de 2026<br>
+    💰 <strong>CON LO RECAUDADO COMPRAREMOS</strong> los trajes que alcancemos.
+</div>
+</div>
+    
 <div class="card">
 <h2>Recompensas (¡Limitados!)</h2>
 <div class="rewards-grid">
