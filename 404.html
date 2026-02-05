@@ -1,41 +1,274 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página no encontrada - LRM Trajes</title>
-    <meta name="description" content="Lo sentimos, la página que buscas no existe en LRM Trajes.">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-        }
-        h1 {
-            color: #d32f2f;
-        }
-        a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Página no encontrada - LRM Trajes</title>
+  <link rel="canonical" href="https://lrmtrajes.com" />
+  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/HTBTYxYL/lrm-logo-red.png">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Estilos específicos para la página 404 que mantienen la congruencia visual */
+    .error-container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 40px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e9ecef;
+    }
+    
+    .error-icon {
+      font-size: 80px;
+      color: #d32f2f;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    
+    .error-title {
+      font-size: 2.5rem;
+      color: #333;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+    
+    .error-message {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .error-code {
+      background: #333;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 1rem;
+      display: inline-block;
+      margin-bottom: 20px;
+      font-family: monospace;
+    }
+    
+    .home-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+      margin: 10px;
+    }
+    
+    .home-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+      background: linear-gradient(135deg, #128C7E 0%, #25D366 100%);
+    }
+    
+    .home-button i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+    
+    .contact-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #333;
+      color: white;
+      padding: 15px 30px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin: 10px;
+      border: 2px solid #333;
+    }
+    
+    .contact-button:hover {
+      background: white;
+      color: #333;
+      transform: translateY(-3px);
+    }
+    
+    .suggestions {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid #eee;
+    }
+    
+    .suggestions h3 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+    }
+    
+    .suggestion-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .suggestion-link {
+      background: #f8f9fa;
+      color: #333;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 1px solid #e9ecef;
+    }
+    
+    .suggestion-link:hover {
+      background: #25D366;
+      color: white;
+      transform: translateY(-2px);
+      border-color: #25D366;
+    }
+    
+    @media (max-width: 768px) {
+      .error-container {
+        margin: 30px 15px;
+        padding: 30px 15px;
+      }
+      
+      .error-title {
+        font-size: 2rem;
+      }
+      
+      .error-message {
+        font-size: 1.1rem;
+      }
+      
+      .home-button, .contact-button {
+        display: block;
+        margin: 10px auto;
+        max-width: 250px;
+      }
+      
+      .suggestion-links {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>404 - Página no encontrada</h1>
-        <p>Lo sentimos, la página que estás buscando no existe o ha sido movida.</p>
-        <p>Te invitamos a volver a la <a href="https://lrmtrajes.com/">página principal</a>.</p>
-        <p>Si crees que esto es un error, contáctanos.</p>
+
+  <!-- Mismo Header que la página principal -->
+  <header class="header">
+    <h1>LRM Trajes</h1>
+    <p>Luces bien y ahorras.</p>
+  </header>
+
+  <!-- Contenido de Error 404 -->
+  <div class="error-container">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
     </div>
+    
+    <div class="error-code">ERROR 404</div>
+    
+    <h1 class="error-title">Página no encontrada</h1>
+    
+    <p class="error-message">
+      Lo sentimos, la página que estás buscando no existe o ha sido movida a una nueva ubicación. 
+      Puede que hayas ingresado una dirección incorrecta o que el enlace haya cambiado.
+    </p>
+    
+    <div class="button-group">
+      <a href="https://lrmtrajes.com" class="home-button">
+        <i class="fas fa-home"></i> Volver a la página principal
+      </a>
+      
+      <a href="https://wa.link/9ekoa6" class="contact-button" target="_blank">
+        <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+      </a>
+    </div>
+    
+    <div class="suggestions">
+      <h3>Quizás te interese:</h3>
+      <div class="suggestion-links">
+        <a href="https://lrmtrajes.com#trajes" class="suggestion-link">Ver trajes disponibles</a>
+        <a href="https://maps.app.goo.gl/HPJMkwu7Reqs5zGt5" class="suggestion-link" target="_blank">Ubicación de la tienda</a>
+        <a href="https://www.instagram.com/trajes_lrm" class="suggestion-link" target="_blank">Seguir en Instagram</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mismo Footer que la página principal -->
+  <footer class="footer-container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3><i class="fas fa-store"></i> Nuestra Tienda</h3>
+        <p><a href="https://maps.app.goo.gl/HPJMkwu7Reqs5zGt5" target="_blank"><i class="fas fa-map-marker-alt"></i> Vargas con 18 - Merpolara Piso 1 L42</a></p>
+        <p><i class="fas fa-clock"></i> Horario: Lunes a Sábado, 10:00 AM - 5:00 PM</p>
+        <p><a href="tel:04129373630"><i class="fas fa-phone-alt"></i> Teléfono: 0412-9373630</a></p>
+      </div>
+      <div class="footer-section">
+        <h3><i class="fas fa-info-circle"></i> Información</h3>
+        <p><i class="fas fa-tag"></i> Precio: 20 USD por 3 días</p>
+        <p><i class="fas fa-shield-alt"></i> Garantía de calidad</p>
+        <p><i class="fas fa-tshirt"></i> Amplia variedad de tallas</p>
+      </div>
+      <div class="footer-section">
+        <h3><i class="fas fa-share-alt"></i> Síguenos</h3>
+        <p>Conéctate con nosotros en redes sociales</p>
+        <div class="social-links">
+          <a class="social-link" href="https://www.instagram.com/trajes_lrm" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a class="social-link" href="https://www.tiktok.com/@trajes_lrm" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2025 LRM Trajes. Todos los derechos reservados.
+    </div>
+  </footer>
+
+  <script>
+    // Añadir interactividad simple
+    document.addEventListener('DOMContentLoaded', function() {
+      // Efecto de aparición
+      const errorContainer = document.querySelector('.error-container');
+      errorContainer.style.opacity = '0';
+      errorContainer.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        errorContainer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        errorContainer.style.opacity = '1';
+        errorContainer.style.transform = 'translateY(0)';
+      }, 100);
+      
+      // Añadir sonido de clic (opcional)
+      const buttons = document.querySelectorAll('.home-button, .contact-button, .suggestion-link');
+      buttons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Podrías añadir un sonido de clic aquí si quieres
+          console.log('Navegando a:', this.href);
+        });
+      });
+    });
+  </script>
 </body>
 </html>
