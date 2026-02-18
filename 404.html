@@ -146,6 +146,45 @@
       transform: translateY(-2px);
       border-color: #25D366;
     }
+
+    /* Estilos para los iconos de redes sociales en sugerencias */
+    .social-suggestion-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .social-suggestion-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #f8f9fa;
+      color: #333;
+      font-size: 24px;
+      transition: all 0.3s ease;
+      border: 1px solid #e9ecef;
+      text-decoration: none;
+    }
+
+    .social-suggestion-link:hover {
+      transform: translateY(-5px);
+    }
+
+    .social-suggestion-link.instagram:hover {
+      background: linear-gradient(45deg, #f09433 0%, #d62976 100%);
+      color: white;
+      border-color: transparent;
+    }
+
+    .social-suggestion-link.tiktok:hover {
+      background: #000000;
+      color: white;
+      border-color: transparent;
+    }
     
     @media (max-width: 768px) {
       .error-container {
@@ -170,6 +209,10 @@
       .suggestion-links {
         flex-direction: column;
         align-items: center;
+      }
+
+      .social-suggestion-links {
+        gap: 15px;
       }
     }
   </style>
@@ -212,7 +255,16 @@
       <div class="suggestion-links">
         <a href="https://lrmtrajes.com#trajes" class="suggestion-link">Ver trajes disponibles</a>
         <a href="https://maps.app.goo.gl/HPJMkwu7Reqs5zGt5" class="suggestion-link" target="_blank">Ubicación de la tienda</a>
-        <a href="https://www.instagram.com/trajes_lrm" class="suggestion-link" target="_blank">Seguir en Instagram</a>
+      </div>
+      
+      <!-- Redes sociales solo con iconos -->
+      <div class="social-suggestion-links">
+        <a href="https://www.instagram.com/trajes_lrm" class="social-suggestion-link instagram" target="_blank" title="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@trajes_lrm" class="social-suggestion-link tiktok" target="_blank" title="TikTok">
+          <i class="fab fa-tiktok"></i>
+        </a>
       </div>
     </div>
   </div>
@@ -261,10 +313,9 @@
       }, 100);
       
       // Añadir sonido de clic (opcional)
-      const buttons = document.querySelectorAll('.home-button, .contact-button, .suggestion-link');
+      const buttons = document.querySelectorAll('.home-button, .contact-button, .suggestion-link, .social-suggestion-link');
       buttons.forEach(button => {
         button.addEventListener('click', function() {
-          // Podrías añadir un sonido de clic aquí si quieres
           console.log('Navegando a:', this.href);
         });
       });
