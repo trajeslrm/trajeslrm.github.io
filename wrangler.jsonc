@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "dry-night-4bf9",
+  "name": "lrm-web",
   "compatibility_date": "2026-05-05",
   "observability": {
     "enabled": true
